@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default axios.create({
-  baseURL: window.electron.env.apiBaseUrl,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 10000,
 });
