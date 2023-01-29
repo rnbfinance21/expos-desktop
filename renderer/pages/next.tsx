@@ -13,7 +13,7 @@ function Next() {
         <span>⚡ Nextron ⚡</span>
       </div>
       <div className='mt-1 w-full flex-wrap flex justify-center'>
-        <Link href='/home'>
+        <Link href='/login'>
           <a className='btn-blue'>Go to home page</a>
         </Link>
       </div>

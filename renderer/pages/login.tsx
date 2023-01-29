@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "../components/login/Container";
 import AuthForm from "../components/login/AuthForm";
+import { withOutAuth } from "../HOC/withOutAuth";
 
 const login = () => {
   return (
@@ -10,4 +11,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default withOutAuth(login);

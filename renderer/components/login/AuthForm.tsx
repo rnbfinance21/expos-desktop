@@ -12,6 +12,8 @@ import AuthService, { LoginUsernameParams } from "../../services/AuthService";
 import { AxiosError } from "axios";
 import { BaseResponse } from "../../services/types";
 import Toast from "../../utils/toast";
+import { useRouter } from "next/router";
+import { useAuth } from "../../hooks/AuthContext";
 
 type FormType = {
   username: string;
@@ -37,6 +39,8 @@ const Header = () => {
 };
 
 const AuthForm = () => {
+  const router = useRouter();
+  const { signIn } = useAuth();
   const [secureText, setSecureText] = useState(true);
 
   const {
@@ -51,7 +55,7 @@ const AuthForm = () => {
     (params: LoginUsernameParams) => AuthService.loginUsername(params),
     {
       onSuccess: (res) => {
-        console.log(res);
+        signIn(res.data.access_token);
       },
       onError: (err: AxiosError<BaseResponse>) => {
         if (err.isAxiosError && err.response) {
