@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import * as HeroIcons from "@heroicons/react/24/solid";
 import { classNames } from "../../../utils/string";
 
-type IconName = keyof typeof HeroIcons;
+export type IconName = keyof typeof HeroIcons;
 
 interface DynamicHeroIconProps {
   icon: IconName;
