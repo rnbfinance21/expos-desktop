@@ -111,8 +111,7 @@ const AuthForm = () => {
         <TextInput
           type="text"
           placeholder="Kode Staff"
-          className="text-left js-kioskboard-input"
-          data-kioskboard-type="numpad"
+          className="text-left"
           onClick={() => onFocus(1)}
           {...register("username")}
         />
@@ -123,8 +122,7 @@ const AuthForm = () => {
           <TextInput
             type={secureText ? "password" : "text"}
             placeholder="Pin / Kata Sandi"
-            className="text-left js-kioskboard-input"
-            data-kioskboard-type="numpad"
+            className="text-left"
             onClick={() => onFocus(2)}
             {...register("password")}
           />

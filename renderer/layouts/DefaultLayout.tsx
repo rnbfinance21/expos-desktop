@@ -14,9 +14,14 @@ const DefaultLayout = ({ title, children }: DefaultLayoutProps) => {
       <Head>
         <title>EXPOS {title === "" ? "" : `- ${title}`}</title>
       </Head>
-      <div className="w-full h-screen">
+      <div className="w-full h-screen flex flex-col">
         <Header />
         {children}
+        <div className="bg-white flex justify-center py-1 border-t">
+          <span className="text-xs font-bold">
+            &copy; CV. Ramen Nikmat Barokah
+          </span>
+        </div>
       </div>
     </Fragment>
   );

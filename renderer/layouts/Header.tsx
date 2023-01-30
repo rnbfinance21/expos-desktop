@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="px-4 py-3 w-ful bg-white shadow">
+      <div className="px-4 py-3 w-full bg-white border-b">
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-4">
             <button
