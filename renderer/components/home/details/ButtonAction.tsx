@@ -1,4 +1,6 @@
+
 import React from "react";
+import electron from "electron";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
@@ -17,6 +19,7 @@ interface ButtonActionProps {
 
 const ButtonAction = ({ data }: ButtonActionProps) => {
   const dispatch = useDispatch();
+  const ipcRenderer = electron.ipcRenderer || false;
   const { token } = useAuth();
 
   const changeStateMutation = useMutation(
@@ -74,11 +77,17 @@ const ButtonAction = ({ data }: ButtonActionProps) => {
     });
   };
 
+  const _printOrder = () => {
+    if(ipcRenderer){
+      ipcRenderer.send('print-order', data);
+    }
+  }
+
   return (
     <>
       {data.status === 0 ? (
         <div className="grid grid-cols-2 gap-4">
-          <Button onClick={_onAccept}>Terima</Button>
+          <Button onClick={_printOrder}>Terima</Button>
           <Button onClick={() => _onReject(0)}>Tolak</Button>
         </div>
       ) : null}
