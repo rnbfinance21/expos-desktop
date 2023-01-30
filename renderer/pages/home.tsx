@@ -15,9 +15,6 @@ function Home() {
     <DefaultLayout title="Home">
       <div className="flex-grow w-full flex flex-row">
         <Main />
-        {/* <div className="w-[400px] h-full bg-white border-l">
-        <p>haii</p>
-      </div> */}
       </div>
     </DefaultLayout>
   );

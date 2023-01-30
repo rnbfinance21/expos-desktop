@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSearch } from "../../features/listOrderSlice";
+import { setRefetchOrder, setSearch } from "../../features/listOrderSlice";
 import { DynamicHeroIcon } from "../globals/icons";
 
 const Header = () => {
@@ -41,10 +41,19 @@ const Header = () => {
           />
         </div>
       </div>
-      <button className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md">
-        <DynamicHeroIcon icon="AdjustmentsHorizontalIcon" />
-        Filter
-      </button>
+      <div className="flex flex-row gap-2">
+        <button
+          onClick={() => dispatch(setRefetchOrder(true))}
+          className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"
+        >
+          <DynamicHeroIcon icon="ArrowPathIcon" />
+          Perbarui
+        </button>
+        <button className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md">
+          <DynamicHeroIcon icon="AdjustmentsHorizontalIcon" />
+          Filter
+        </button>
+      </div>
     </div>
   );
 };

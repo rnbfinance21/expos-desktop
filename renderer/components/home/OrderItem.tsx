@@ -1,6 +1,11 @@
 import React from "react";
+import { Order } from "../../services/OrderService";
 
-const OrderItem = () => {
+interface OrderItemProps {
+  data: Order;
+}
+
+const OrderItem = ({ data }: OrderItemProps) => {
   return (
     <div className="flex flex-col w-full p-4 border-b justify-between gap-4">
       <div className="flex-1 flex flex-row gap-4 items-center">
