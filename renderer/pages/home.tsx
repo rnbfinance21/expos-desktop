@@ -1,4 +1,5 @@
 import React from "react";
+import Detail from "../components/home/Detail";
 import Header from "../components/home/Header";
 import Main from "../components/home/Main";
 import OrderItem from "../components/home/OrderItem";
@@ -15,6 +16,7 @@ function Home() {
     <DefaultLayout title="Home">
       <div className="flex-grow w-full flex flex-row">
         <Main />
+        <Detail />
       </div>
     </DefaultLayout>
   );

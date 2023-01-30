@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Shimmer } from "react-shimmer";
-import { getListOrder, setRefetchOrder } from "../../features/listOrderSlice";
+import {
+  getListOrder,
+  setRefetchOrder,
+  setSelectedOrder,
+} from "../../features/listOrderSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import OrderService, { Order } from "../../services/OrderService";
 import Header from "./Header";
@@ -50,7 +54,8 @@ const OrderItemShimmer = () => {
 const Main = () => {
   const dispatch = useDispatch();
   const { token } = useAuth();
-  const { date, status, search, refetchOrder } = useSelector(getListOrder);
+  const { date, status, search, refetchOrder, selectedOrder } =
+    useSelector(getListOrder);
 
   const [data, setData] = useState<Order[]>([]);
 
@@ -72,6 +77,8 @@ const Main = () => {
       },
     }
   );
+
+  const _onSelectedItem = (id: number) => dispatch(setSelectedOrder(id));
 
   useEffect(() => {
     refetch();
@@ -97,7 +104,12 @@ const Main = () => {
               <div className="h-0">
                 {data.map((item) => {
                   return (
-                    <OrderItem key={`order_item_${item.id}`} data={item} />
+                    <OrderItem
+                      key={`order_item_${item.id}`}
+                      data={item}
+                      onClick={() => _onSelectedItem(item.id)}
+                      selected={selectedOrder === item.id}
+                    />
                   );
                 })}
               </div>

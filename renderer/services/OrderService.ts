@@ -1,7 +1,10 @@
 import axios from "../utils/axios";
+import { BaseResponse } from "./types";
 
 enum OrderUrl {
   ORDER_OUTLET = "/api/transaksi/all",
+  ORDER_DETAIL = "/api/transaksi/detail",
+  ORDER_STATE = "/api/transaksi/state",
 }
 
 export type Order = {
@@ -35,7 +38,52 @@ export type Order = {
   diskon_value: number;
   status_text: string;
   type_text: string;
+  items_count: number;
 };
+
+export type DetailMenu = {
+  id: number;
+  name: string;
+  photo: string;
+};
+
+export type DetailVariant = {
+  id: number;
+  transaksi_detail_id: number;
+  variant_option_id: number;
+  price: number;
+  state: number;
+  deleted_at: null | string;
+  created_at: string;
+  updated_at: string;
+  option_name: string;
+  variant_name: string;
+};
+
+export type Detail = {
+  id: number;
+  transaksi_id: number;
+  menu_id: number;
+  qty: number;
+  description: null | string;
+  price: number;
+  margin: number | null;
+  box: number;
+  diskon: number;
+  pajak_state: number;
+  status: number;
+  deleted_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+  total: number;
+  menu: DetailMenu;
+  variants: DetailVariant[];
+};
+
+export interface OrderDetail extends Order {
+  details: Detail[];
+  reason: string | null;
+}
 
 export type GetOrderOutletParams = {
   search?: string;
@@ -48,6 +96,18 @@ export type GetOrderOutletResponse = {
   message: string;
   data: Order[];
 };
+
+export type GetOrderDetailResponse = {
+  code: number;
+  message: string;
+  data: OrderDetail;
+};
+
+export interface UpdateStateParams {
+  id: number;
+  status: number;
+  description?: string;
+}
 
 const getOrderOutlet = async (
   token: string,
@@ -68,8 +128,46 @@ const getOrderOutlet = async (
   }
 };
 
+const getOrderDetail = async (
+  token: string,
+  transaksiId: number
+): Promise<GetOrderDetailResponse> => {
+  try {
+    const resp = await axios.get(`${OrderUrl.ORDER_DETAIL}/${transaksiId}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateState = async (
+  token: string,
+  params: UpdateStateParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.ORDER_STATE}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const OrderService = {
   getOrderOutlet,
+  getOrderDetail,
+  updateState,
 };
 
 export default OrderService;

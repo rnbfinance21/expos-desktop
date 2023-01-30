@@ -1,3 +1,4 @@
 import DynamicHeroIcon from "./DynamicHeroIcon";
+import Loading from "./Loading";
 
-export { DynamicHeroIcon };
+export { DynamicHeroIcon, Loading };
