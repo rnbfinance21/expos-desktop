@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import type { AppProps } from "next/app";
-
+import "react-datepicker/dist/react-datepicker.css";
 import "../styles/globals.css";
 import { Provider } from "react-redux";
 import { store } from "../config/store";

@@ -27,18 +27,33 @@ export const counterSlice = createSlice({
     setStatus: (state, actions: PayloadAction<number | null>) => {
       state.status = actions.payload;
     },
-    setDate: (state, actions: PayloadAction<Date>) => {
-      state.date = formatDate(actions.payload);
+    setDate: (state, actions: PayloadAction<string>) => {
+      state.date = actions.payload;
     },
     setRefetchOrder: (state, actions: PayloadAction<boolean>) => {
       state.refetchOrder = actions.payload;
+    },
+    setStatusAndDate: (
+      state,
+      actions: PayloadAction<{
+        status: number;
+        date: string;
+      }>
+    ) => {
+      state.status = actions.payload.status;
+      state.date = actions.payload.date;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSearch, setStatus, setDate, setRefetchOrder } =
-  counterSlice.actions;
+export const {
+  setSearch,
+  setStatus,
+  setDate,
+  setRefetchOrder,
+  setStatusAndDate,
+} = counterSlice.actions;
 
 export const getListOrder = (state: RootState) => state.listOrder;
 
