@@ -12,9 +12,9 @@ const Header = () => {
 
   return (
     <>
-      <div className="px-4 py-3 w-full bg-white border-b">
+      <div className="px-4 py-1 w-full bg-white border-b">
         <div className="flex flex-row justify-between items-center">
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row gap-4 items-center">
             <button
               onClick={() => setOpenSideBar(true)}
               className="p-2 border rounded-lg"
@@ -24,8 +24,8 @@ const Header = () => {
                 className="h-5 w-5 text-gray-900"
               />
             </button>
-            <div>
-              <p className="text-3xl tracking-wide text-red-500">EXPOS</p>
+            <div className="flex justify-center">
+              <p className="text-xl tracking-wide text-red-500">EXPOS</p>
             </div>
           </div>
           <div className="flex flex-row gap-4 items-center">

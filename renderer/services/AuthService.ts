@@ -32,6 +32,7 @@ export type UserDetailResponse = {
     outlet: {
       id: number;
       name: string;
+      code: string;
       open_state: number;
     };
   };

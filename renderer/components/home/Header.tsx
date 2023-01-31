@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRefetchOrder, setSearch } from "../../features/listOrderSlice";
@@ -43,6 +44,12 @@ const Header = () => {
         </div>
       </div>
       <div className="flex flex-row gap-2">
+        <Link href="/form">
+          <div className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md">
+            <DynamicHeroIcon icon="PlusIcon" />
+            Buat Order
+          </div>
+        </Link>
         <button
           onClick={() => dispatch(setRefetchOrder(true))}
           className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"

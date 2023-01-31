@@ -6,6 +6,7 @@ import { classNames, ucwords } from "../utils/string";
 import Divider from "../components/globals/dividers/Divider";
 import { DynamicHeroIcon } from "../components/globals/icons";
 import { IconName } from "../components/globals/icons/DynamicHeroIcon";
+import { useRouter } from "next/router";
 
 type SideBarProps = {
   show: boolean;
@@ -41,6 +42,7 @@ const SideBarMenu = ({ title, onClick, icon }: SideBarMenuProps) => {
 
 const SideBar = ({ show, onClose }: SideBarProps) => {
   const { user, outlet, logout } = useAuth();
+  const router = useRouter();
 
   return (
     <Transition.Root show={show} as={Fragment}>
@@ -109,6 +111,13 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
               <div className="mt-5 h-0 flex-1 overflow-y-auto">
                 <nav className="space-y-1 px-2">
                   <div className="pb-10">
+                    <div>
+                      <SideBarMenu
+                        title="Utama"
+                        onClick={() => router.push("/home")}
+                        icon="HomeIcon"
+                      />
+                    </div>
                     <div>
                       <SideBarMenu
                         title="Laporan"
