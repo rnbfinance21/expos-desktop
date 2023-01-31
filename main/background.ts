@@ -24,17 +24,33 @@ ipcMain.on("printer-list", async (event) => {
 
 ipcMain.on("print-order", async (e, data: OrderDetail) => {
   const options: PosPrintOptions = {
-    preview: false,
-    margin: '0 0 0 0',
-    copies: 1,
-    printerName: 'DAPUR',
-    timeOutPerLine: 400,
-    pageSize: '80mm', // page size
     silent: true,
+    printerName: 'DAPUR',
+    preview: false,
     boolean: false,
+    copies: 1,
+    collate: true,
+    margin: '0 0 0 0',
+    timeOutPerLine: 400,
+    margins: {
+      top: 5,
+      left: 10,
+      right: 10,
+      bottom: 5,
+    },
   }
 
   const printData: PosPrintData[] = [
+    {
+      type: 'text',
+      value: 'Pesanan Masuk',
+      style: {
+        fontWeight: '700',
+        fontSize: '16px',
+        textAlign: 'center',
+        marginBottom: '10px',
+      },
+    },
     {
       type: 'text',
       value: `<div style='display: flex; flex-direction: row;'>
@@ -74,7 +90,67 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
         textAlign: 'left',
       },
     },
+    {
+      type: 'text',
+      value: `<div style='display: flex; flex-direction: row;'>
+                <div style='width: 70px;'>Tanggal</div>
+                <div style='flex: 1'>
+                  : ${data.date}
+                </div>
+              </div>`,
+      fontsize: 20,
+      style: {
+        textAlign: 'left',
+        paddingBottom: "10px",
+        borderBottom: "1px dashed black"
+      },
+    },
   ];
+
+  data.details.forEach(element => {
+    let variants = '';
+
+    element.variants.forEach(v => {
+      variants += `<div>
+        <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+      </div>`;
+    });
+
+    printData.push({
+        type: 'text',
+        value: `
+        <div style='display: flex; flex-direction: column;'>
+          <div style='display: flex; flex-direction: row'>
+            <div style='flex: 1; text-align: left'>
+              <span>${element.menu.name}</span>
+            </div>
+            <div style='flex: 1; text-align: right'>
+              (${element.qty})
+            </div>
+          </div>
+          ${variants}
+          ${element.description !== null ? `
+            <div style='display: flex; flex-direction: col;'>
+              <div style='flex: 1;text-align: left'>
+                <span>Catatan:</span>
+              </div>
+              <div style='text-align: left'>
+                ${element.description}
+              </div>
+            </div>
+          ` : ''}
+        </div>`,
+        fontsize: 20,
+        style: {
+          // fontWeight: '400',
+          marginTop: '5px',
+          marginBottom: '5px',
+          borderBottom: "1px dashed black",
+          paddingTop: '5px',
+          paddingBottom: '5px',
+        },
+      })
+  });
 
   PosPrinter.print(printData,options).then(() => {
     console.log('success');
@@ -84,9 +160,13 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
   });;
 });
 
-(async () => {
-  await app.whenReady();
+// (async () => {
+//   await app.whenReady();
 
+  
+// })();
+
+const create = async () => {
   mainWindow = createWindow("main", {
     width: 1280,
     height: 1024,
@@ -97,6 +177,21 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
     },
   });
 
+  mainWindow.on('ready-to-show', () => {
+    if (!mainWindow) {
+      throw new Error('"mainWindow" is not defined');
+    }
+    if (process.env.START_MINIMIZED) {
+      mainWindow.minimize();
+    } else {
+      mainWindow.show();
+    }
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+
   if (isProd) {
     await mainWindow.loadURL("app://./login.html");
   } else {
@@ -104,8 +199,24 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
     await mainWindow.loadURL(`http://localhost:${port}/login`);
     mainWindow.webContents.openDevTools();
   }
-})();
+}
 
-app.on("window-all-closed", () => {
-  app.quit();
+app.on('window-all-closed', () => {
+  // Respect the OSX convention of having the application in memory even
+  // after all windows have been closed
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
+
+app
+  .whenReady()
+  .then(() => {
+    create();
+    app.on('activate', () => {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (mainWindow === null) create();
+    });
+  })
+  .catch(console.log);
