@@ -7,6 +7,7 @@ import {
   setMenu,
   setRefetchMenu,
 } from "../../features/menuSlice";
+import { addItem } from "../../features/orderSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import MenuService, { Menu } from "../../services/MenuService";
 import { numberFormat } from "../../utils/currency";
@@ -34,6 +35,30 @@ const Main = () => {
     }
   );
 
+  const _onClickMenu = (menu: Menu) => {
+    const isCustom = menu.variants.length > 0 ? true : false;
+
+    if (isCustom) {
+      // show modal
+    } else {
+      dispatch(
+        addItem({
+          id: menu.id,
+          price: menu.price,
+          qty: 1,
+          notes: null,
+          margin: 0,
+          box: 0,
+          diskon: 0,
+          margin_stat: menu.box_state,
+          pajak_stat: menu.tax_state,
+          variants: [],
+          menu: menu,
+        })
+      );
+    }
+  };
+
   useEffect(() => {
     if (refetchMenu) {
       refetch();
@@ -49,11 +74,25 @@ const Main = () => {
             <Loading />
           </div>
         ) : (
-          <div className="grid grid-cols-5 gap-2 px-2 py-2 h-0">
-            {menuData.map((m) => {
-              return <MenuItem data={m} type={type} />;
-            })}
-          </div>
+          <>
+            {menuData.length === 0 ? (
+              <div className="flex-1 flex justify-center items-center">
+                <p className="text-sm font-medium">Menu tidak tersedia</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-5 gap-2 px-2 py-2 h-0">
+                {menuData.map((m) => {
+                  return (
+                    <MenuItem
+                      data={m}
+                      type={type}
+                      onClick={() => _onClickMenu(m)}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

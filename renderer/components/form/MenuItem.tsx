@@ -6,12 +6,16 @@ import { numberFormat } from "../../utils/currency";
 interface MenuItemProps {
   data: Menu;
   type?: string;
+  onClick?: () => void;
 }
 
-const MenuItem = ({ data, type }: MenuItemProps) => {
+const MenuItem = ({ data, type, onClick }: MenuItemProps) => {
   return (
     <>
-      <div className="shadow rounded bg-white h-40 border text-center flex flex-col p-2 cursor-pointer active:bg-gray-50">
+      <div
+        onClick={onClick}
+        className="shadow rounded bg-white h-40 border text-center flex flex-col p-2 cursor-pointer active:bg-gray-50"
+      >
         {type === "list" ? (
           <>
             <div className="text-center">
@@ -20,7 +24,7 @@ const MenuItem = ({ data, type }: MenuItemProps) => {
               </span>
             </div>
             <div className="flex-1 flex justify-center items-center">
-              <span className="text-sm font-semibold">{data.name}</span>
+              <span className="text-xs font-semibold">{data.name}</span>
             </div>
             <div className="text-center">
               <span className="text-xs font-medium">

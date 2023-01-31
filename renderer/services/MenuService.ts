@@ -6,14 +6,39 @@ enum MenuUrl {
   MENU_LIST = "/api/menu/outlet",
 }
 
-export type Menu = {
+export interface VariantOption {
+  id: number;
+  variant_id: number;
+  name: string;
+  price: number;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
+  outlet_state: number;
+}
+
+export interface Variant {
+  id: number;
+  name: string;
+  type: number;
+  state: number;
+  required_state: number;
+  required_select: number;
+  max_state: number;
+  max_select: number;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
+  options: VariantOption[];
+}
+
+export interface Menu {
   id: number;
   kategori_outlet_id: number | null;
   kategori_brand_id: number | null;
   kategori_menu_id: number;
-  kategori_menu_name: string;
   name: string;
-  description: string | null;
+  description: string;
   price: number;
   photo: string;
   published_at: string | null;
@@ -24,13 +49,16 @@ export type Menu = {
   consignment_state: number;
   kuah_state: number;
   level_state: number;
+  show_state: number;
   state: number;
   deleted_at: string | null;
-  created_at: string | null;
-  updated_at: string | null;
+  created_at: string;
+  updated_at: string;
+  kategori_menu_name: string;
   in_stock: number;
   state_stock: number;
-};
+  variants: Variant[];
+}
 
 export type GetMenuOutletResponse = {
   code: number;

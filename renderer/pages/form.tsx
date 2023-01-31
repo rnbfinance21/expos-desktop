@@ -1,4 +1,5 @@
 import React from "react";
+import Detail from "../components/form/Detail";
 import Header from "../components/form/Header";
 import Main from "../components/form/Main";
 import { withAuth } from "../HOC/withAuth";
@@ -9,9 +10,7 @@ const form = () => {
     <DefaultLayout title="Form">
       <div className="flex-grow w-full flex flex-row">
         <Main />
-        <div className="w-[500px] h-full bg-white border-l">
-          <p>haii</p>
-        </div>
+        <Detail />
       </div>
     </DefaultLayout>
   );
