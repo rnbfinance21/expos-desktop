@@ -1,8 +1,15 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { PosPrinter, PosPrintOptions, PosPrintData } from "electron-pos-printer";
+import {
+  PosPrinter,
+  PosPrintOptions,
+  PosPrintData,
+} from "electron-pos-printer";
 import serve from "electron-serve";
 import { OrderDetail } from "../renderer/services/OrderService";
 import { createWindow } from "./helpers";
+import Store from "electron-store";
+
+const store = new Store();
 
 const isProd: boolean = process.env.NODE_ENV === "production";
 let mainWindow: BrowserWindow | null = null;
@@ -12,6 +19,17 @@ if (isProd) {
 } else {
   app.setPath("userData", `${app.getPath("userData")} (development)`);
 }
+
+// Electron store
+ipcMain.on("electron-store-get", async (event, val) => {
+  event.returnValue = store.get(val);
+});
+ipcMain.on("electron-store-set", async (event, key, val) => {
+  store.set(key, val);
+});
+ipcMain.on("electron-store-remove", async (event, key) => {
+  store.delete(key);
+});
 
 ipcMain.on("test", async (event) => {
   console.log("Pong");
@@ -25,12 +43,12 @@ ipcMain.on("printer-list", async (event) => {
 ipcMain.on("print-order", async (e, data: OrderDetail) => {
   const options: PosPrintOptions = {
     silent: true,
-    printerName: 'DAPUR',
+    printerName: "DAPUR",
     preview: false,
     boolean: false,
     copies: 1,
     collate: true,
-    margin: '0 0 0 0',
+    margin: "0 0 0 0",
     timeOutPerLine: 400,
     margins: {
       top: 5,
@@ -38,21 +56,21 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
       right: 10,
       bottom: 5,
     },
-  }
+  };
 
   const printData: PosPrintData[] = [
     {
-      type: 'text',
-      value: 'Pesanan Masuk',
+      type: "text",
+      value: "Pesanan Masuk",
       style: {
-        fontWeight: '700',
-        fontSize: '16px',
-        textAlign: 'center',
-        marginBottom: '10px',
+        fontWeight: "700",
+        fontSize: "16px",
+        textAlign: "center",
+        marginBottom: "10px",
       },
     },
     {
-      type: 'text',
+      type: "text",
       value: `<div style='display: flex; flex-direction: row;'>
                 <div style='width: 70px;'>No</div>
                 <div style='flex: 1'>
@@ -61,11 +79,11 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
               </div>`,
       fontsize: 20,
       style: {
-        textAlign: 'left',
+        textAlign: "left",
       },
     },
     {
-      type: 'text',
+      type: "text",
       value: `<div style='display: flex; flex-direction: row;'>
                 <div style='width: 70px;'>Nama</div>
                 <div style='flex: 1'>
@@ -74,11 +92,11 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
               </div>`,
       fontsize: 20,
       style: {
-        textAlign: 'left',
+        textAlign: "left",
       },
     },
     {
-      type: 'text',
+      type: "text",
       value: `<div style='display: flex; flex-direction: row;'>
                 <div style='width: 70px;'>Table</div>
                 <div style='flex: 1'>
@@ -87,11 +105,11 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
               </div>`,
       fontsize: 20,
       style: {
-        textAlign: 'left',
+        textAlign: "left",
       },
     },
     {
-      type: 'text',
+      type: "text",
       value: `<div style='display: flex; flex-direction: row;'>
                 <div style='width: 70px;'>Tanggal</div>
                 <div style='flex: 1'>
@@ -100,25 +118,25 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
               </div>`,
       fontsize: 20,
       style: {
-        textAlign: 'left',
+        textAlign: "left",
         paddingBottom: "10px",
-        borderBottom: "1px dashed black"
+        borderBottom: "1px dashed black",
       },
     },
   ];
 
-  data.details.forEach(element => {
-    let variants = '';
+  data.details.forEach((element) => {
+    let variants = "";
 
-    element.variants.forEach(v => {
+    element.variants.forEach((v) => {
       variants += `<div>
         <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
       </div>`;
     });
 
     printData.push({
-        type: 'text',
-        value: `
+      type: "text",
+      value: `
         <div style='display: flex; flex-direction: column;'>
           <div style='display: flex; flex-direction: row'>
             <div style='flex: 1; text-align: left'>
@@ -129,7 +147,9 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
             </div>
           </div>
           ${variants}
-          ${element.description !== null ? `
+          ${
+            element.description !== null
+              ? `
             <div style='display: flex; flex-direction: col;'>
               <div style='flex: 1;text-align: left'>
                 <span>Catatan:</span>
@@ -138,36 +158,39 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
                 ${element.description}
               </div>
             </div>
-          ` : ''}
+          `
+              : ""
+          }
         </div>`,
-        fontsize: 20,
-        style: {
-          // fontWeight: '400',
-          marginTop: '5px',
-          marginBottom: '5px',
-          borderBottom: "1px dashed black",
-          paddingTop: '5px',
-          paddingBottom: '5px',
-        },
-      })
+      fontsize: 20,
+      style: {
+        // fontWeight: '400',
+        marginTop: "5px",
+        marginBottom: "5px",
+        borderBottom: "1px dashed black",
+        paddingTop: "5px",
+        paddingBottom: "5px",
+      },
+    });
   });
 
-  PosPrinter.print(printData,options).then(() => {
-    console.log('success');
-  })
-  .catch((error: any) => {
-    console.error(error);
-  });;
+  PosPrinter.print(printData, options)
+    .then(() => {
+      console.log("success");
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
 });
 
 // (async () => {
 //   await app.whenReady();
 
-  
 // })();
 
 const create = async () => {
   mainWindow = createWindow("main", {
+    show: false,
     width: 1280,
     height: 1024,
     minWidth: 1280,
@@ -177,7 +200,7 @@ const create = async () => {
     },
   });
 
-  mainWindow.on('ready-to-show', () => {
+  mainWindow.on("ready-to-show", () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -188,7 +211,7 @@ const create = async () => {
     }
   });
 
-  mainWindow.on('closed', () => {
+  mainWindow.on("closed", () => {
     mainWindow = null;
   });
 
@@ -199,12 +222,12 @@ const create = async () => {
     await mainWindow.loadURL(`http://localhost:${port}/login`);
     mainWindow.webContents.openDevTools();
   }
-}
+};
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if (process.platform !== 'darwin') {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
@@ -213,7 +236,7 @@ app
   .whenReady()
   .then(() => {
     create();
-    app.on('activate', () => {
+    app.on("activate", () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) create();

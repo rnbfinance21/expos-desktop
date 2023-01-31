@@ -6,12 +6,12 @@ import {
   useState,
 } from "react";
 import Cookie from "js-cookie";
-import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import AuthService from "../services/AuthService";
 import { AxiosError } from "axios";
 import { BaseResponse } from "../services/types";
 import Toast from "../utils/toast";
+import electron from "electron";
 
 type UserDetail = {
   id: number;
@@ -62,15 +62,20 @@ const authContextDefaultValues: authContextType = {
 const AuthContext = createContext<authContextType>(authContextDefaultValues);
 
 export const AuthContextProvider = ({ children }: Props) => {
+  const ipcRenderer = electron.ipcRenderer || false;
+
   const [token, setToken] = useState("");
   const [user, setUser] = useState<UserDetail>();
   const [outlet, setOutlet] = useState<OutletDetail>();
 
   useEffect(() => {
-    const _token: any =
-      Cookie.get("_token") === undefined ? "" : Cookie.get("_token");
+    if (ipcRenderer) {
+      // const _token: any =
+      //   Cookie.get("_token") === undefined ? "" : Cookie.get("_token");
+      const _token: any = ipcRenderer.sendSync("electron-store-get", "_token");
 
-    setToken(_token);
+      setToken(_token);
+    }
   }, []);
 
   const fetchUser = useQuery(
@@ -107,11 +112,18 @@ export const AuthContextProvider = ({ children }: Props) => {
 
   const signIn = (val: string) => {
     setToken(val);
-    Cookie.set("_token", val);
+
+    if (ipcRenderer) {
+      ipcRenderer.send("electron-store-set", "_token", val);
+    }
+    // Cookie.set("_token", val);
   };
 
   const logout = () => {
-    Cookie.remove("_token");
+    if (ipcRenderer) {
+      ipcRenderer.send("electron-store-remove", "_token");
+    }
+    // Cookie.remove("_token");
     setToken("");
     setUser(undefined);
     setOutlet(undefined);
