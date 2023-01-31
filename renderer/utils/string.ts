@@ -1,7 +1,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable func-names */
+import { twMerge } from "tailwind-merge";
+
 export const classNames = (...classes: unknown[]) => {
-  return classes.filter(Boolean).join(' ');
+  // classes.filter(Boolean).join(' ');
+  return twMerge([...(classes as string[])]);
 };
 
 export const ucwords = (str: string) => {

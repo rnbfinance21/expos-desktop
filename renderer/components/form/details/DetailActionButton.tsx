@@ -29,7 +29,7 @@ const DetailActionButton = ({
         className={classNames(
           "h-12 w-12 rounded-full  flex justify-center items-center",
           outline
-            ? `border border-${color}-500 active:border-${color}-600`
+            ? `border border-red-500 active:border-red-600`
             : `bg-${color}-500 active:bg-${color}-600`
         )}
       >
