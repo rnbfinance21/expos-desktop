@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setModalCustom,
+  setSelectedMenuCustom,
+} from "../../features/customSlice";
+import {
   getMenu,
   getMenuData,
   setMenu,
@@ -13,13 +17,17 @@ import MenuService, { Menu } from "../../services/MenuService";
 import { numberFormat } from "../../utils/currency";
 import { Loading } from "../globals/icons";
 import Header from "./Header";
+import MenuCustomModal from "./menu/MenuCustomModal";
 import MenuItem from "./MenuItem";
 
 const Main = () => {
   const dispatch = useDispatch();
   const { token, outlet } = useAuth();
+
   const { refetchMenu, type } = useSelector(getMenu);
   const menuData = useSelector(getMenuData);
+
+  const _openModal = () => dispatch(setModalCustom(true));
 
   const { isLoading, isRefetching, refetch } = useQuery(
     ["menus", token],
@@ -40,6 +48,8 @@ const Main = () => {
 
     if (isCustom) {
       // show modal
+      dispatch(setSelectedMenuCustom(menu));
+      _openModal();
     } else {
       dispatch(
         addItem({
@@ -95,6 +105,7 @@ const Main = () => {
           </>
         )}
       </div>
+      <MenuCustomModal />
     </div>
   );
 };

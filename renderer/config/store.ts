@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import listOrderReducer from "../features/listOrderSlice";
 import menuReducer from "../features/menuSlice";
 import orderReducer from "../features/orderSlice";
+import customReducer from "../features/customSlice";
 
 export const store = configureStore({
   reducer: {
     listOrder: listOrderReducer,
     menu: menuReducer,
     order: orderReducer,
+    custom: customReducer,
   },
 });
 

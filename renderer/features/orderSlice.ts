@@ -56,6 +56,7 @@ export const findIndexCustomItem = (data: Orders[], value: Orders) =>
     (e) =>
       e.id === value.id &&
       e.notes === value.notes &&
+      e.diskon === value.diskon &&
       arraysEqual2(e.variants, value.variants)
   );
 
