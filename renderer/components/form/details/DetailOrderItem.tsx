@@ -6,17 +6,23 @@ import { ucwords } from "../../../utils/string";
 
 type DetailOrderItemProps = {
   data: Orders;
+  onClick?: () => void;
 };
 
-const DetailOrderItem = ({ data }: DetailOrderItemProps) => {
+const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
   const diskon = (data.price * data.qty * data.diskon) / 100;
 
   const total = data.price * data.qty - diskon;
 
   return (
-    <div className="py-4 border-b border-b-gray-300 border-dashed">
+    <div
+      onClick={onClick}
+      className="p-4 border-b border-b-gray-300 border-dashed active:bg-gray-50"
+    >
       <div className="flex flex-row justify-between">
-        <span className="text-xs font-bold text-red-500">{ucwords(data.menu.name)}</span>
+        <span className="text-xs font-bold text-red-500">
+          {ucwords(data.menu.name)}
+        </span>
         <span className="text-xs font-bold">Rp{numberFormat(total, 0)}</span>
       </div>
       <div className="flex flex-col mt-1 justify-between">
@@ -33,10 +39,13 @@ const DetailOrderItem = ({ data }: DetailOrderItemProps) => {
           );
         })}
       </div>
-      {data.notes !== null ? (
+      {data.notes !== "" && data.notes !== null ? (
         <div className="mt-1">
           <p className="text-[10px] text-gray-500 font-light mr-1">
-            Catatan Pembeli: &quot;{data.notes}&quot;
+            Catatan Pembeli:
+          </p>
+          <p className="text-[10px] text-gray-800 font-semibold mr-1">
+            {data.notes}
           </p>
         </div>
       ) : null}

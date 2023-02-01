@@ -6,16 +6,17 @@ import Header from "./Header";
 interface DefaultLayoutProps {
   title?: string;
   children: ReactNode;
+  isBack?: boolean;
 }
 
-const DefaultLayout = ({ title, children }: DefaultLayoutProps) => {
+const DefaultLayout = ({ title, children, isBack }: DefaultLayoutProps) => {
   return (
     <Fragment>
       <Head>
         <title>EXPOS {title === "" ? "" : `- ${title}`}</title>
       </Head>
       <div className="w-full h-screen flex flex-col">
-        <Header />
+        <Header isBack={isBack} />
         {children}
         {/* <div className="bg-white flex justify-start py-1 border-t px-4">
           <span className="text-xs font-bold">
@@ -29,6 +30,7 @@ const DefaultLayout = ({ title, children }: DefaultLayoutProps) => {
 
 DefaultLayout.defaultProps = {
   title: "",
+  isBack: false,
 };
 
 export default DefaultLayout;

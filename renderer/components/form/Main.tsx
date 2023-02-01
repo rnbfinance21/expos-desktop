@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalCustom,
   setSelectedMenuCustom,
+  setType,
 } from "../../features/customSlice";
 import {
   getMenu,
@@ -27,7 +28,10 @@ const Main = () => {
   const { refetchMenu, type } = useSelector(getMenu);
   const menuData = useSelector(getMenuData);
 
-  const _openModal = () => dispatch(setModalCustom(true));
+  const _openModal = () => {
+    dispatch(setType("ADD"));
+    dispatch(setModalCustom(true));
+  };
 
   const { isLoading, isRefetching, refetch } = useQuery(
     ["menus", token],

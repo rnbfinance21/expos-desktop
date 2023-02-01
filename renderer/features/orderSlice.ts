@@ -140,6 +140,7 @@ export const orderSlice = createSlice({
       object.notes = action.payload.new.notes;
       object.price = action.payload.new.price;
       object.variants = action.payload.new.variants;
+      object.diskon = action.payload.new.diskon;
 
       state.orders[index] = object;
     },

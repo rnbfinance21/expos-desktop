@@ -7,7 +7,7 @@ import DefaultLayout from "../layouts/DefaultLayout";
 
 const form = () => {
   return (
-    <DefaultLayout title="Form">
+    <DefaultLayout title="Form" isBack>
       <div className="flex-grow w-full flex flex-row">
         <Main />
         <Detail />

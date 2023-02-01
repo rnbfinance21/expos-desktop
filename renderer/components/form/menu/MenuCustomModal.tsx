@@ -55,23 +55,22 @@ const MenuCustomModal = () => {
       case 2:
         if (checked) {
           if (find === -1) {
-            let tmp = selectVariants;
-
-            tmp.push({
-              id: item.id,
-              name: item.name,
-              data: [
-                {
-                  option_id: val.id,
-                  price: val.price,
-                  category_id: item.id,
-                  category_name: ucwords(item.name),
-                  option_name: ucwords(val.name),
-                },
-              ],
-            });
-
-            setSelectVariants(tmp);
+            setSelectVariants((prevVariants) => [
+              ...prevVariants,
+              {
+                id: item.id,
+                name: item.name,
+                data: [
+                  {
+                    option_id: val.id,
+                    price: val.price,
+                    category_id: item.id,
+                    category_name: ucwords(item.name),
+                    option_name: ucwords(val.name),
+                  },
+                ],
+              },
+            ]);
           } else {
             setSelectVariants((prevVariants) =>
               prevVariants.map((variant, index) => {
@@ -296,59 +295,6 @@ const MenuCustomModal = () => {
   };
 
   useEffect(() => {
-    if (type === "UPDATE" && selectedOrder) {
-      let resultVariant: SelectVariantType[] = [];
-
-      selectedOrder?.variants.forEach((e) => {
-        let find = resultVariant.findIndex((f) => f.id === e.category_id);
-
-        if (find === -1) {
-          resultVariant.push({
-            id: e.category_id,
-            name: e.category_name,
-            data: [
-              {
-                option_id: e.option_id,
-                option_name: e.option_name,
-                price: e.price,
-                category_id: e.category_id,
-                category_name: e.category_name,
-              },
-            ],
-          });
-        } else {
-          let tmp = resultVariant;
-
-          let tmpData = tmp[find].data;
-
-          if (tmpData) {
-            tmpData.push({
-              option_id: e.option_id,
-              option_name: e.option_name,
-              price: e.price,
-              category_id: e.category_id,
-              category_name: e.category_name,
-            });
-
-            tmp[find] = {
-              id: e.category_id,
-              name: e.category_name,
-              data: tmpData,
-            };
-          }
-
-          resultVariant = tmp;
-        }
-      });
-
-      setSelectVariants(resultVariant);
-      setNotes(selectedOrder?.notes ?? "");
-      setPrice(selectedOrder?.price);
-      setQty(selectedOrder?.qty.toString());
-    }
-  }, [type]);
-
-  useEffect(() => {
     setPrice(_getSumPrice());
   }, [JSON.stringify(selectVariants), qty]);
 
@@ -359,6 +305,58 @@ const MenuCustomModal = () => {
       setDiskon("0");
       setPrice(0);
       setNotes("");
+    } else {
+      if (type === "UPDATE" && selectedOrder) {
+        let resultVariant: SelectVariantType[] = [];
+
+        selectedOrder?.variants.forEach((e) => {
+          let find = resultVariant.findIndex((f) => f.id === e.category_id);
+
+          if (find === -1) {
+            resultVariant.push({
+              id: e.category_id,
+              name: e.category_name,
+              data: [
+                {
+                  option_id: e.option_id,
+                  option_name: e.option_name,
+                  price: e.price,
+                  category_id: e.category_id,
+                  category_name: e.category_name,
+                },
+              ],
+            });
+          } else {
+            let tmp = resultVariant;
+
+            let tmpData = tmp[find].data;
+
+            if (tmpData) {
+              tmpData.push({
+                option_id: e.option_id,
+                option_name: e.option_name,
+                price: e.price,
+                category_id: e.category_id,
+                category_name: e.category_name,
+              });
+
+              tmp[find] = {
+                id: e.category_id,
+                name: e.category_name,
+                data: tmpData,
+              };
+            }
+
+            resultVariant = tmp;
+          }
+        });
+
+        setSelectVariants(resultVariant);
+        setNotes(selectedOrder?.notes ?? "");
+        setPrice(selectedOrder?.price);
+        setQty(selectedOrder?.qty.toString());
+        setDiskon(selectedOrder.diskon.toString());
+      }
     }
   }, [openModalCustom]);
 
