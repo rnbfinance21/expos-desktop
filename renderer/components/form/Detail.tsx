@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalCustom,
+  setModalUpdate,
   setSelectedMenuCustom,
   setSelectedOrder,
   setType,
@@ -18,6 +19,7 @@ import { DynamicHeroIcon } from "../globals/icons";
 import Customer from "./details/Customer";
 import DetailActionButton from "./details/DetailActionButton";
 import DetailOrderItem from "./details/DetailOrderItem";
+import OrderUpdateModal from "./menu/OrderUpdateModal";
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -33,7 +35,10 @@ const Detail = () => {
       dispatch(setSelectedMenuCustom(item.menu));
       dispatch(setSelectedOrder(item));
     } else {
-      // open modal edit
+      dispatch(setType("UPDATE"));
+      dispatch(setModalUpdate(true));
+      dispatch(setSelectedMenuCustom(item.menu));
+      dispatch(setSelectedOrder(item));
     }
   };
 
@@ -79,6 +84,7 @@ const Detail = () => {
           </div>
         </div>
       </div>
+      <OrderUpdateModal />
     </div>
   );
 };

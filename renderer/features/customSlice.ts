@@ -9,6 +9,7 @@ export interface CustomState {
   selectedMenuCustom: Menu | null;
   selectedOrder: Orders | null;
   openModalCustom: boolean;
+  openModalUpdate: boolean;
 }
 
 const initialState: CustomState = {
@@ -16,6 +17,7 @@ const initialState: CustomState = {
   selectedMenuCustom: null,
   selectedOrder: null,
   openModalCustom: false,
+  openModalUpdate: false,
 };
 
 export const customSlice = createSlice({
@@ -38,6 +40,13 @@ export const customSlice = createSlice({
       }
       state.openModalCustom = actions.payload;
     },
+    setModalUpdate: (state, actions: PayloadAction<boolean>) => {
+      if (!actions.payload) {
+        state.selectedMenuCustom = null;
+        state.selectedOrder = null;
+      }
+      state.openModalUpdate = actions.payload;
+    },
   },
 });
 
@@ -47,6 +56,7 @@ export const {
   setSelectedOrder,
   setType,
   setModalCustom,
+  setModalUpdate,
 } = customSlice.actions;
 
 export const getCustom = (state: RootState) => {
@@ -63,6 +73,10 @@ export const getSelectedOrder = (state: RootState) => {
 
 export const getOpenModalCustom = (state: RootState) => {
   return state.custom.openModalCustom;
+};
+
+export const getOpenModalUpdate = (state: RootState) => {
+  return state.custom.openModalUpdate;
 };
 
 export const getCustomType = (state: RootState) => {
