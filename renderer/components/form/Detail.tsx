@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalCustom,
@@ -8,6 +8,7 @@ import {
   setType,
 } from "../../features/customSlice";
 import { getOrder, Orders } from "../../features/orderSlice";
+import PasscodeModal from "../modals/PasscodeModal";
 import Customer from "./details/Customer";
 import DetailAction from "./details/DetailAction";
 import DetailOrderItem from "./details/DetailOrderItem";
@@ -15,22 +16,41 @@ import OrderUpdateModal from "./menu/OrderUpdateModal";
 
 const Detail = () => {
   const dispatch = useDispatch();
-  const { orders } = useSelector(getOrder);
+  const { orders, type } = useSelector(getOrder);
+
+  const [selectedData, setSelectedData] = useState<Orders>();
+  const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
+
+  const _showModalUpdate = () => {
+    setOpenPasscodeModal(false);
+    if (selectedData) {
+      const isCustom = selectedData.menu.variants.length > 0 ?? false;
+
+      if (isCustom) {
+        dispatch(setType("UPDATE"));
+        dispatch(setModalCustom(true));
+        dispatch(setSelectedMenuCustom(selectedData.menu));
+        dispatch(setSelectedOrder(selectedData));
+      } else {
+        dispatch(setType("UPDATE"));
+        dispatch(setModalUpdate(true));
+        dispatch(setSelectedMenuCustom(selectedData.menu));
+        dispatch(setSelectedOrder(selectedData));
+      }
+    }
+  };
 
   const _onClick = (item: Orders) => {
-    const isCustom = item.menu.variants.length > 0 ?? false;
-
-    if (isCustom) {
-      dispatch(setType("UPDATE"));
-      dispatch(setModalCustom(true));
-      dispatch(setSelectedMenuCustom(item.menu));
-      dispatch(setSelectedOrder(item));
+    setSelectedData(item);
+    if (type === "ADD") {
+      _showModalUpdate();
     } else {
-      dispatch(setType("UPDATE"));
-      dispatch(setModalUpdate(true));
-      dispatch(setSelectedMenuCustom(item.menu));
-      dispatch(setSelectedOrder(item));
+      setOpenPasscodeModal(true);
     }
+  };
+
+  const _onSuccessPasscode = () => {
+    _showModalUpdate();
   };
 
   return (
@@ -49,6 +69,11 @@ const Detail = () => {
         <DetailAction />
       </div>
       <OrderUpdateModal />
+      <PasscodeModal
+        visible={openPasscodeModal}
+        onClose={() => setOpenPasscodeModal(false)}
+        onSuccess={_onSuccessPasscode}
+      />
     </div>
   );
 };

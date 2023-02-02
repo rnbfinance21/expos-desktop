@@ -34,7 +34,6 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     (params: UpdateStateParams) => OrderService.updateState(token, params),
     {
       onSuccess: (res) => {
-        setOpenPasscodeModal(false);
         Swal.fire("Berhasil!", res.message, "success");
         dispatch(setRefetchOrder(true));
       },
@@ -88,6 +87,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
   };
 
   const _onSuccessPasscode = () => {
+    setOpenPasscodeModal(false);
     Swal.fire({
       title: "Alasan Pembatalan",
       input: "text",
