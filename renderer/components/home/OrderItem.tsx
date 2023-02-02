@@ -10,12 +10,27 @@ interface OrderItemProps {
 
 const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
   const stateColor: {
-    [key: number]: string;
+    [key: number]: {
+      background: string;
+      text: string;
+    };
   } = {
-    0: "gray",
-    1: "blue",
-    2: "green",
-    "-1": "red",
+    0: {
+      background: "bg-gray-100",
+      text: "text-gray-900",
+    },
+    1: {
+      background: "bg-blue-100",
+      text: "text-blue-900",
+    },
+    2: {
+      background: "bg-green-100",
+      text: "text-green-900",
+    },
+    "-1": {
+      background: "bg-red-100",
+      text: "text-red-900",
+    },
   };
 
   const selectColor = stateColor[data.status] ?? stateColor["-1"];
@@ -36,7 +51,7 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
           <div className="flex flex-row items-center gap-2 mb-1">
             <p className="text-sm font-bold">{ucwords(data.name)}</p>
             <button
-              className={`text-[10px] font-bold bg-${selectColor}-100 text-${selectColor}-900 px-3 rounded-lg cursor-auto`}
+              className={`text-[10px] font-bold ${selectColor.background} ${selectColor.text} px-3 rounded-lg cursor-auto`}
             >
               {data.status_text}
             </button>

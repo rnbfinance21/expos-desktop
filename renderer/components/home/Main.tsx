@@ -75,6 +75,7 @@ const Main = () => {
       onSettled: () => {
         dispatch(setRefetchOrder(false));
       },
+      refetchInterval: 30000,
     }
   );
 
