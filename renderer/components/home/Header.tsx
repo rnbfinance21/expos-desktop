@@ -19,7 +19,7 @@ const Header = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (inputSearch) {
+      if (inputSearch !== undefined) {
         dispatch(setSearch(inputSearch));
       }
     }, 1000);
@@ -39,6 +39,11 @@ const Header = () => {
             // data-kioskboard-capsLockActive={false}
             autoCapitalize="none"
             onChange={handleOnChange}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                dispatch(setSearch(inputSearch));
+              }
+            }}
           />
           <DynamicHeroIcon
             icon="MagnifyingGlassIcon"

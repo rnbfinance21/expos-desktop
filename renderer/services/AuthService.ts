@@ -5,6 +5,7 @@ enum AuthUrl {
   Login = "/api/auth/login-username",
   UserDetail = "/api/auth/detail",
   KAS = "/api/kas",
+  PASSCODE = "/api/passcode",
 }
 
 export type LoginUsernameParams = {
@@ -44,6 +45,12 @@ export type UserDetailResponse = {
 export type UangKasParams = {
   kas: number;
   state?: number;
+};
+
+export type CheckPasscodeResponse = {
+  code: number;
+  message: string;
+  status: boolean;
 };
 
 const loginUsername = async (
@@ -96,10 +103,35 @@ const uangKas = async (
   }
 };
 
+const checkPasscode = async (
+  token: string,
+  passcode: string
+): Promise<CheckPasscodeResponse> => {
+  try {
+    const response = await axios.post(
+      AuthUrl.PASSCODE,
+      {
+        passcode,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const AuthService = {
   loginUsername,
   userDetail,
   uangKas,
+  checkPasscode,
 };
 
 export default AuthService;

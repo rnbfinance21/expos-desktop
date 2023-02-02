@@ -1,14 +1,23 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { setRefetchOrder } from "../../../../features/listOrderSlice";
 import {
   setId,
   setIdentity,
   setOrders,
   setType,
 } from "../../../../features/orderSlice";
-import { OrderDetail } from "../../../../services/OrderService";
+import { useAuth } from "../../../../hooks/AuthContext";
+import OrderService, {
+  OrderDetail,
+  UpdateStateParams,
+} from "../../../../services/OrderService";
+import { handleErrorAxios } from "../../../../utils/errors";
 import DetailActionButton from "../../../form/details/DetailActionButton";
+import PasscodeModal from "../../../modals/PasscodeModal";
 
 interface ProsesActionProps {
   data: OrderDetail;
@@ -17,6 +26,21 @@ interface ProsesActionProps {
 const ProsesAction = ({ data }: ProsesActionProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { token } = useAuth();
+
+  const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
+
+  const changeStateMutation = useMutation(
+    (params: UpdateStateParams) => OrderService.updateState(token, params),
+    {
+      onSuccess: (res) => {
+        setOpenPasscodeModal(false);
+        Swal.fire("Berhasil!", res.message, "success");
+        dispatch(setRefetchOrder(true));
+      },
+      onError: handleErrorAxios,
+    }
+  );
 
   const _onChange = () => {
     dispatch(setType("UPDATE"));
@@ -58,32 +82,71 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     dispatch(setId(data.id));
     router.push("/form");
   };
+
+  const _onCancel = () => {
+    setOpenPasscodeModal(true);
+  };
+
+  const _onSuccessPasscode = () => {
+    Swal.fire({
+      title: "Alasan Pembatalan",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      showCancelButton: true,
+      cancelButtonText: "Batal",
+      confirmButtonText: "Simpan",
+      confirmButtonColor: "#3085d6",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        changeStateMutation.mutate({
+          id: data.id,
+          status: -1,
+          description: result.value,
+        });
+      }
+    });
+  };
+
   return (
-    <div className="flex-1 flex flex-row gap-2">
-      <DetailActionButton
-        icon="TruckIcon"
-        title="Cetak Ke Dapur"
-        onClick={() => {}}
+    <>
+      <div className="flex-1 flex flex-row gap-2">
+        <DetailActionButton
+          icon="TruckIcon"
+          title="Cetak Ke Dapur"
+          onClick={() => {}}
+        />
+        <DetailActionButton
+          icon="PrinterIcon"
+          title="Cetak Struk"
+          onClick={() => {}}
+        />
+        <DetailActionButton
+          icon="PencilIcon"
+          title="Ubah"
+          onClick={_onChange}
+        />
+        <DetailActionButton
+          icon="CurrencyDollarIcon"
+          title="Bayar"
+          onClick={() => {}}
+        />
+        <DetailActionButton
+          icon="XMarkIcon"
+          title="Batal"
+          outline={false}
+          onClick={_onCancel}
+          iconClassName="text-white"
+        />
+      </div>
+      <PasscodeModal
+        visible={openPasscodeModal}
+        onClose={() => setOpenPasscodeModal(false)}
+        onSuccess={_onSuccessPasscode}
       />
-      <DetailActionButton
-        icon="PrinterIcon"
-        title="Cetak Struk"
-        onClick={() => {}}
-      />
-      <DetailActionButton icon="PencilIcon" title="Ubah" onClick={_onChange} />
-      <DetailActionButton
-        icon="CurrencyDollarIcon"
-        title="Bayar"
-        onClick={() => {}}
-      />
-      <DetailActionButton
-        icon="XMarkIcon"
-        title="Batal"
-        outline={false}
-        onClick={() => {}}
-        iconClassName="text-white"
-      />
-    </div>
+    </>
   );
 };
 

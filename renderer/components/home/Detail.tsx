@@ -95,7 +95,9 @@ const Detail = () => {
                 </div>
                 <div className="px-4 h-0">
                   {selectedData?.details.map((item) => {
-                    return <DetailItem data={item} />;
+                    return (
+                      <DetailItem key={`detail_item_${item.id}`} data={item} />
+                    );
                   })}
                 </div>
               </div>
