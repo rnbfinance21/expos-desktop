@@ -9,7 +9,11 @@ import {
   getSelectedOrder,
   setModalCustom,
 } from "../../../features/customSlice";
-import { addItemCustom, updateItemCustom } from "../../../features/orderSlice";
+import {
+  addItemCustom,
+  deleteItem,
+  updateItemCustom,
+} from "../../../features/orderSlice";
 import { Menu, Variant, VariantOption } from "../../../services/MenuService";
 import { classNames, ucwords } from "../../../utils/string";
 import { Button } from "../../globals/buttons";
@@ -294,6 +298,14 @@ const MenuCustomModal = () => {
     }
   };
 
+  const _onDelete = () => {
+    if (selectedOrder) {
+      dispatch(deleteItem(selectedOrder));
+    }
+
+    _closeModal();
+  };
+
   useEffect(() => {
     setPrice(_getSumPrice());
   }, [JSON.stringify(selectVariants), qty]);
@@ -523,10 +535,24 @@ const MenuCustomModal = () => {
                   </div>
                 </div>
 
-                <div className="mt-4">
+                <div
+                  className={`mt-4 grid ${
+                    type === "ADD" ? "grid-cols-1" : "grid-cols-2"
+                  } gap-4`}
+                >
                   <Button onClick={_onSubmit} type="submit" blok>
                     Simpan
                   </Button>
+                  {type === "UPDATE" ? (
+                    <Button
+                      onClick={_onDelete}
+                      type="submit"
+                      blok
+                      className="bg-red-500 text-white"
+                    >
+                      Hapus
+                    </Button>
+                  ) : null}
                 </div>
 
                 <div className="absolute top-5 right-6">

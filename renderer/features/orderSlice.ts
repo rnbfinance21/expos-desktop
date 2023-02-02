@@ -175,6 +175,13 @@ export const orderSlice = createSlice({
         }
       }
     },
+    deleteItem: (state, action: PayloadAction<Orders>) => {
+      let index = findIndexCustomItem(state.orders, action.payload);
+
+      if (index !== -1) {
+        state.orders.splice(index, 1);
+      }
+    },
     resetOrder: () => {
       return initialState;
     },
@@ -195,6 +202,7 @@ export const {
   setType,
   setOrders,
   setId,
+  deleteItem,
 } = orderSlice.actions;
 
 export const getOrder = (state: RootState) => state.order;
