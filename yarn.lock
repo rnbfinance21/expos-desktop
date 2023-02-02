@@ -3734,6 +3734,11 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
+react-currency-input-field@^3.6.9:
+  version "3.6.9"
+  resolved "https://registry.yarnpkg.com/react-currency-input-field/-/react-currency-input-field-3.6.9.tgz#5eaa1190512d1de214863032045b67dd0582c87a"
+  integrity sha512-GNqG1Np+dz3VfBhDc9pFPIyar9SgB/fRjIofFSXOoyFNffda5r24n6LSoXfqQ9L7IKRDoUwveMMJV5GCM2eByw==
+
 react-datepicker@^4.9.0:
   version "4.9.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-4.9.0.tgz#e70cc7956e89e22d41dfdca06a6a8bf9676a0cc6"

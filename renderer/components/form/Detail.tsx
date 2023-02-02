@@ -7,24 +7,15 @@ import {
   setSelectedOrder,
   setType,
 } from "../../features/customSlice";
-import { setSearch } from "../../features/menuSlice";
-import {
-  getOrder,
-  getSumOrder,
-  Orders,
-  resetOrder,
-} from "../../features/orderSlice";
-import { numberFormat } from "../../utils/currency";
-import { DynamicHeroIcon } from "../globals/icons";
+import { getOrder, Orders } from "../../features/orderSlice";
 import Customer from "./details/Customer";
-import DetailActionButton from "./details/DetailActionButton";
+import DetailAction from "./details/DetailAction";
 import DetailOrderItem from "./details/DetailOrderItem";
 import OrderUpdateModal from "./menu/OrderUpdateModal";
 
 const Detail = () => {
   const dispatch = useDispatch();
   const { orders } = useSelector(getOrder);
-  const sum = useSelector(getSumOrder);
 
   const _onClick = (item: Orders) => {
     const isCustom = item.menu.variants.length > 0 ?? false;
@@ -55,34 +46,7 @@ const Detail = () => {
             })}
           </div>
         </div>
-        <div className="flex flex-col bg-white border-b pt-4 border-t">
-          <div className="flex flex-row pb-2 px-4">
-            <div className="flex-1 flex flex-row gap-2">
-              <DetailActionButton
-                icon="CubeIcon"
-                title="Tambah Box"
-                onClick={() => dispatch(setSearch("box"))}
-              />
-            </div>
-            <div>
-              <DetailActionButton
-                icon="XMarkIcon"
-                title="Batal Pesan"
-                outline={false}
-                iconClassName="text-white"
-                onClick={() => dispatch(resetOrder())}
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2">
-            <div className="bg-blue-500 active:bg-blue-600 text-white p-4 text-center text-sm font-medium cursor-pointer">
-              Simpan
-            </div>
-            <div className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer">
-              Rp {numberFormat(sum, 0)}
-            </div>
-          </div>
-        </div>
+        <DetailAction />
       </div>
       <OrderUpdateModal />
     </div>

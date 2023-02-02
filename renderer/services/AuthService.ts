@@ -1,8 +1,10 @@
 import axios from "../utils/axios";
+import { BaseResponse } from "./types";
 
 enum AuthUrl {
   Login = "/api/auth/login-username",
   UserDetail = "/api/auth/detail",
+  KAS = "/api/kas",
 }
 
 export type LoginUsernameParams = {
@@ -34,8 +36,14 @@ export type UserDetailResponse = {
       name: string;
       code: string;
       open_state: number;
+      kas_state: number;
     };
   };
+};
+
+export type UangKasParams = {
+  kas: number;
+  state?: number;
 };
 
 const loginUsername = async (
@@ -70,9 +78,28 @@ const userDetail = async (token: string): Promise<UserDetailResponse> => {
   }
 };
 
+const uangKas = async (
+  token: string,
+  params: UangKasParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(AuthUrl.KAS, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const AuthService = {
   loginUsername,
   userDetail,
+  uangKas,
 };
 
 export default AuthService;

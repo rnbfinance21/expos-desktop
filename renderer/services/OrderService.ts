@@ -5,6 +5,7 @@ enum OrderUrl {
   ORDER_OUTLET = "/api/transaksi/all",
   ORDER_DETAIL = "/api/transaksi/detail",
   ORDER_STATE = "/api/transaksi/state",
+  ORDER_CHECK_KAS = "/api/transaksi/check-kas",
 }
 
 export type Order = {
@@ -109,6 +110,11 @@ export interface UpdateStateParams {
   description?: string;
 }
 
+export type CheckKasResponse = {
+  code: number;
+  state: boolean;
+};
+
 const getOrderOutlet = async (
   token: string,
   params: GetOrderOutletParams
@@ -164,10 +170,35 @@ export const updateState = async (
   }
 };
 
+export const checkKas = async (
+  token: string,
+  outletId: number
+): Promise<CheckKasResponse> => {
+  try {
+    const response = await axios.post(
+      `${OrderUrl.ORDER_CHECK_KAS}`,
+      {
+        outlet_id: outletId,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const OrderService = {
   getOrderOutlet,
   getOrderDetail,
   updateState,
+  checkKas,
 };
 
 export default OrderService;

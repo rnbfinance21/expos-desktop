@@ -30,10 +30,12 @@ type OutletDetail = {
 };
 
 type authContextType = {
+  kasState: boolean;
   token: string;
   user: UserDetail;
   outlet: OutletDetail;
   signIn: (token: string) => void;
+  setKasState: (state: boolean) => void;
   logout: () => void;
 };
 
@@ -42,6 +44,7 @@ type Props = {
 };
 
 const authContextDefaultValues: authContextType = {
+  kasState: false,
   token: "",
   user: {
     id: null,
@@ -58,6 +61,7 @@ const authContextDefaultValues: authContextType = {
     open_state: false,
   },
   signIn: (token: string) => {},
+  setKasState: (state: boolean) => {},
   logout: () => {},
 };
 
@@ -66,6 +70,7 @@ const AuthContext = createContext<authContextType>(authContextDefaultValues);
 export const AuthContextProvider = ({ children }: Props) => {
   const ipcRenderer = electron.ipcRenderer || false;
 
+  const [kasState, setKasState] = useState(false);
   const [token, setToken] = useState("");
   const [user, setUser] = useState<UserDetail>();
   const [outlet, setOutlet] = useState<OutletDetail>();
@@ -101,6 +106,7 @@ export const AuthContextProvider = ({ children }: Props) => {
           code: data.outlet.code,
           open_state: data.outlet.open_state ? true : false,
         });
+        setKasState(data.outlet.kas_state === 1 ? true : false);
       },
       onError: (err: AxiosError<BaseResponse>) => {
         if (err.isAxiosError && err.response) {
@@ -144,6 +150,8 @@ export const AuthContextProvider = ({ children }: Props) => {
     outlet,
     logout,
     signIn,
+    kasState,
+    setKasState,
   };
 
   return (
