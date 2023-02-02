@@ -8,7 +8,8 @@ import OrderService, { OrderDetail } from "../../services/OrderService";
 import { numberFormat } from "../../utils/currency";
 import { ucwords } from "../../utils/string";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
-import ButtonAction from "./details/ButtonAction";
+import PendingAction from "./details/actions/PendingAction";
+import ProsesAction from "./details/actions/ProsesAction";
 import DetailItem from "./details/DetailItem";
 import InfoItem from "./details/InfoItem";
 
@@ -85,7 +86,12 @@ const Detail = () => {
                       />
                     ) : null}
                   </div>
-                  <ButtonAction data={selectedData} />
+                  {selectedData?.status === 0 ? (
+                    <PendingAction data={selectedData} />
+                  ) : null}
+                  {selectedData?.status === 1 ? (
+                    <ProsesAction data={selectedData} />
+                  ) : null}
                 </div>
                 <div className="px-4 h-0">
                   {selectedData?.details.map((item) => {

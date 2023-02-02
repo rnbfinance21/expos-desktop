@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,16 +10,21 @@ import {
   resetOrder,
 } from "../../../features/orderSlice";
 import { useAuth } from "../../../hooks/AuthContext";
-import OrderService from "../../../services/OrderService";
+import OrderService, {
+  SaveDraftParams,
+  UpdateDraftParams,
+} from "../../../services/OrderService";
 import { numberFormat } from "../../../utils/currency";
+import { handleErrorAxios } from "../../../utils/errors";
 import Toast from "../../../utils/toast";
 import UangKasModal from "../../modals/UangKasModal";
 import DetailActionButton from "./DetailActionButton";
 
 const DetailAction = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { token, kasState, outlet, setKasState } = useAuth();
-  const { identity, orders, type } = useSelector(getOrder);
+  const { identity, orders, type, id } = useSelector(getOrder);
   const sum = useSelector(getSumOrder);
 
   const [openKasModal, setOpenKasModal] = useState(false);
@@ -38,6 +44,30 @@ const DetailAction = () => {
     }
   );
 
+  const saveDraftMutation = useMutation(
+    (params: SaveDraftParams) => OrderService.saveDraft(token, params),
+    {
+      onSuccess: (res) => {
+        dispatch(resetOrder());
+        Swal.fire("Berhasil!", res.message, "success");
+        router.replace("/home");
+      },
+      onError: handleErrorAxios,
+    }
+  );
+
+  const updateDraftMutation = useMutation(
+    (params: UpdateDraftParams) => OrderService.updateDraft(token, params),
+    {
+      onSuccess: (res) => {
+        dispatch(resetOrder());
+        Swal.fire("Berhasil!", res.message, "success");
+        router.replace("/home");
+      },
+      onError: handleErrorAxios,
+    }
+  );
+
   const _onConfirm = () => {
     Swal.fire({
       title: "Apakah Anda yakin?",
@@ -51,7 +81,57 @@ const DetailAction = () => {
       allowOutsideClick: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Berhasil!!", "Simpan Data", "success");
+        if (type === "ADD") {
+          saveDraftMutation.mutate({
+            outlet_id: outlet.id,
+            name: identity.name,
+            table: identity.table,
+            no_bill: identity.no_bill,
+            details: orders.map((d) => {
+              return {
+                menu_id: d.menu.id,
+                box: d.box,
+                description: d.notes,
+                diskon: d.diskon,
+                margin: d.margin,
+                pajak_state: d.pajak_stat,
+                price: d.price,
+                qty: d.qty,
+                variants: d.variants.map((v) => {
+                  return {
+                    option_id: v.option_id,
+                    price: v.price,
+                  };
+                }),
+              };
+            }),
+          });
+        } else {
+          updateDraftMutation.mutate({
+            id,
+            name: identity.name,
+            table: identity.table,
+            no_bill: identity.no_bill,
+            details: orders.map((d) => {
+              return {
+                menu_id: d.menu.id,
+                box: d.box,
+                description: d.notes,
+                diskon: d.diskon,
+                margin: d.margin,
+                pajak_state: d.pajak_stat,
+                price: d.price,
+                qty: d.qty,
+                variants: d.variants.map((v) => {
+                  return {
+                    option_id: v.option_id,
+                    price: v.price,
+                  };
+                }),
+              };
+            }),
+          });
+        }
       }
     });
   };
@@ -110,7 +190,7 @@ const DetailAction = () => {
             onClick={_onSave}
             className="bg-blue-500 active:bg-blue-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
           >
-            Simpan
+            {saveDraftMutation.isLoading ? "Mohon Tunggu..." : "Simpan"}
           </div>
           <div className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer">
             Rp {numberFormat(sum, 0)}

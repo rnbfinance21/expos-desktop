@@ -41,7 +41,7 @@ const DetailActionButton = ({
           )}
         />
       </div>
-      <span className="text-xs font-thin w-12 text-center">{title}</span>
+      <span className="text-[10px] mt-1 font-light w-14 h-6 text-center">{title}</span>
     </div>
   );
 };

@@ -1,24 +1,22 @@
 import React from "react";
-import electron from "electron";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import { setRefetchOrder } from "../../../features/listOrderSlice";
-import { useAuth } from "../../../hooks/AuthContext";
+import { setRefetchOrder } from "../../../../features/listOrderSlice";
+import { useAuth } from "../../../../hooks/AuthContext";
 import OrderService, {
   OrderDetail,
   UpdateStateParams,
-} from "../../../services/OrderService";
-import { handleErrorAxios } from "../../../utils/errors";
-import { Button } from "../../globals/buttons";
+} from "../../../../services/OrderService";
+import { handleErrorAxios } from "../../../../utils/errors";
+import { Button } from "../../../globals/buttons";
 
-interface ButtonActionProps {
+interface PendingActionProps {
   data: OrderDetail;
 }
 
-const ButtonAction = ({ data }: ButtonActionProps) => {
+const PendingAction = ({ data }: PendingActionProps) => {
   const dispatch = useDispatch();
-  const ipcRenderer = electron.ipcRenderer || false;
   const { token } = useAuth();
 
   const changeStateMutation = useMutation(
@@ -75,23 +73,12 @@ const ButtonAction = ({ data }: ButtonActionProps) => {
       }
     });
   };
-
-  const _printOrder = () => {
-    if (ipcRenderer) {
-      ipcRenderer.send("print-order", data);
-    }
-  };
-
   return (
-    <>
-      {data?.status === 0 ? (
-        <div className="grid grid-cols-2 gap-4">
-          <Button onClick={_onAccept}>Terima</Button>
-          <Button onClick={() => _onReject(0)}>Tolak</Button>
-        </div>
-      ) : null}
-    </>
+    <div className="grid grid-cols-2 gap-4">
+      <Button onClick={_onAccept}>Terima</Button>
+      <Button onClick={() => _onReject(0)}>Tolak</Button>
+    </div>
   );
 };
 
-export default ButtonAction;
+export default PendingAction;

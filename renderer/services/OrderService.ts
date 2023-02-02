@@ -1,4 +1,5 @@
 import axios from "../utils/axios";
+import { Menu } from "./MenuService";
 import { BaseResponse } from "./types";
 
 enum OrderUrl {
@@ -6,6 +7,8 @@ enum OrderUrl {
   ORDER_DETAIL = "/api/transaksi/detail",
   ORDER_STATE = "/api/transaksi/state",
   ORDER_CHECK_KAS = "/api/transaksi/check-kas",
+  SAVE_DRAFT = "/api/transaksi/save-draft",
+  UPDATE_DRAFT = "/api/transaksi/update-draft",
 }
 
 export type Order = {
@@ -59,6 +62,7 @@ export type DetailVariant = {
   updated_at: string;
   option_name: string;
   variant_name: string;
+  variant_id: number;
 };
 
 export type Detail = {
@@ -77,7 +81,7 @@ export type Detail = {
   created_at: string | null;
   updated_at: string | null;
   total: number;
-  menu: DetailMenu;
+  menu: Menu;
   variants: DetailVariant[];
 };
 
@@ -104,15 +108,56 @@ export type GetOrderDetailResponse = {
   data: OrderDetail;
 };
 
-export interface UpdateStateParams {
+export type UpdateStateParams = {
   id: number;
   status: number;
   description?: string;
-}
+};
 
 export type CheckKasResponse = {
   code: number;
   state: boolean;
+};
+
+type VariantParams = {
+  option_id: number;
+  price: number;
+};
+
+export type SaveDraftParams = {
+  outlet_id: number;
+  name: string;
+  table: string;
+  no_bill: string | null;
+  details: {
+    menu_id: number;
+    qty: number;
+    description: string | null;
+    price: number;
+    margin: number;
+    box: number;
+    diskon: number;
+    pajak_state: number;
+    variants: VariantParams[];
+  }[];
+};
+
+export type UpdateDraftParams = {
+  id: number;
+  name: string;
+  table: string;
+  no_bill: string | null;
+  details: {
+    menu_id: number;
+    qty: number;
+    description: string | null;
+    price: number;
+    margin: number;
+    box: number;
+    diskon: number;
+    pajak_state: number;
+    variants: VariantParams[];
+  }[];
 };
 
 const getOrderOutlet = async (
@@ -194,11 +239,51 @@ export const checkKas = async (
   }
 };
 
+export const saveDraft = async (
+  token: string,
+  params: SaveDraftParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.SAVE_DRAFT}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("saveDraft", error);
+    throw error;
+  }
+};
+
+const updateDraft = async (
+  token: string,
+  params: UpdateDraftParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.UPDATE_DRAFT}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("saveDraft", error);
+    throw error;
+  }
+};
+
 const OrderService = {
   getOrderOutlet,
   getOrderDetail,
   updateState,
   checkKas,
+  saveDraft,
+  updateDraft,
 };
 
 export default OrderService;

@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRefetchOrder, setSearch } from "../../features/listOrderSlice";
+import { resetOrder, setType } from "../../features/orderSlice";
 import { DynamicHeroIcon } from "../globals/icons";
 import Filter from "./Filter";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [inputSearch, setInputSearch] = useState("");
 
@@ -44,12 +47,17 @@ const Header = () => {
         </div>
       </div>
       <div className="flex flex-row gap-2">
-        <Link href="/form">
+        <button
+          onClick={() => {
+            dispatch(resetOrder());
+            router.push("/form");
+          }}
+        >
           <div className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md">
             <DynamicHeroIcon icon="PlusIcon" />
             Buat Order
           </div>
-        </Link>
+        </button>
         <button
           onClick={() => dispatch(setRefetchOrder(true))}
           className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"

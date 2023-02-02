@@ -64,6 +64,12 @@ export const orderSlice = createSlice({
   name: "orders",
   initialState,
   reducers: {
+    setType: (state, actions: PayloadAction<string>) => {
+      state.type = actions.payload;
+    },
+    setId: (state, actions: PayloadAction<number>) => {
+      state.id = actions.payload;
+    },
     setIdentity: (
       state,
       actions: PayloadAction<{
@@ -81,6 +87,9 @@ export const orderSlice = createSlice({
         table,
         no_bill,
       };
+    },
+    setOrders: (state, actions: PayloadAction<Orders[]>) => {
+      state.orders = actions.payload;
     },
     addItem: (state, action: PayloadAction<Orders>) => {
       let index = findIndexSingleItem(state.orders, action.payload.id);
@@ -183,6 +192,9 @@ export const {
   incrementItemCustom,
   decrementItemCustom,
   resetOrder,
+  setType,
+  setOrders,
+  setId,
 } = orderSlice.actions;
 
 export const getOrder = (state: RootState) => state.order;
