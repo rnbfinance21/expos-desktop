@@ -14,7 +14,7 @@ const MenuItem = ({ data, type, onClick }: MenuItemProps) => {
     <>
       <div
         onClick={onClick}
-        className="shadow rounded bg-white h-40 border text-center flex flex-col p-2 cursor-pointer active:bg-gray-50"
+        className="shadow rounded bg-white h-48 border text-center flex flex-col p-2 cursor-pointer active:bg-gray-50"
       >
         {type === "list" ? (
           <>
@@ -34,10 +34,10 @@ const MenuItem = ({ data, type, onClick }: MenuItemProps) => {
           </>
         ) : (
           <>
-            <div className="relative w-full h-28 bg-red-500">
+            <div className="relative w-full h-28 bg-gray-100 rounded overflow-hidden">
               <Image src={data.photo} layout="fill" objectFit="cover" />
             </div>
-            <div className="flex-1 flex flex-col px-2 py-1 items-start justify-between">
+            <div className="flex-1 flex flex-col py-1 items-start justify-between">
               <span className="text-xs font-semibold text-left leading-normal max-h-16">
                 {data.name}
               </span>

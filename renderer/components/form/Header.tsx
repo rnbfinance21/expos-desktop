@@ -20,7 +20,7 @@ const CategoryItem = ({ onClick, isActive, title }) => {
         isActive ? "border-b-2 border-b-red-500" : ""
       )}
     >
-      <p className="w-20 text-center">{ucwords(title)}</p>
+      <p className="w-24 text-center">{ucwords(title)}</p>
     </div>
   );
 };

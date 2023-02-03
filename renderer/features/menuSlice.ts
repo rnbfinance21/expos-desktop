@@ -14,7 +14,7 @@ export interface MenuState {
 const initialState: MenuState = {
   menu: [],
   search: "",
-  type: "list",
+  type: "images",
   refetchMenu: true,
   selectedCategory: null,
 };
