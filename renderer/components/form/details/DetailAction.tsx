@@ -139,7 +139,7 @@ const DetailAction = () => {
     dispatch(resetPayment());
     dispatch(
       setPayment({
-        type: "ADD",
+        type: type,
         id: id,
         identity: {
           member_id: null,
