@@ -45,6 +45,9 @@ export interface PaymentState extends PaymentOrder {
   bayar: number;
   inputNumpad: number;
   focus: number;
+  changeState: boolean;
+  openModal: boolean;
+  selectedItem: null | Payment;
 }
 
 const initialState: PaymentState = {
@@ -66,6 +69,10 @@ const initialState: PaymentState = {
   bayar: 0,
   inputNumpad: 0,
   focus: 3,
+  changeState: false,
+  // update price
+  openModal: false,
+  selectedItem: null,
 };
 
 export const findIndexSingleItem = (data: Payment[], value: any) =>
@@ -223,6 +230,33 @@ export const paymentSlice = createSlice({
 
       state.bayar = total;
     },
+    setChangeState: (state, actions: PayloadAction<boolean>) => {
+      state.changeState = actions.payload;
+    },
+    setOpenModal: (state, actions: PayloadAction<boolean>) => {
+      state.openModal = actions.payload;
+    },
+    setSelectedItem: (state, actions: PayloadAction<Payment>) => {
+      state.selectedItem = actions.payload;
+    },
+    updateItemCustom: (
+      state,
+      action: PayloadAction<{
+        prev: Payment;
+        new: {
+          price: number;
+        };
+      }>
+    ) => {
+      let index = findIndexCustomItem(state.orders, action.payload.prev);
+
+      let object = state.orders[index];
+      object.price = action.payload.new.price;
+      object.margin = 0;
+      object.box = 0;
+
+      state.orders[index] = object;
+    },
   },
 });
 
@@ -242,6 +276,10 @@ export const {
   setMargin,
   resetMargin,
   autoSetBayar,
+  setChangeState,
+  setOpenModal,
+  setSelectedItem,
+  updateItemCustom,
 } = paymentSlice.actions;
 
 export const getPayment = (state: RootState) => state.payment;

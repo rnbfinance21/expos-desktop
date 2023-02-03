@@ -9,6 +9,7 @@ import {
   getPayment,
   resetMargin,
   setBayar,
+  setChangeState,
   setMargin,
   setOrderType,
   setPaymentType,
@@ -52,6 +53,8 @@ const OrderTypeSection = () => {
       setSelectedPayment(null);
       dispatch(setBayar(0));
     }
+
+    dispatch(setChangeState(!!item.change_state));
   };
 
   return (
