@@ -36,6 +36,8 @@ const DetailAction = () => {
         setKasState(res.state);
         if (!res.state) {
           setOpenKasModal(true);
+        } else {
+          _onConfirm();
         }
       },
       onError: () => {

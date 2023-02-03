@@ -3,6 +3,8 @@ import listOrderReducer from "../features/listOrderSlice";
 import menuReducer from "../features/menuSlice";
 import orderReducer from "../features/orderSlice";
 import customReducer from "../features/customSlice";
+import paymentReducer from "../features/paymentSlice";
+import paymentAttributeReducer from "../features/paymentAttributeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     menu: menuReducer,
     order: orderReducer,
     custom: customReducer,
+    payment: paymentReducer,
+    paymentAttribute: paymentAttributeReducer,
   },
 });
 

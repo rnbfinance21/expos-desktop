@@ -24,7 +24,7 @@ const Header = ({ isBack }) => {
             {isBack ? (
               <button
                 onClick={() => navigate.back()}
-                className="p-2 border rounded-lg flex flex-row justify-center items-center"
+                className="text-xs p-2 border rounded-lg flex flex-row justify-center items-center"
               >
                 <DynamicHeroIcon
                   icon="ArrowLeftIcon"

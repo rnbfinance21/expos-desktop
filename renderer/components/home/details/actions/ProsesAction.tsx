@@ -10,6 +10,7 @@ import {
   setOrders,
   setType,
 } from "../../../../features/orderSlice";
+import { resetPayment, setPayment } from "../../../../features/paymentSlice";
 import { useAuth } from "../../../../hooks/AuthContext";
 import OrderService, {
   OrderDetail,
@@ -86,6 +87,46 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     setOpenPasscodeModal(true);
   };
 
+  const _onPayment = () => {
+    dispatch(resetPayment());
+    dispatch(
+      setPayment({
+        type: "UPDATE",
+        id: data.id,
+        identity: {
+          member_id: null,
+          name: data.name,
+          table: data.table,
+          no_bill: data.no_bill,
+        },
+        orders: data.details.map((d) => {
+          return {
+            id: d.id,
+            box: d.box,
+            diskon: d.diskon,
+            margin: d.margin,
+            margin_stat: d.menu.box_state,
+            pajak_stat: d.pajak_state,
+            notes: d.description,
+            price: d.price,
+            qty: d.qty,
+            menu: d.menu,
+            variants: d.variants.map((v) => {
+              return {
+                option_id: v.variant_option_id,
+                price: v.price,
+                category_id: v.variant_id,
+                category_name: v.variant_name,
+                option_name: v.option_name,
+              };
+            }),
+          };
+        }),
+      })
+    );
+    router.push("/payment");
+  };
+
   const _onSuccessPasscode = () => {
     setOpenPasscodeModal(false);
     Swal.fire({
@@ -131,7 +172,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         <DetailActionButton
           icon="CurrencyDollarIcon"
           title="Bayar"
-          onClick={() => {}}
+          onClick={_onPayment}
         />
         <DetailActionButton
           icon="XMarkIcon"
