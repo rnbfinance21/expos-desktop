@@ -9,6 +9,9 @@ enum OrderUrl {
   ORDER_CHECK_KAS = "/api/transaksi/check-kas",
   SAVE_DRAFT = "/api/transaksi/save-draft",
   UPDATE_DRAFT = "/api/transaksi/update-draft",
+  SAVE_PAYMENT = "/api/transaksi/save-payment",
+  UPDATE_PAYMENT = "/api/transaksi/update-payment",
+  VOID = "/api/transaksi/void",
 }
 
 export type Order = {
@@ -160,6 +163,21 @@ export type UpdateDraftParams = {
   }[];
 };
 
+type PaymentParams = {
+  kategori_order_id: number;
+  kategori_payment_id: number;
+  diskon: number;
+  pajak: number;
+  potongan: number;
+  total: number;
+  bayar: number;
+  kembalian: number;
+};
+
+export interface SavePaymentParams extends SaveDraftParams, PaymentParams {}
+
+export interface UpdatePaymentParams extends UpdateDraftParams, PaymentParams {}
+
 const getOrderOutlet = async (
   token: string,
   params: GetOrderOutletParams
@@ -197,7 +215,7 @@ const getOrderDetail = async (
   }
 };
 
-export const updateState = async (
+const updateState = async (
   token: string,
   params: UpdateStateParams
 ): Promise<BaseResponse> => {
@@ -215,7 +233,7 @@ export const updateState = async (
   }
 };
 
-export const checkKas = async (
+const checkKas = async (
   token: string,
   outletId: number
 ): Promise<CheckKasResponse> => {
@@ -239,7 +257,7 @@ export const checkKas = async (
   }
 };
 
-export const saveDraft = async (
+const saveDraft = async (
   token: string,
   params: SaveDraftParams
 ): Promise<BaseResponse> => {
@@ -277,6 +295,44 @@ const updateDraft = async (
   }
 };
 
+const savePayment = async (
+  token: string,
+  params: SavePaymentParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.SAVE_PAYMENT}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("savePayment", error);
+    throw error;
+  }
+};
+
+const updatePayment = async (
+  token: string,
+  params: UpdatePaymentParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.UPDATE_PAYMENT}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("updatePayment", error);
+    throw error;
+  }
+};
+
 const OrderService = {
   getOrderOutlet,
   getOrderDetail,
@@ -284,6 +340,8 @@ const OrderService = {
   checkKas,
   saveDraft,
   updateDraft,
+  savePayment,
+  updatePayment,
 };
 
 export default OrderService;

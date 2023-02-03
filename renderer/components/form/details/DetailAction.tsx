@@ -9,6 +9,7 @@ import {
   getSumOrder,
   resetOrder,
 } from "../../../features/orderSlice";
+import { resetPayment, setPayment } from "../../../features/paymentSlice";
 import { useAuth } from "../../../hooks/AuthContext";
 import OrderService, {
   SaveDraftParams,
@@ -28,17 +29,13 @@ const DetailAction = () => {
   const sum = useSelector(getSumOrder);
 
   const [openKasModal, setOpenKasModal] = useState(false);
+  const [openKasType, setOpenKasType] = useState("SAVE");
 
   const changeStateMutation = useMutation(
     () => OrderService.checkKas(token, outlet.id),
     {
       onSuccess: (res) => {
         setKasState(res.state);
-        if (!res.state) {
-          setOpenKasModal(true);
-        } else {
-          _onConfirm();
-        }
       },
       onError: () => {
         setKasState(false);
@@ -138,8 +135,52 @@ const DetailAction = () => {
     });
   };
 
+  const _redirectPayment = () => {
+    dispatch(resetPayment());
+    dispatch(
+      setPayment({
+        type: "ADD",
+        id: id,
+        identity: {
+          member_id: null,
+          name: identity.name,
+          table: identity.table,
+          no_bill: identity.no_bill,
+        },
+        orders: orders.map((d) => {
+          return {
+            id: d.id,
+            box: d.box,
+            diskon: d.diskon,
+            margin: d.margin,
+            margin_stat: d.menu.box_state,
+            pajak_stat: d.menu.tax_state,
+            notes: d.notes,
+            price: d.price,
+            qty: d.qty,
+            menu: d.menu,
+            variants: d.variants.map((v) => {
+              return {
+                option_id: v.option_id,
+                price: v.price,
+                category_id: v.category_id,
+                category_name: v.category_name,
+                option_name: v.option_name,
+              };
+            }),
+          };
+        }),
+      })
+    );
+    router.push("/payment");
+  };
+
   const _onSuccessKas = () => {
-    _onConfirm();
+    if (openKasType === "SAVE") {
+      _onConfirm();
+    } else {
+      _redirectPayment();
+    }
 
     setOpenKasModal(false);
   };
@@ -158,11 +199,43 @@ const DetailAction = () => {
         text: "Transaksi minimal 1 item",
       });
     } else {
-      if (!kasState) {
-        changeStateMutation.mutate();
-      } else {
-        _onConfirm();
-      }
+      changeStateMutation.mutateAsync().then((res) => {
+        if (!res.state) {
+          setOpenKasType("SAVE");
+          setOpenKasModal(true);
+        } else {
+          _onConfirm();
+        }
+      });
+      // if (!kasState) {
+      // } else {
+      //   _onConfirm();
+      // }
+    }
+  };
+
+  const _onPayment = () => {
+    if (identity.name === "" || identity.table === "") {
+      Toast.fire({
+        icon: "warning",
+        title: "Peringatan!",
+        text: "Silahkan isi data pelanggan",
+      });
+    } else if (orders.length === 0) {
+      Toast.fire({
+        icon: "warning",
+        title: "Peringatan!",
+        text: "Transaksi minimal 1 item",
+      });
+    } else {
+      changeStateMutation.mutateAsync().then((res) => {
+        if (!res.state) {
+          setOpenKasType("PAYMENT");
+          setOpenKasModal(true);
+        } else {
+          _redirectPayment();
+        }
+      });
     }
   };
 
@@ -194,7 +267,10 @@ const DetailAction = () => {
           >
             {saveDraftMutation.isLoading ? "Mohon Tunggu..." : "Simpan"}
           </div>
-          <div className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer">
+          <div
+            onClick={_onPayment}
+            className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
+          >
             Rp {numberFormat(sum, 0)}
           </div>
         </div>
