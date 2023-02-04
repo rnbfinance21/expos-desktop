@@ -1,11 +1,15 @@
 import { Switch } from "@headlessui/react";
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { Loading } from "../../components/globals/icons";
 import { useAuth } from "../../hooks/AuthContext";
 import DefaultLayout from "../../layouts/DefaultLayout";
-import MenuService, { VariantData } from "../../services/MenuService";
+import MenuService, {
+  ChangeVariantStateParams,
+  VariantData,
+} from "../../services/MenuService";
+import { handleErrorAxios } from "../../utils/errors";
 import { ucwords } from "../../utils/string";
 
 const variant = () => {
@@ -20,6 +24,17 @@ const variant = () => {
       onSuccess: (res) => {
         setData(res.data);
       },
+    }
+  );
+
+  const updateVariantMutation = useMutation(
+    (params: ChangeVariantStateParams) =>
+      MenuService.changeVariantState(token, params),
+    {
+      onSuccess: (res) => {
+        refetch();
+      },
+      onError: handleErrorAxios,
     }
   );
 
@@ -62,6 +77,13 @@ const variant = () => {
                                   </div>
                                   <Switch
                                     checked={!!m.state}
+                                    onChange={(e) => {
+                                      updateVariantMutation.mutate({
+                                        variant_option_id: m.id,
+                                        outlet_id: outlet.id,
+                                        state: e ? 1 : 0,
+                                      });
+                                    }}
                                     className={`${
                                       !!m.state ? "bg-green-500" : "bg-red-500"
                                     }
