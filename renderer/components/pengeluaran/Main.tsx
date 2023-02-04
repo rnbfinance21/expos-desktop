@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 import { getPengeluaran, setRefetch } from "../../features/pengeluaranSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import PengeluaranService, {
   PengeluaranData,
 } from "../../services/PengeluaranService";
 import { numberFormat } from "../../utils/currency";
+import { handleErrorAxios } from "../../utils/errors";
+import Toast from "../../utils/toast";
 import { Loading } from "../globals/icons";
 import Header from "./main/Header";
 
@@ -34,6 +37,33 @@ const Main = () => {
       },
     }
   );
+
+  const deleteMutation = useMutation(
+    (id: number) => PengeluaranService.deletePengeluaran(token, id),
+    {
+      onSuccess: (res) => {
+        Toast.fire("Berhasil!", res.message, "success");
+        refetch();
+      },
+      onError: handleErrorAxios,
+    }
+  );
+
+  const _onClick = (item: PengeluaranData) => {
+    Swal.fire({
+      title: "Apakah Anda akan menbatalkan data ini?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Batalkan",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(item.id);
+      }
+    });
+  };
 
   useEffect(() => {
     refetch();
@@ -85,7 +115,10 @@ const Main = () => {
                 <>
                   {data.map((item) => {
                     return (
-                      <tr>
+                      <tr
+                        onClick={() => _onClick(item)}
+                        className="hover:bg-gray-100 border-b"
+                      >
                         <th className="text-xs font-light py-2 px-4 w-48 text-center">
                           {item.date}
                         </th>
@@ -124,7 +157,7 @@ const Main = () => {
               )}
             </tbody>
             <tfoot className="sticky bottom-0">
-              <tr>
+              <tr className="border-b">
                 <th
                   colSpan={3}
                   className="text-sm font-medium py-2 px-4 w-48 text-end"
