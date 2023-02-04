@@ -6,17 +6,17 @@ import { RootState } from "../config/store";
 export interface ReportState {
   search: string;
   date: string;
-  refetchReport: boolean;
+  refetchPengeluaran: boolean;
 }
 
 const initialState: ReportState = {
   search: "",
   date: formatDate(new Date()),
-  refetchReport: true,
+  refetchPengeluaran: true,
 };
 
 export const reportSlice = createSlice({
-  name: "report",
+  name: "pengeluaran",
   initialState,
   reducers: {
     setSearch: (state, actions: PayloadAction<string>) => {
@@ -26,7 +26,7 @@ export const reportSlice = createSlice({
       state.date = actions.payload;
     },
     setRefetch: (state, actions: PayloadAction<boolean>) => {
-      state.refetchReport = actions.payload;
+      state.refetchPengeluaran = actions.payload;
     },
   },
 });
@@ -34,6 +34,6 @@ export const reportSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { setSearch, setDate, setRefetch } = reportSlice.actions;
 
-export const getReport = (state: RootState) => state.report;
+export const getPengeluaran = (state: RootState) => state.pengeluaran;
 
 export default reportSlice.reducer;

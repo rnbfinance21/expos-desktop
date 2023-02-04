@@ -128,7 +128,7 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
                     <div>
                       <SideBarMenu
                         title="Pengeluaran"
-                        onClick={() => {}}
+                        onClick={() => router.push("pengeluaran")}
                         icon="CreditCardIcon"
                       />
                     </div>
