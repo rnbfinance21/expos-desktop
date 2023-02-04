@@ -128,21 +128,21 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
                     <div>
                       <SideBarMenu
                         title="Pengeluaran"
-                        onClick={() => router.push("pengeluaran")}
+                        onClick={() => router.push("/pengeluaran")}
                         icon="CreditCardIcon"
                       />
                     </div>
                     <div>
                       <SideBarMenu
                         title="Stok Menu"
-                        onClick={() => router.push("stok")}
+                        onClick={() => router.push("/stok/")}
                         icon="DocumentArrowUpIcon"
                       />
                     </div>
                     <div>
                       <SideBarMenu
                         title="Stok Variant"
-                        onClick={() => router.push("stok/variant")}
+                        onClick={() => router.push("/stok/variant")}
                         icon="DocumentArrowDownIcon"
                       />
                     </div>
@@ -151,7 +151,7 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
                   <div>
                     <SideBarMenu
                       title="Pengaturan"
-                      onClick={() => {}}
+                      onClick={() => router.push("/config")}
                       icon="Cog8ToothIcon"
                     />
                   </div>
