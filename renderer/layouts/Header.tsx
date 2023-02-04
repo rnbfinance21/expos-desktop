@@ -1,20 +1,35 @@
+import { Switch } from "@headlessui/react";
 import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useMutation } from "react-query";
 import { DynamicHeroIcon } from "../components/globals/icons";
 import { useAuth } from "../hooks/AuthContext";
-import { ucwords } from "../utils/string";
+import OutletService, { OpenOutletParams } from "../services/OutletService";
+import { classNames, ucwords } from "../utils/string";
+import Toast from "../utils/toast";
 import SideBar from "./Sidebar";
 
 interface HeaderProps {
   isBack: boolean;
 }
 
-const Header = ({ isBack }) => {
+const Header = ({ isBack }: HeaderProps) => {
   const navigate = useRouter();
-  const { user, outlet } = useAuth();
+  const { user, outlet, openState, setOpenState, token } = useAuth();
+
   const [openSideBar, setOpenSideBar] = useState(false);
+
+  const openStateMutation = useMutation(
+    (params: OpenOutletParams) => OutletService.openOutlet(token, params),
+    {
+      onSuccess: (res) => {
+        Toast.fire("Berhasil!", res.message, "success");
+      },
+      // onError: handleErrorAxios,
+    }
+  );
 
   return (
     <>
@@ -50,6 +65,42 @@ const Header = ({ isBack }) => {
             )}
           </div>
           <div className="flex flex-row gap-4 items-center">
+            {!isBack ? (
+              <div className="w-24">
+                <div className="grid grid-cols-2 bg-gray-100 rounded-md p-1 overflow-hidden">
+                  <button
+                    onClick={() => {
+                      setOpenState(true);
+                      openStateMutation.mutate({
+                        outlet_id: outlet.id,
+                        state: 1,
+                      });
+                    }}
+                    className={classNames(
+                      "w-full py-2 text-[10px] font-bold bg-transparent rounded",
+                      openState ? "bg-green-500 text-white" : ""
+                    )}
+                  >
+                    Buka
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOpenState(false);
+                      openStateMutation.mutate({
+                        outlet_id: outlet.id,
+                        state: 0,
+                      });
+                    }}
+                    className={classNames(
+                      "w-full py-2 text-[10px] font-bold bg-transparent rounded",
+                      !openState ? "bg-red-500 text-white" : ""
+                    )}
+                  >
+                    Tutup
+                  </button>
+                </div>
+              </div>
+            ) : null}
             <div className="flex flex-col items-end">
               <p className="text-xs font-bold">{ucwords(user?.name ?? "")}</p>
               <p className="text-[10px] font-thin">

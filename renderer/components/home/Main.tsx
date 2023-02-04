@@ -9,6 +9,7 @@ import {
 } from "../../features/listOrderSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import OrderService, { Order } from "../../services/OrderService";
+import { Loading } from "../globals/icons";
 import Header from "./Header";
 import OrderItem from "./OrderItem";
 
@@ -95,7 +96,9 @@ const Main = () => {
       <div className="flex-1 flex flex-col overflow-auto bg-white">
         <Header />
         {isLoading || isRefetching ? (
-          <OrderItemShimmer />
+          <div className="flex-1 flex justify-center items-center">
+            <Loading />
+          </div>
         ) : (
           <>
             {data.length === 0 ? (

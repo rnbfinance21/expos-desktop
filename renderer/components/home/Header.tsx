@@ -4,12 +4,14 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRefetchOrder, setSearch } from "../../features/listOrderSlice";
 import { resetOrder, setType } from "../../features/orderSlice";
+import { useAuth } from "../../hooks/AuthContext";
 import { DynamicHeroIcon } from "../globals/icons";
 import Filter from "./Filter";
 
 const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { openState } = useAuth();
 
   const [inputSearch, setInputSearch] = useState("");
 
@@ -52,17 +54,19 @@ const Header = () => {
         </div>
       </div>
       <div className="flex flex-row gap-2">
-        <button
-          onClick={() => {
-            dispatch(resetOrder());
-            router.push("/form");
-          }}
-        >
-          <div className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md">
-            <DynamicHeroIcon icon="PlusIcon" />
-            Buat Order
-          </div>
-        </button>
+        {openState ? (
+          <button
+            onClick={() => {
+              dispatch(resetOrder());
+              router.push("/form");
+            }}
+          >
+            <div className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md">
+              <DynamicHeroIcon icon="PlusIcon" />
+              Buat Order
+            </div>
+          </button>
+        ) : null}
         <button
           onClick={() => dispatch(setRefetchOrder(true))}
           className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"

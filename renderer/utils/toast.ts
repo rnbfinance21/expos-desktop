@@ -5,9 +5,9 @@ import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({
   toast: true,
-  position: "top-end",
+  position: "top-start",
   showConfirmButton: false,
-  timer: 3000,
+  timer: 1500,
   timerProgressBar: true,
   width: 450,
   didOpen: (toast) => {
