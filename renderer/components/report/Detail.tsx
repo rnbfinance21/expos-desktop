@@ -67,9 +67,14 @@ const Detail = () => {
   return (
     <div className="w-[450px] px-4 border-l">
       <div className="flex-1">
-        <span className="text-sm font-medium text-gray-900 w-[150px] mb-2">
-          Pendapatan
-        </span>
+        <div className="flex flex-col my-2">
+          <span className="text-sm font-medium text-gray-900 w-[150px]">
+            Pendapatan
+          </span>
+          <span className="text-xs font-light text-gray-900 w-[150px]">
+            {formatDate(date)}
+          </span>
+        </div>
         <div className="flex flex-row justify-between items-start mb-1 pb-1">
           <span className="text-sm font-tight text-gray-500 w-[150px]">
             Uang Kas / Laci

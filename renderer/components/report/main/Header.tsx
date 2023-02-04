@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRefetch, setSearch } from "../../../features/reportSlice";
 import { DynamicHeroIcon } from "../../globals/icons";
+import Filter from "./Filter";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const Header = () => {
           <DynamicHeroIcon icon="ArrowPathIcon" />
           Perbarui
         </button>
-        {/* <Filter /> */}
+        <Filter />
       </div>
     </div>
   );
