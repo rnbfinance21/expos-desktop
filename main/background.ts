@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, Notification, shell } from "electron";
 import {
   PosPrinter,
   PosPrintOptions,
@@ -214,6 +214,30 @@ const create = async () => {
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
+
+  mainWindow.webContents.session.on(
+    "will-download",
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (event, item, _webContents) => {
+      item.once("done", (_, state) => {
+        if (state === "completed") {
+          // console.log('Download successfully');
+          // console.log(item.getSavePath());
+          shell.showItemInFolder(item.getSavePath());
+          new Notification({
+            title: "Pemberitahuan",
+            body: "Download excel berhasil",
+          });
+        } else {
+          console.log(`Download failed: ${state}`);
+          new Notification({
+            title: "Pemberitahuan",
+            body: "Download excel gagal",
+          });
+        }
+      });
+    }
+  );
 
   if (isProd) {
     await mainWindow.loadURL("app://./login.html");

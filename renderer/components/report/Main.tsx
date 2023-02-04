@@ -56,7 +56,7 @@ const Main = () => {
           <table className="min-w-full">
             <thead className="sticky top-[54px]">
               <tr>
-                <th className="text-sm font-medium bg-gray-100 py-2 px-4 w-40 text-left">
+                <th className="text-sm font-medium bg-gray-100 py-2 px-4 w-48 text-left">
                   Kode Transaksi
                 </th>
                 <th className="text-sm font-medium bg-gray-100 py-2 px-4 w-32 text-left">

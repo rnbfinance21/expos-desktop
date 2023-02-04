@@ -1,4 +1,5 @@
 import React from "react";
+import Detail from "../components/report/Detail";
 import Main from "../components/report/Main";
 import DefaultLayout from "../layouts/DefaultLayout";
 
@@ -7,9 +8,7 @@ const report = () => {
     <DefaultLayout title="Report">
       <div className="flex-grow w-full flex flex-row">
         <Main />
-        <div className="w-[450px] bg-blue-300">
-          <p>haii</p>
-        </div>
+        <Detail />
       </div>
     </DefaultLayout>
   );
