@@ -1,6 +1,6 @@
 import React from "react";
-import MenuSection from "../components/stok/MenuSection";
-import DefaultLayout from "../layouts/DefaultLayout";
+import MenuSection from "../../components/stok/MenuSection";
+import DefaultLayout from "../../layouts/DefaultLayout";
 
 const stok = () => {
   return (
