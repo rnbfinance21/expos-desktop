@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 
 import axios from "../utils/axios";
+import { BaseResponse } from "./types";
 
 enum MenuUrl {
   MENU_LIST = "/api/menu/outlet",
+  UPDATE_STOCK_STATE = "/api/menu/stock/change",
 }
 
 export interface VariantOption {
@@ -66,6 +68,12 @@ export type GetMenuOutletResponse = {
   data: Menu[];
 };
 
+export type ChangeStockStateParams = {
+  outlet_id: number;
+  menu_id: number;
+  state: number;
+};
+
 const getMenuOutlet = async (
   token: string,
   outletCode: string
@@ -85,8 +93,28 @@ const getMenuOutlet = async (
   }
 };
 
+const changeStockState = async (
+  token: string,
+  params: ChangeStockStateParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${MenuUrl.UPDATE_STOCK_STATE}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("changeStockState", error);
+    throw error;
+  }
+};
+
 const MenuService = {
   getMenuOutlet,
+  changeStockState,
 };
 
 export default MenuService;

@@ -132,6 +132,13 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
                         icon="CreditCardIcon"
                       />
                     </div>
+                    <div>
+                      <SideBarMenu
+                        title="Menu"
+                        onClick={() => router.push("stok")}
+                        icon="DocumentArrowUpIcon"
+                      />
+                    </div>
                   </div>
                   <Divider />
                   <div>
