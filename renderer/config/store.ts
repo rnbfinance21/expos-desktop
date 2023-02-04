@@ -5,6 +5,7 @@ import orderReducer from "../features/orderSlice";
 import customReducer from "../features/customSlice";
 import paymentReducer from "../features/paymentSlice";
 import paymentAttributeReducer from "../features/paymentAttributeSlice";
+import reportReducer from "../features/reportSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     custom: customReducer,
     payment: paymentReducer,
     paymentAttribute: paymentAttributeReducer,
+    report: reportReducer,
   },
 });
 

@@ -121,7 +121,7 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
                     <div>
                       <SideBarMenu
                         title="Laporan"
-                        onClick={() => {}}
+                        onClick={() => router.push("/report")}
                         icon="DocumentChartBarIcon"
                       />
                     </div>
