@@ -8,6 +8,7 @@ import OrderService, { OrderDetail } from "../../services/OrderService";
 import { numberFormat } from "../../utils/currency";
 import { ucwords } from "../../utils/string";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
+import PaidAction from "./details/actions/PaidAction";
 import PendingAction from "./details/actions/PendingAction";
 import ProsesAction from "./details/actions/ProsesAction";
 import DetailItem from "./details/DetailItem";
@@ -91,6 +92,9 @@ const Detail = () => {
                   ) : null}
                   {selectedData?.status === 1 ? (
                     <ProsesAction data={selectedData} />
+                  ) : null}
+                  {selectedData?.status === 2 ? (
+                    <PaidAction data={selectedData} />
                   ) : null}
                 </div>
                 <div className="px-4 h-0">

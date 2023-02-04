@@ -260,20 +260,31 @@ const DetailAction = () => {
             />
           </div>
         </div>
-        <div className="grid grid-cols-2">
-          <div
-            onClick={_onSave}
-            className="bg-blue-500 active:bg-blue-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
-          >
-            {saveDraftMutation.isLoading ? "Mohon Tunggu..." : "Simpan"}
+        {type !== "VOID" ? (
+          <div className="grid grid-cols-2">
+            <div
+              onClick={_onSave}
+              className="bg-blue-500 active:bg-blue-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
+            >
+              {saveDraftMutation.isLoading ? "Mohon Tunggu..." : "Simpan"}
+            </div>
+            <div
+              onClick={_onPayment}
+              className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
+            >
+              Rp {numberFormat(sum, 0)}
+            </div>
           </div>
-          <div
-            onClick={_onPayment}
-            className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
-          >
-            Rp {numberFormat(sum, 0)}
+        ) : (
+          <div className="grid grid-cols-1">
+            <div
+              onClick={_onPayment}
+              className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
+            >
+              Lanjut
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <UangKasModal
         visible={openKasModal}

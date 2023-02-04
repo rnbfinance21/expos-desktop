@@ -68,7 +68,6 @@ const Main = () => {
         date,
       }),
     {
-      enabled: false,
       onSuccess: (res) => {
         setData(res.data);
       },

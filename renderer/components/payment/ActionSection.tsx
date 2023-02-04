@@ -104,12 +104,38 @@ const ActionSection = () => {
     }
   );
 
+  const voidMutation = useMutation(
+    (params: UpdatePaymentParams) => OrderService.voidPayment(token, params),
+    {
+      onSuccess: (res) => {
+        Swal.fire({
+          title: "Berhasil",
+          text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
+          allowOutsideClick: false,
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Oke",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(resetPayment());
+            dispatch(resetOrder());
+
+            router.replace("/home");
+          }
+        });
+      },
+      onError: handleErrorAxios,
+    }
+  );
+
   const _onChange = (val: string) => {
     dispatch(setInputNumpad(parseInt(val, 0)));
   };
 
   const _onPayment = () => {
-    if (validationSave) {
+    if (validationSave()) {
       if (type === "UPDATE" && id !== null) {
         updateMutation.mutate({
           id,
@@ -186,6 +212,49 @@ const ActionSection = () => {
     }
   };
 
+  const _onVoid = () => {
+    if (validationSave() && id !== null) {
+      voidMutation.mutate({
+        id,
+        name: identity.name,
+        table: identity.table,
+        no_bill: identity.no_bill,
+        bayar,
+        diskon,
+        kategori_order_id: orderType,
+        kategori_payment_id: paymentType,
+        kembalian,
+        pajak: tax,
+        potongan,
+        total,
+        details: orders.map((d) => {
+          return {
+            menu_id: d.menu.id,
+            box: d.box,
+            description: d.notes,
+            diskon: d.diskon,
+            margin: d.margin,
+            pajak_state: d.pajak_stat,
+            price: d.price,
+            qty: d.qty,
+            variants: d.variants.map((v) => {
+              return {
+                option_id: v.option_id,
+                price: v.price,
+              };
+            }),
+          };
+        }),
+      });
+    } else {
+      Toast.fire({
+        icon: "warning",
+        title: "Peringatan!",
+        text: "Silahkan lengkapi data pembayaran",
+      });
+    }
+  };
+
   return (
     <div className="grid grid-cols-2 gap-4">
       <div>
@@ -212,9 +281,9 @@ const ActionSection = () => {
           <Button
             type="button"
             className="flex-1 bg-red-500 text-sm text-white border border-red-300 rounded-lg"
-            // isLoading={voidMutation.isLoading}
-            // disabled={voidMutation.isLoading}
-            // onClick={onVoid}
+            isLoading={voidMutation.isLoading}
+            disabled={voidMutation.isLoading}
+            onClick={_onVoid}
           >
             SIMPAN VOID
           </Button>

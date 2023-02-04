@@ -333,6 +333,25 @@ const updatePayment = async (
   }
 };
 
+const voidPayment = async (
+  token: string,
+  params: UpdatePaymentParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.VOID}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("voidPayment", error);
+    throw error;
+  }
+};
+
 const OrderService = {
   getOrderOutlet,
   getOrderDetail,
@@ -342,6 +361,7 @@ const OrderService = {
   updateDraft,
   savePayment,
   updatePayment,
+  voidPayment,
 };
 
 export default OrderService;
