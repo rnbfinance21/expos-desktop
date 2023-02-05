@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
@@ -10,19 +10,28 @@ import OrderService, {
 } from "../../../../services/OrderService";
 import { handleErrorAxios } from "../../../../utils/errors";
 import { Button } from "../../../globals/buttons";
+import electron from "electron";
 
 interface PendingActionProps {
   data: OrderDetail;
 }
 
 const PendingAction = ({ data }: PendingActionProps) => {
+  const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const { token } = useAuth();
+
+  const [typeConfirm, setTypeConfirm] = useState(1); // 1 = accept, -1 = Reject
 
   const changeStateMutation = useMutation(
     (params: UpdateStateParams) => OrderService.updateState(token, params),
     {
       onSuccess: (res) => {
+        if(ipcRenderer) {
+          if(typeConfirm === 1) {
+            ipcRenderer.send("print-order", data);
+          }
+        }
         Swal.fire("Berhasil!", res.message, "success");
         dispatch(setRefetchOrder(true));
       },
@@ -31,6 +40,7 @@ const PendingAction = ({ data }: PendingActionProps) => {
   );
 
   const _onAccept = () => {
+    setTypeConfirm(1);
     Swal.fire({
       title: "Apakah Anda yakin?",
       text: "Transaksi ini akan di proses",
@@ -52,6 +62,7 @@ const PendingAction = ({ data }: PendingActionProps) => {
   };
 
   const _onReject = (type = 0) => {
+    setTypeConfirm(-1);
     Swal.fire({
       title: type === 0 ? "Alasan penolakan" : "Alasan Pembatalan",
       input: "text",

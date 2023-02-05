@@ -29,7 +29,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const router = useRouter();
-  const { token } = useAuth();
+  const { token, outlet } = useAuth();
 
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
 
@@ -135,6 +135,16 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     }
   }
 
+  const _printBill = () => {
+    if(ipcRenderer){
+      ipcRenderer.send('print-bill', {
+        name: outlet.name,
+        address: outlet.address,
+        instagram: 'ramenbajuri'
+      } ,data);
+    }
+  }
+
   const _onSuccessPasscode = () => {
     setOpenPasscodeModal(false);
     Swal.fire({
@@ -170,7 +180,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak Struk"
-          onClick={() => {}}
+          onClick={_printBill}
         />
         <DetailActionButton
           icon="PencilIcon"

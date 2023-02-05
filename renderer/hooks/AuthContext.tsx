@@ -25,6 +25,7 @@ type UserDetail = {
 type OutletDetail = {
   id: number;
   name: string;
+  address: string;
   code: string;
   open_state: boolean;
 };
@@ -60,6 +61,7 @@ const authContextDefaultValues: authContextType = {
   outlet: {
     id: null,
     name: "",
+    address: "",
     code: "",
     open_state: false,
   },
@@ -108,6 +110,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         setOutlet({
           id: data.outlet.id,
           name: data.outlet.name,
+          address: data.outlet.address,
           code: data.outlet.code,
           open_state: data.outlet.open_state ? true : false,
         });
