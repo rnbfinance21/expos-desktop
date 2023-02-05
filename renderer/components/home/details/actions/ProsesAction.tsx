@@ -22,6 +22,7 @@ import PasscodeModal from "../../../modals/PasscodeModal";
 import electron from "electron";
 import { ucwords } from "../../../../utils/string";
 import GabungModal from "../GabungModal";
+import UangKasModal from "../../../modals/UangKasModal";
 
 interface ProsesActionProps {
   data: OrderDetail;
@@ -31,10 +32,13 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const router = useRouter();
-  const { token, outlet, user } = useAuth();
+  const { token, outlet, user, setKasState } = useAuth();
 
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
   const [openGabungModal, setOpenGabungModal] = useState(false);
+
+  const [openKasModal, setOpenKasModal] = useState(false);
+  const [openKasType, setOpenKasType] = useState("PAYMENT");
 
   const changeStateMutation = useMutation(
     (params: UpdateStateParams) => OrderService.updateState(token, params),
@@ -44,6 +48,18 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         dispatch(setRefetchOrder(true));
       },
       onError: handleErrorAxios,
+    }
+  );
+
+  const checkKasMuation = useMutation(
+    () => OrderService.checkKas(token, outlet.id),
+    {
+      onSuccess: (res) => {
+        setKasState(res.state);
+      },
+      onError: () => {
+        setKasState(false);
+      },
     }
   );
 
@@ -92,7 +108,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     setOpenPasscodeModal(true);
   };
 
-  const _onPayment = () => {
+  const _redirectToPayment = () => {
     dispatch(resetPayment());
     dispatch(
       setPayment({
@@ -130,6 +146,25 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
       })
     );
     router.push("/payment");
+  };
+
+  const _onPayment = () => {
+    checkKasMuation.mutateAsync().then((res) => {
+      console.log(res);
+
+      if (!res.state) {
+        setOpenKasType("UPDATE");
+        setOpenKasModal(true);
+      } else {
+        _redirectToPayment();
+      }
+    });
+  };
+
+  const _onSuccessKas = () => {
+    _redirectToPayment();
+
+    setOpenKasModal(false);
   };
 
   const _sendToKitchen = () => {
@@ -232,6 +267,12 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         show={openGabungModal}
         onClose={() => setOpenGabungModal(false)}
         data={data}
+      />
+      <UangKasModal
+        visible={openKasModal}
+        openState={1}
+        onError={() => {}}
+        onSuccess={_onSuccessKas}
       />
     </>
   );

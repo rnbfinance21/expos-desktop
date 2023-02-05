@@ -304,7 +304,7 @@ const ActionSection = () => {
   };
 
   const _simulatePrint = () => {
-    if(validationSave()){
+    if(validationSave() && id !== null){
 
       if(ipcRenderer){
         let simluateData: OrderDetail = {

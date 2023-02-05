@@ -11,6 +11,7 @@ import OrderService, {
 } from "../../../services/OrderService";
 import { handleErrorAxios } from "../../../utils/errors";
 import { ucwords } from "../../../utils/string";
+import Toast from "../../../utils/toast";
 import { Button } from "../../globals/buttons";
 import { DynamicHeroIcon, Loading } from "../../globals/icons";
 import MyModal from "../../globals/modal/MyModal";
@@ -54,10 +55,14 @@ const GabungModal = ({ show, onClose, data }: GabungModalProps) => {
   );
 
   const _onSubmit = () => {
-    gabungMutation.mutate({
-      from: data.id,
-      to: selectedTransaction,
-    });
+    if (selectedTransaction !== 0) {
+      gabungMutation.mutate({
+        from: data.id,
+        to: selectedTransaction,
+      });
+    } else {
+      Toast.fire("Pemberitahuan", "Silahkan pilih transaksi", "warning");
+    }
   };
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  autoSetBayar,
   Payment,
   setOpenModal,
   setSelectedItem,
@@ -37,6 +38,7 @@ const ChangePriceModal = ({
     );
     dispatch(setOpenModal(false));
     dispatch(setSelectedItem(null));
+    dispatch(autoSetBayar());
   };
 
   useEffect(() => {

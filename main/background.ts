@@ -294,6 +294,8 @@ const create = async () => {
   // });
   mainWindow = new BrowserWindow({
     center: true,
+    width: 1280,
+    height: 768,
     minHeight: 768,
     minWidth: 1280,
     webPreferences: {
