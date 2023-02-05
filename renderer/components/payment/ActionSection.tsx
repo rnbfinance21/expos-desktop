@@ -12,6 +12,7 @@ import {
 } from "../../features/paymentSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import OrderService, {
+  OrderDetail,
   SavePaymentParams,
   UpdatePaymentParams,
 } from "../../services/OrderService";
@@ -21,6 +22,7 @@ import { Button } from "../globals/buttons";
 import { Numpad } from "../globals/keyboard";
 import electron from "electron";
 import { ucwords } from "../../utils/string";
+import { formatFullDate } from "../../utils/date";
 
 const ActionSection = () => {
   const ipcRenderer = electron.ipcRenderer || false;
@@ -297,6 +299,31 @@ const ActionSection = () => {
       });
     }
   };
+
+  const _simulatePrint = () => {
+    if(ipcRenderer){
+      let simluateData: OrderDetail = {
+        id: 0,
+        bayar,
+        created_at: "",
+        updated_at: "",
+        date: formatFullDate(new Date()),
+        deleted_at: null,
+        diskon: diskon,
+        diskon_value: 0,
+        items_count: orders.length,
+        kasir_id: null,
+        kembalian,
+      };
+
+      ipcRenderer.send("print-simulate",{
+        name: outlet.name,
+        address: outlet.address,
+        instagram: "ramenbajuri",
+        kasir: ucwords(user.name),
+      }, simluateData);
+    }
+  }
 
   return (
     <div className="grid grid-cols-2 gap-4">

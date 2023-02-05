@@ -246,6 +246,36 @@ ipcMain.on("print-reprint", async (e, outlet: InfoOutlet, data: OrderDetail, typ
       console.error(error);
     });
 });
+
+ipcMain.on("print-simulate", async (e, outlet: InfoOutlet, data: OrderDetail) => {
+  const options: PosPrintOptions = {
+    silent: true,
+    printerName: store.get("printer-cashier") as string,
+    preview: false,
+    boolean: false,
+    copies: 1,
+    collate: true,
+    margin: "0 0 0 0",
+    timeOutPerLine: 400,
+    margins: {
+      top: 5,
+      left: 10,
+      right: 10,
+      bottom: 5,
+    },
+  };
+
+  const printData: PosPrintData[] = PrinterService.simulateStruk(outlet, data);
+
+  PosPrinter.print(printData, options)
+    .then(() => {
+      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+      console.log("success");
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+});
 // (async () => {
 //   await app.whenReady();
 

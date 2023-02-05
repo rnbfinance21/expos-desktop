@@ -207,3 +207,25 @@ export function parseGetTime(tanggal: Date) {
 
   return `${h}:${m}:${s}`;
 }
+
+export const formatFullDate = (date: any) => {
+  const d = new Date(date);
+  let month = `${d.getMonth() + 1}`;
+  let day = `${d.getDate()}`;
+  const year = d.getFullYear();
+
+  if (month.length < 2) {
+    month = `0${month}`;
+  }
+  if (day.length < 2) {
+    day = `0${day}`;
+  }
+
+  const h = (d.getHours() < 10 ? '0' : '') + d.getHours();
+  const m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+  const s = (d.getMilliseconds() < 10 ? '0' : '') + d.getMilliseconds();
+
+  let time = `${h}:${m}`;
+
+  return [year, month, day].join('-') + " " + time;
+};
