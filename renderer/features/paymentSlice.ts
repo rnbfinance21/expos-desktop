@@ -361,6 +361,10 @@ export const getPaymentAllSumPrice = (state: RootState) => {
   return {
     total,
     kembalian,
+    subtotal,
+    pajak_value: pajak,
+    diskon_value: diskon,
+    sumPayment
   };
 };
 

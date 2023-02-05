@@ -931,36 +931,36 @@ const simulateStruk = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] =
           textAlign: "left",
         },
       },
-      {
-        type: "text",
-        value: `<div style='display: flex; flex-direction: row;'>
-                          <div style='width: 70px;'>Bayar</div>
-                          <div>:</div>
-                          <div style='flex: 1; text-align: right;'>
-                            <span>${numberFormat(order.bayar, 0)}</span>
-                          </div>
-                        </div>`,
-        fontsize: 20,
-        style: {
-          // fontWeight: '400',
-          textAlign: "left",
-        },
-      },
-      {
-        type: "text",
-        value: `<div style='display: flex; flex-direction: row;'>
-                          <div style='width: 70px;'>Kembali</div>
-                          <div>:</div>
-                          <div style='flex: 1; text-align: right;'>
-                            <span>${numberFormat(order.kembalian, 0)}</span>
-                          </div>
-                        </div>`,
-        fontsize: 20,
-        style: {
-          // fontWeight: '400',
-          textAlign: "left",
-        },
-      },
+      // {
+      //   type: "text",
+      //   value: `<div style='display: flex; flex-direction: row;'>
+      //                     <div style='width: 70px;'>Bayar</div>
+      //                     <div>:</div>
+      //                     <div style='flex: 1; text-align: right;'>
+      //                       <span>${numberFormat(order.bayar, 0)}</span>
+      //                     </div>
+      //                   </div>`,
+      //   fontsize: 20,
+      //   style: {
+      //     // fontWeight: '400',
+      //     textAlign: "left",
+      //   },
+      // },
+      // {
+      //   type: "text",
+      //   value: `<div style='display: flex; flex-direction: row;'>
+      //                     <div style='width: 70px;'>Kembali</div>
+      //                     <div>:</div>
+      //                     <div style='flex: 1; text-align: right;'>
+      //                       <span>${numberFormat(order.kembalian, 0)}</span>
+      //                     </div>
+      //                   </div>`,
+      //   fontsize: 20,
+      //   style: {
+      //     // fontWeight: '400',
+      //     textAlign: "left",
+      //   },
+      // },
       {
         type: "text",
         value: `--Terima Kasih--`,

@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { resetOrder } from "../../features/orderSlice";
+import { getOrderType, getPaymentType } from "../../features/paymentAttributeSlice";
 import {
   getPayment,
   getPaymentAllSumPrice,
@@ -43,7 +44,9 @@ const ActionSection = () => {
     diskon,
     potongan,
   } = useSelector(getPayment);
-  const { kembalian, total } = useSelector(getPaymentAllSumPrice);
+  const { kembalian, total, diskon_value, pajak_value, subtotal, sumPayment } = useSelector(getPaymentAllSumPrice);
+  const orderTypeList = useSelector(getOrderType);
+  const paymentTypeList = useSelector(getPaymentType);
 
   const validationSave = () => {
     if (
@@ -301,27 +304,85 @@ const ActionSection = () => {
   };
 
   const _simulatePrint = () => {
-    if(ipcRenderer){
-      let simluateData: OrderDetail = {
-        id: 0,
-        bayar,
-        created_at: "",
-        updated_at: "",
-        date: formatFullDate(new Date()),
-        deleted_at: null,
-        diskon: diskon,
-        diskon_value: 0,
-        items_count: orders.length,
-        kasir_id: null,
-        kembalian,
-      };
+    if(validationSave()){
 
-      ipcRenderer.send("print-simulate",{
-        name: outlet.name,
-        address: outlet.address,
-        instagram: "ramenbajuri",
-        kasir: ucwords(user.name),
-      }, simluateData);
+      if(ipcRenderer){
+        let simluateData: OrderDetail = {
+          id: 0,
+          bayar,
+          created_at: "",
+          updated_at: "",
+          date: formatFullDate(new Date()),
+          deleted_at: null,
+          diskon: diskon,
+          diskon_value,
+          items_count: orders.length,
+          kasir_id: null,
+          kembalian,
+          kategori_order_id: orderType,
+          kategori_payment_id: paymentType,
+          kategori_order_name: orderTypeList[orderType - 1].name,
+          kategori_payment_name: paymentTypeList[paymentType -1].name,
+          kode_transaksi:"-",
+          name: identity.name,
+          no_bill: identity.no_bill,
+          outlet_id: null,
+          pajak: tax,
+          pajak_value,
+          potongan,
+          reason: null,
+          status: 1,
+          status_text: "Proses",
+          subtotal,
+          subtotal_box: 0,
+          subtotal_pajak: sumPayment,
+          table: identity.table,
+          total: total,
+          type: 1,
+          type_text: "Dine In",
+          details: orders.map((o) => {
+            let margin = o.price * o.margin / 100;
+            let sum = o.price + margin + o.box;
+            let diskon = sum * o.diskon / 100;
+            
+            let total = (sum - diskon) * o.qty;
+
+            return {
+              box: o.box,
+              id: o.id,
+              description: o.notes,
+              diskon: o.diskon,
+              margin: o.margin,
+              menu: o.menu,
+              menu_id: o.menu.id,
+              pajak_state: o.pajak_stat,
+              price: o.price,
+              qty: o.qty,
+              status: 1,
+              total: total,
+              transaksi_id: 1,
+              variants: [],
+              created_at: "",
+              updated_at: "",
+              deleted_at: ""
+            }
+          })
+          
+        };
+  
+        ipcRenderer.send("print-simulate",{
+          name: outlet.name,
+          address: outlet.address,
+          instagram: "ramenbajuri",
+          kasir: ucwords(user.name),
+        }, simluateData);
+      }
+    } else {
+      Toast.fire({
+        icon: "warning",
+        title: "Peringatan!",
+        text: "Silahkan lengkapi data pembayaran",
+      });
     }
   }
 
@@ -332,6 +393,7 @@ const ActionSection = () => {
       </div>
       <div className="flex flex-col space-y-2">
         <Button
+          onClick={_simulatePrint}
           type="button"
           className="flex-1 bg-red-500 text-sm  text-white border border-red-300 rounded-lg"
         >
