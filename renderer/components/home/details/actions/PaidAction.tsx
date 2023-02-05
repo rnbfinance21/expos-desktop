@@ -19,14 +19,18 @@ import OrderService, {
 import { handleErrorAxios } from "../../../../utils/errors";
 import DetailActionButton from "../../../form/details/DetailActionButton";
 import PasscodeModal from "../../../modals/PasscodeModal";
+import electron from "electron";
+import { ucwords } from "../../../../utils/string";
 
 interface PaidActionProps {
   data: OrderDetail;
 }
 
 const PaidAction = ({ data }: PaidActionProps) => {
+  const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const router = useRouter();
+  const { outlet, user } = useAuth();
 
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
 
@@ -76,13 +80,28 @@ const PaidAction = ({ data }: PaidActionProps) => {
     router.push("/form");
   };
 
+  const _rePrint = () => {
+    if (ipcRenderer) {
+      ipcRenderer.send(
+        "print-reprint",
+        {
+          name: outlet.name,
+          address: outlet.address,
+          instagram: "ramenbajuri",
+          kasir: ucwords(user.name),
+        },
+        data
+      );
+    }
+  };
+
   return (
     <>
       <div className="flex-1 flex flex-row gap-2">
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak Struk"
-          onClick={() => {}}
+          onClick={_rePrint}
         />
         <DetailActionButton
           icon="XMarkIcon"

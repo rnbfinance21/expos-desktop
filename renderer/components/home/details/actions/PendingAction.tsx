@@ -29,7 +29,11 @@ const PendingAction = ({ data }: PendingActionProps) => {
       onSuccess: (res) => {
         if(ipcRenderer) {
           if(typeConfirm === 1) {
-            ipcRenderer.send("print-order", data);
+            let copies =  ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
+
+            for (let index = 0; index < copies; index++) {
+              ipcRenderer.send("print-order", data, 1);
+            }
           }
         }
         Swal.fire("Berhasil!", res.message, "success");

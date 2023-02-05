@@ -20,6 +20,7 @@ import { handleErrorAxios } from "../../../../utils/errors";
 import DetailActionButton from "../../../form/details/DetailActionButton";
 import PasscodeModal from "../../../modals/PasscodeModal";
 import electron from 'electron'
+import { ucwords } from "../../../../utils/string";
 
 interface ProsesActionProps {
   data: OrderDetail;
@@ -29,7 +30,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const router = useRouter();
-  const { token, outlet } = useAuth();
+  const { token, outlet, user } = useAuth();
 
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
 
@@ -131,7 +132,11 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
 
   const _sendToKitchen = () => {
     if(ipcRenderer){
-      ipcRenderer.send('print-order', data);
+      let copies = ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
+
+      for (let index = 0; index < copies; index++) {
+        ipcRenderer.send("print-order", data, 1);
+      }
     }
   }
 
@@ -140,7 +145,8 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
       ipcRenderer.send('print-bill', {
         name: outlet.name,
         address: outlet.address,
-        instagram: 'ramenbajuri'
+        instagram: 'ramenbajuri',
+        kasir: ucwords(user.name),
       } ,data);
     }
   }

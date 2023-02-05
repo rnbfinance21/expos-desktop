@@ -42,13 +42,13 @@ ipcMain.on("printer-list", async (event) => {
   event.returnValue = printers;
 });
 
-ipcMain.on("print-order", async (e, data: OrderDetail) => {
+ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
   const options: PosPrintOptions = {
     silent: true,
     printerName: store.get("printer-kitchen") as string,
     preview: false,
     boolean: false,
-    copies:  store.get("printer-kitchen-copies") ? parseInt(store.get("printer-kitchen-copies") as string, 10) : 1,
+    copies: 1,
     collate: true,
     margin: "0 0 0 0",
     timeOutPerLine: 400,
@@ -206,6 +206,36 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
   };
 
   const printData: PosPrintData[] = PrinterService.cetakBill(outlet, data);
+
+  PosPrinter.print(printData, options)
+    .then(() => {
+      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+      console.log("success");
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+});
+
+ipcMain.on("print-reprint", async (e, outlet: InfoOutlet, data: OrderDetail) => {
+  const options: PosPrintOptions = {
+    silent: true,
+    printerName: store.get("printer-cashier") as string,
+    preview: false,
+    boolean: false,
+    copies: 1,
+    collate: true,
+    margin: "0 0 0 0",
+    timeOutPerLine: 400,
+    margins: {
+      top: 5,
+      left: 10,
+      right: 10,
+      bottom: 5,
+    },
+  };
+
+  const printData: PosPrintData[] = PrinterService.cetakStruk(outlet, data);
 
   PosPrinter.print(printData, options)
     .then(() => {
