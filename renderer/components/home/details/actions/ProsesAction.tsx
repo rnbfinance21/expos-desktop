@@ -19,8 +19,9 @@ import OrderService, {
 import { handleErrorAxios } from "../../../../utils/errors";
 import DetailActionButton from "../../../form/details/DetailActionButton";
 import PasscodeModal from "../../../modals/PasscodeModal";
-import electron from 'electron'
+import electron from "electron";
 import { ucwords } from "../../../../utils/string";
+import GabungModal from "../GabungModal";
 
 interface ProsesActionProps {
   data: OrderDetail;
@@ -33,6 +34,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
   const { token, outlet, user } = useAuth();
 
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
+  const [openGabungModal, setOpenGabungModal] = useState(false);
 
   const changeStateMutation = useMutation(
     (params: UpdateStateParams) => OrderService.updateState(token, params),
@@ -131,25 +133,31 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
   };
 
   const _sendToKitchen = () => {
-    if(ipcRenderer){
-      let copies = ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
+    if (ipcRenderer) {
+      let copies =
+        ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
+        2;
 
       for (let index = 0; index < copies; index++) {
         ipcRenderer.send("print-order", data, 1);
       }
     }
-  }
+  };
 
   const _printBill = () => {
-    if(ipcRenderer){
-      ipcRenderer.send('print-bill', {
-        name: outlet.name,
-        address: outlet.address,
-        instagram: 'ramenbajuri',
-        kasir: ucwords(user.name),
-      } ,data);
+    if (ipcRenderer) {
+      ipcRenderer.send(
+        "print-bill",
+        {
+          name: outlet.name,
+          address: outlet.address,
+          instagram: "ramenbajuri",
+          kasir: ucwords(user.name),
+        },
+        data
+      );
     }
-  }
+  };
 
   const _onSuccessPasscode = () => {
     setOpenPasscodeModal(false);
@@ -173,6 +181,10 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         });
       }
     });
+  };
+
+  const _onMerge = () => {
+    setOpenGabungModal(true);
   };
 
   return (
@@ -199,6 +211,11 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
           onClick={_onPayment}
         />
         <DetailActionButton
+          icon="BanknotesIcon"
+          title="Gabung ke"
+          onClick={_onMerge}
+        />
+        <DetailActionButton
           icon="XMarkIcon"
           title="Batal"
           outline={false}
@@ -210,6 +227,11 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         visible={openPasscodeModal}
         onClose={() => setOpenPasscodeModal(false)}
         onSuccess={_onSuccessPasscode}
+      />
+      <GabungModal
+        show={openGabungModal}
+        onClose={() => setOpenGabungModal(false)}
+        data={data}
       />
     </>
   );

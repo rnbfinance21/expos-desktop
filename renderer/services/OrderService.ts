@@ -4,6 +4,7 @@ import { BaseResponse } from "./types";
 
 enum OrderUrl {
   ORDER_OUTLET = "/api/transaksi/all",
+  ORDER_MERGE = "/api/transaksi/gabung/transaksi",
   ORDER_DETAIL = "/api/transaksi/detail",
   ORDER_STATE = "/api/transaksi/state",
   ORDER_CHECK_KAS = "/api/transaksi/check-kas",
@@ -12,6 +13,7 @@ enum OrderUrl {
   SAVE_PAYMENT = "/api/transaksi/save-payment",
   UPDATE_PAYMENT = "/api/transaksi/update-payment",
   VOID = "/api/transaksi/void",
+  GABUNG = "/api/transaksi/gabung",
 }
 
 export type Order = {
@@ -181,8 +183,13 @@ export interface UpdatePaymentParams extends UpdateDraftParams, PaymentParams {}
 export type PaymentResponse = {
   code: number;
   message: string;
-  data: OrderDetail
-}
+  data: OrderDetail;
+};
+
+export type GabungParams = {
+  from: number;
+  to: number;
+};
 
 const getOrderOutlet = async (
   token: string,
@@ -195,6 +202,27 @@ const getOrderOutlet = async (
         Authorization: `Bearer ${token}`,
       },
       params: params,
+    });
+
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getOrderMerge = async (
+  token: string,
+  id: number
+): Promise<GetOrderOutletResponse> => {
+  try {
+    const resp = await axios.get(OrderUrl.ORDER_MERGE, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        id,
+      },
     });
 
     return resp.data;
@@ -358,6 +386,25 @@ const voidPayment = async (
   }
 };
 
+const gabungOrder = async (
+  token: string,
+  params: GabungParams
+): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(`${OrderUrl.GABUNG}`, params, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("voidPayment", error);
+    throw error;
+  }
+};
+
 const OrderService = {
   getOrderOutlet,
   getOrderDetail,
@@ -368,6 +415,8 @@ const OrderService = {
   savePayment,
   updatePayment,
   voidPayment,
+  getOrderMerge,
+  gabungOrder,
 };
 
 export default OrderService;
