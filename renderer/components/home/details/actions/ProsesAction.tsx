@@ -19,12 +19,14 @@ import OrderService, {
 import { handleErrorAxios } from "../../../../utils/errors";
 import DetailActionButton from "../../../form/details/DetailActionButton";
 import PasscodeModal from "../../../modals/PasscodeModal";
+import electron from 'electron'
 
 interface ProsesActionProps {
   data: OrderDetail;
 }
 
 const ProsesAction = ({ data }: ProsesActionProps) => {
+  const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const router = useRouter();
   const { token } = useAuth();
@@ -127,6 +129,12 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     router.push("/payment");
   };
 
+  const _sendToKitchen = () => {
+    if(ipcRenderer){
+      ipcRenderer.send('print-order', data);
+    }
+  }
+
   const _onSuccessPasscode = () => {
     setOpenPasscodeModal(false);
     Swal.fire({
@@ -157,7 +165,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         <DetailActionButton
           icon="TruckIcon"
           title="Cetak Ke Dapur"
-          onClick={() => {}}
+          onClick={_sendToKitchen}
         />
         <DetailActionButton
           icon="PrinterIcon"

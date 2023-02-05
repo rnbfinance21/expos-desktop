@@ -43,7 +43,7 @@ ipcMain.on("printer-list", async (event) => {
 ipcMain.on("print-order", async (e, data: OrderDetail) => {
   const options: PosPrintOptions = {
     silent: true,
-    printerName: "DAPUR",
+    printerName: store.get("printer-kitchen") as string,
     preview: false,
     boolean: false,
     copies: 1,
@@ -189,14 +189,23 @@ ipcMain.on("print-order", async (e, data: OrderDetail) => {
 // })();
 
 const create = async () => {
-  mainWindow = createWindow("main", {
-    show: false,
-    width: 1280,
-    height: 1024,
-    minWidth: 1280,
+  // mainWindow = createWindow("main", {
+  //   show: false,
+  //   width: 1280,
+  //   height: 1024,
+  //   minWidth: 1280,
+  //   minHeight: 768,
+  //   webPreferences: {
+  //     nodeIntegration: true,
+  //   },
+  // });
+  mainWindow = new BrowserWindow({
+    center: true,
     minHeight: 768,
+    minWidth: 1280,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
