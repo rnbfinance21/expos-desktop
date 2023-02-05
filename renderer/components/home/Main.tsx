@@ -95,7 +95,7 @@ const Main = () => {
     <div className="flex-1 flex flex-row bg-gray-100">
       <div className="flex-1 flex flex-col overflow-auto bg-white">
         <Header />
-        {isLoading || isRefetching ? (
+        {isLoading ? (
           <div className="flex-1 flex justify-center items-center">
             <Loading />
           </div>

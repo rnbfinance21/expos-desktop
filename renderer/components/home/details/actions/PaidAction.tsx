@@ -90,7 +90,8 @@ const PaidAction = ({ data }: PaidActionProps) => {
           instagram: "ramenbajuri",
           kasir: ucwords(user.name),
         },
-        data
+        data,
+        1
       );
     }
   };

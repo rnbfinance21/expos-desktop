@@ -19,11 +19,15 @@ import { handleErrorAxios } from "../../utils/errors";
 import Toast from "../../utils/toast";
 import { Button } from "../globals/buttons";
 import { Numpad } from "../globals/keyboard";
+import electron from "electron";
+import { ucwords } from "../../utils/string";
 
 const ActionSection = () => {
+  const ipcRenderer = electron.ipcRenderer || false;
+
   const dispatch = useDispatch();
   const router = useRouter();
-  const { token, outlet } = useAuth();
+  const { token, outlet, user } = useAuth();
   const {
     type,
     id,
@@ -56,6 +60,19 @@ const ActionSection = () => {
     (params: SavePaymentParams) => OrderService.savePayment(token, params),
     {
       onSuccess: (res) => {
+        if (ipcRenderer) {
+          ipcRenderer.send(
+            "print-reprint",
+            {
+              name: outlet.name,
+              address: outlet.address,
+              instagram: "ramenbajuri",
+              kasir: ucwords(user.name),
+            },
+            res.data,
+            2
+          );
+        }
         Swal.fire({
           title: "Berhasil",
           text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
@@ -82,6 +99,19 @@ const ActionSection = () => {
     (params: UpdatePaymentParams) => OrderService.updatePayment(token, params),
     {
       onSuccess: (res) => {
+        if (ipcRenderer) {
+          ipcRenderer.send(
+            "print-reprint",
+            {
+              name: outlet.name,
+              address: outlet.address,
+              instagram: "ramenbajuri",
+              kasir: ucwords(user.name),
+            },
+            res.data,
+            2
+          );
+        }
         Swal.fire({
           title: "Berhasil",
           text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
@@ -108,6 +138,19 @@ const ActionSection = () => {
     (params: UpdatePaymentParams) => OrderService.voidPayment(token, params),
     {
       onSuccess: (res) => {
+        if (ipcRenderer) {
+          ipcRenderer.send(
+            "print-reprint",
+            {
+              name: outlet.name,
+              address: outlet.address,
+              instagram: "ramenbajuri",
+              kasir: ucwords(user.name),
+            },
+            res.data,
+            3
+          );
+        }
         Swal.fire({
           title: "Berhasil",
           text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",

@@ -217,7 +217,7 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
     });
 });
 
-ipcMain.on("print-reprint", async (e, outlet: InfoOutlet, data: OrderDetail) => {
+ipcMain.on("print-reprint", async (e, outlet: InfoOutlet, data: OrderDetail, type = 2) => {
   const options: PosPrintOptions = {
     silent: true,
     printerName: store.get("printer-cashier") as string,
@@ -235,7 +235,7 @@ ipcMain.on("print-reprint", async (e, outlet: InfoOutlet, data: OrderDetail) => 
     },
   };
 
-  const printData: PosPrintData[] = PrinterService.cetakStruk(outlet, data);
+  const printData: PosPrintData[] = PrinterService.cetakStruk(outlet, data, type);
 
   PosPrinter.print(printData, options)
     .then(() => {

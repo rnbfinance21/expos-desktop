@@ -178,6 +178,12 @@ export interface SavePaymentParams extends SaveDraftParams, PaymentParams {}
 
 export interface UpdatePaymentParams extends UpdateDraftParams, PaymentParams {}
 
+export type PaymentResponse = {
+  code: number;
+  message: string;
+  data: OrderDetail
+}
+
 const getOrderOutlet = async (
   token: string,
   params: GetOrderOutletParams
@@ -298,7 +304,7 @@ const updateDraft = async (
 const savePayment = async (
   token: string,
   params: SavePaymentParams
-): Promise<BaseResponse> => {
+): Promise<PaymentResponse> => {
   try {
     const response = await axios.post(`${OrderUrl.SAVE_PAYMENT}`, params, {
       headers: {
@@ -317,7 +323,7 @@ const savePayment = async (
 const updatePayment = async (
   token: string,
   params: UpdatePaymentParams
-): Promise<BaseResponse> => {
+): Promise<PaymentResponse> => {
   try {
     const response = await axios.post(`${OrderUrl.UPDATE_PAYMENT}`, params, {
       headers: {
@@ -336,7 +342,7 @@ const updatePayment = async (
 const voidPayment = async (
   token: string,
   params: UpdatePaymentParams
-): Promise<BaseResponse> => {
+): Promise<PaymentResponse> => {
   try {
     const response = await axios.post(`${OrderUrl.VOID}`, params, {
       headers: {

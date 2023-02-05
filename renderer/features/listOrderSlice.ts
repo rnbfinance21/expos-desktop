@@ -33,7 +33,7 @@ export const counterSlice = createSlice({
       state.date = actions.payload;
     },
     setRefetchOrder: (state, actions: PayloadAction<boolean>) => {
-      state.selectedOrder = null;
+      // state.selectedOrder = null;
       state.refetchOrder = actions.payload;
     },
     setStatusAndDate: (
