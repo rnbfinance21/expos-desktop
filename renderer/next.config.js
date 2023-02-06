@@ -7,6 +7,6 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["192.168.1.8"],
+    domains: ["192.168.1.8", "192.168.159.39"],
   },
 };
