@@ -6,7 +6,7 @@ import 'react-simple-keyboard/build/css/index.css';
 
 interface IProps {
   onChange: (input: string) => void;
-  keyboardRef: MutableRefObject<Keyboard>;
+  keyboardRef: MutableRefObject<typeof Keyboard>;
 }
 
 const KeyboardWrapper: FunctionComponent<IProps> = ({
