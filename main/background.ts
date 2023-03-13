@@ -10,6 +10,9 @@ import { createWindow, PrinterService } from "./helpers";
 import Store from "electron-store";
 import Toast from "../renderer/utils/toast";
 import { InfoOutlet } from "./helpers/printers";
+import { setup as setupPushReceiver } from "electron-push-receiver";
+import sound from "sound-play";
+import path from "path";
 
 const store = new Store();
 
@@ -186,7 +189,6 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     });
 });
 
-
 ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
   const options: PosPrintOptions = {
     silent: true,
@@ -217,64 +219,82 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
     });
 });
 
-ipcMain.on("print-reprint", async (e, outlet: InfoOutlet, data: OrderDetail, type = 2) => {
-  const options: PosPrintOptions = {
-    silent: true,
-    printerName: store.get("printer-cashier") as string,
-    preview: false,
-    boolean: false,
-    copies: 1,
-    collate: true,
-    margin: "0 0 0 0",
-    timeOutPerLine: 400,
-    margins: {
-      top: 5,
-      left: 10,
-      right: 10,
-      bottom: 5,
-    },
-  };
+ipcMain.on(
+  "print-reprint",
+  async (e, outlet: InfoOutlet, data: OrderDetail, type = 2) => {
+    const options: PosPrintOptions = {
+      silent: true,
+      printerName: store.get("printer-cashier") as string,
+      preview: false,
+      boolean: false,
+      copies: 1,
+      collate: true,
+      margin: "0 0 0 0",
+      timeOutPerLine: 400,
+      margins: {
+        top: 5,
+        left: 10,
+        right: 10,
+        bottom: 5,
+      },
+    };
 
-  const printData: PosPrintData[] = PrinterService.cetakStruk(outlet, data, type);
+    const printData: PosPrintData[] = PrinterService.cetakStruk(
+      outlet,
+      data,
+      type
+    );
 
-  PosPrinter.print(printData, options)
-    .then(() => {
-      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-      console.log("success");
-    })
-    .catch((error: any) => {
-      console.error(error);
-    });
-});
+    PosPrinter.print(printData, options)
+      .then(() => {
+        Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+        console.log("success");
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+  }
+);
 
-ipcMain.on("print-simulate", async (e, outlet: InfoOutlet, data: OrderDetail) => {
-  const options: PosPrintOptions = {
-    silent: true,
-    printerName: store.get("printer-cashier") as string,
-    preview: false,
-    boolean: false,
-    copies: 1,
-    collate: true,
-    margin: "0 0 0 0",
-    timeOutPerLine: 400,
-    margins: {
-      top: 5,
-      left: 10,
-      right: 10,
-      bottom: 5,
-    },
-  };
+ipcMain.on(
+  "print-simulate",
+  async (e, outlet: InfoOutlet, data: OrderDetail) => {
+    const options: PosPrintOptions = {
+      silent: true,
+      printerName: store.get("printer-cashier") as string,
+      preview: false,
+      boolean: false,
+      copies: 1,
+      collate: true,
+      margin: "0 0 0 0",
+      timeOutPerLine: 400,
+      margins: {
+        top: 5,
+        left: 10,
+        right: 10,
+        bottom: 5,
+      },
+    };
 
-  const printData: PosPrintData[] = PrinterService.simulateStruk(outlet, data);
+    const printData: PosPrintData[] = PrinterService.simulateStruk(
+      outlet,
+      data
+    );
 
-  PosPrinter.print(printData, options)
-    .then(() => {
-      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-      console.log("success");
-    })
-    .catch((error: any) => {
-      console.error(error);
-    });
+    PosPrinter.print(printData, options)
+      .then(() => {
+        Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+        console.log("success");
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+  }
+);
+
+ipcMain.on("play-sound", async () => {
+  let pathFile = path.join(__dirname, "my_sound.mp3");
+  sound.play(pathFile);
 });
 // (async () => {
 //   await app.whenReady();
@@ -303,6 +323,10 @@ const create = async () => {
       contextIsolation: false,
     },
   });
+
+  // ipcMain.on(NOtif)
+
+  // setup(mainWindow.webContents);
 
   mainWindow.on("ready-to-show", () => {
     if (!mainWindow) {
@@ -350,6 +374,8 @@ const create = async () => {
     await mainWindow.loadURL(`http://localhost:${port}/login`);
     mainWindow.webContents.openDevTools();
   }
+
+  setupPushReceiver(mainWindow.webContents);
 };
 
 app.on("window-all-closed", () => {

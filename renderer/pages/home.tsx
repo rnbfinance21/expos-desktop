@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Detail from "../components/home/Detail";
 import Main from "../components/home/Main";
 import { withAuth } from "../HOC/withAuth";
