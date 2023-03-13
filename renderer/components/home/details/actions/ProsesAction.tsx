@@ -252,11 +252,11 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
           title="Bayar"
           onClick={_onPayment}
         />
-        {/* <DetailActionButton
+        <DetailActionButton
           icon="BanknotesIcon"
           title="Gabung ke"
           onClick={_onMerge}
-        /> */}
+        />
         <DetailActionButton
           icon="XMarkIcon"
           title="Batal"
