@@ -9,7 +9,7 @@ import {
 } from "../../features/listOrderSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import OrderService, { Order } from "../../services/OrderService";
-import { Loading } from "../globals/icons";
+import { DynamicHeroIcon, Loading } from "../globals/icons";
 import Header from "./Header";
 import OrderItem from "./OrderItem";
 
@@ -60,7 +60,7 @@ const Main = () => {
 
   const [data, setData] = useState<Order[]>([]);
 
-  const { isLoading, isRefetching, refetch } = useQuery(
+  const { status: statusQuery, refetch } = useQuery(
     ["orders", token],
     () =>
       OrderService.getOrderOutlet(token, {
@@ -69,6 +69,7 @@ const Main = () => {
         date,
       }),
     {
+      enabled: false,
       onSuccess: (res) => {
         setData(res.data);
       },
@@ -82,11 +83,13 @@ const Main = () => {
   const _onSelectedItem = (id: number) => dispatch(setSelectedOrder(id));
 
   useEffect(() => {
-    refetch();
-  }, [date, status, search]);
+    if (token !== "") {
+      refetch();
+    }
+  }, [date, status, search, token]);
 
   useEffect(() => {
-    if (refetchOrder) {
+    if (refetchOrder && token !== "") {
       refetch();
     }
   }, [refetchOrder]);
@@ -95,9 +98,18 @@ const Main = () => {
     <div className="flex-1 flex flex-row bg-gray-100">
       <div className="flex-1 flex flex-col overflow-auto bg-white">
         <Header />
-        {isLoading ? (
+        {statusQuery === "loading" ? (
           <div className="flex-1 flex justify-center items-center">
             <Loading />
+          </div>
+        ) : statusQuery === "error" ? (
+          <div className="flex-1 flex justify-center items-center">
+            <button
+              onClick={() => refetch()}
+              className="py-2 px-4 border border-gray-300 rounded flex flex-row justify-center items-center"
+            >
+              <DynamicHeroIcon icon="ArrowPathIcon" /> Coba Lagi
+            </button>
           </div>
         ) : (
           <>

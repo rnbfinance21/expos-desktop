@@ -27,7 +27,7 @@ const DetailActionButton = ({
     >
       <div
         className={classNames(
-          "h-12 w-12 rounded-full  flex justify-center items-center",
+          "p-3 rounded-full  flex justify-center items-center",
           outline
             ? `border border-red-500 active:border-red-600`
             : `bg-${color}-500 active:bg-${color}-600`
@@ -36,12 +36,14 @@ const DetailActionButton = ({
         <DynamicHeroIcon
           icon={icon}
           className={classNames(
-            "text-red-500 h-[25px] w-[25px]",
+            "text-red-500 h-[20px] w-[20px]",
             iconClassName
           )}
         />
       </div>
-      <span className="text-[10px] mt-1 font-light w-14 h-6 text-center">{title}</span>
+      <div className="w-14 h-6 truncate mt-1 flex flex-col justify-start items-center">
+        <span className="text-[10px] font-light">{title}</span>
+      </div>
     </div>
   );
 };

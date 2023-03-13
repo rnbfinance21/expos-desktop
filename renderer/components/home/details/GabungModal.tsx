@@ -120,6 +120,7 @@ const GabungModal = ({ show, onClose, data }: GabungModalProps) => {
                   {listData.map((item) => {
                     return (
                       <div
+                        key={`gabung_transaksi_${item.id}`}
                         onClick={() => {
                           if (selectedTransaction === item.id) {
                             setSelectedTransaction(0);

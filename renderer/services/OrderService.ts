@@ -82,6 +82,8 @@ export type Detail = {
   diskon: number;
   pajak_state: number;
   status: number;
+  type: number;
+  type_order: number;
   deleted_at: string | null;
   created_at: string | null;
   updated_at: string | null;
@@ -152,7 +154,10 @@ export type UpdateDraftParams = {
   name: string;
   table: string;
   no_bill: string | null;
+  updateLogs?: number[];
+  deleteLogs?: number[];
   details: {
+    id_detail?: number;
     menu_id: number;
     qty: number;
     description: string | null;

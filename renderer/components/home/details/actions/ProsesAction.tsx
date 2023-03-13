@@ -23,6 +23,7 @@ import electron from "electron";
 import { ucwords } from "../../../../utils/string";
 import GabungModal from "../GabungModal";
 import UangKasModal from "../../../modals/UangKasModal";
+import CetakModal from "../CetakModal";
 
 interface ProsesActionProps {
   data: OrderDetail;
@@ -39,6 +40,8 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
 
   const [openKasModal, setOpenKasModal] = useState(false);
   const [openKasType, setOpenKasType] = useState("PAYMENT");
+
+  const [openPrintModal, setOpenPrintModal] = useState(false);
 
   const changeStateMutation = useMutation(
     (params: UpdateStateParams) => OrderService.updateState(token, params),
@@ -77,6 +80,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
       setOrders(
         data.details.map((d) => {
           return {
+            id_detail: d.id,
             id: d.menu.id,
             box: d.box,
             diskon: d.diskon,
@@ -150,8 +154,6 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
 
   const _onPayment = () => {
     checkKasMuation.mutateAsync().then((res) => {
-      console.log(res);
-
       if (!res.state) {
         setOpenKasType("UPDATE");
         setOpenKasModal(true);
@@ -224,17 +226,22 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
 
   return (
     <>
-      <div className="flex-1 flex flex-row gap-2">
+      <div className="flex-1 grid grid-cols-6 gap-2">
         <DetailActionButton
+          icon="PrinterIcon"
+          title="Cetak"
+          onClick={() => setOpenPrintModal(true)}
+        />
+        {/* <DetailActionButton
           icon="TruckIcon"
-          title="Cetak Ke Dapur"
+          title="Cetak Tambahan"
           onClick={_sendToKitchen}
         />
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak Struk"
           onClick={_printBill}
-        />
+        /> */}
         <DetailActionButton
           icon="PencilIcon"
           title="Ubah"
@@ -245,11 +252,11 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
           title="Bayar"
           onClick={_onPayment}
         />
-        <DetailActionButton
+        {/* <DetailActionButton
           icon="BanknotesIcon"
           title="Gabung ke"
           onClick={_onMerge}
-        />
+        /> */}
         <DetailActionButton
           icon="XMarkIcon"
           title="Batal"
@@ -273,6 +280,11 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         openState={1}
         onError={() => {}}
         onSuccess={_onSuccessKas}
+      />
+      <CetakModal
+        show={openPrintModal}
+        onClose={() => setOpenPrintModal(false)}
+        data={data}
       />
     </>
   );

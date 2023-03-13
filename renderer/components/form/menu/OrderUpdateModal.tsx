@@ -2,7 +2,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCustom, setModalUpdate } from "../../../features/customSlice";
-import { deleteItem, updateItemCustom } from "../../../features/orderSlice";
+import {
+  deleteItem,
+  setLogDelete,
+  setLogUpdate,
+  updateItemCustom,
+} from "../../../features/orderSlice";
 import { Button } from "../../globals/buttons";
 import { DynamicHeroIcon } from "../../globals/icons";
 
@@ -56,6 +61,7 @@ const OrderUpdateModal = () => {
           },
         })
       );
+      dispatch(setLogUpdate(selectedOrder.id_detail));
     }
 
     _closeModal();
@@ -64,6 +70,7 @@ const OrderUpdateModal = () => {
   const _onDelete = () => {
     if (selectedOrder) {
       dispatch(deleteItem(selectedOrder));
+      dispatch(setLogDelete(selectedOrder.id_detail));
     }
 
     _closeModal();

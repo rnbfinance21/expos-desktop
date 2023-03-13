@@ -19,7 +19,7 @@ const DetailItem = ({ data }: DetailItemProps) => {
       <div className="flex flex-col mt-1 justify-between">
         {data.variants.map((variant) => {
           return (
-            <div className="flex flex-row">
+            <div key={`detail_variant_${variant.id}`} className="flex flex-row">
               <span className="text-[10px] text-gray-500 font-light mr-1">
                 {ucwords(variant.variant_name)}:
               </span>

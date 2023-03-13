@@ -32,13 +32,13 @@ const Detail = () => {
   );
 
   useEffect(() => {
-    if (selectedOrder !== null) {
+    if (selectedOrder !== null && token !== "") {
       refetch();
     }
   }, [selectedOrder]);
 
   useEffect(() => {
-    if (refetchOrder) {
+    if (refetchOrder && token !== "" && selectedOrder !== null) {
       refetch();
     }
   }, [refetchOrder]);
@@ -71,7 +71,7 @@ const Detail = () => {
               ) : (
                 <div className="h-full w-full overflow-auto scroll-smooth scrollbar-hide">
                   <div className="p-4 border-b sticky top-0 bg-white space-y-2">
-                    <div className="space-y-2">
+                    <div className="space-y-2 pb-4 border-b border-gray-300 border-dashed">
                       <InfoItem
                         title="Kode Transaksi"
                         value={`#${selectedData?.kode_transaksi}`}
@@ -111,7 +111,7 @@ const Detail = () => {
                     {selectedData?.details.map((item) => {
                       return (
                         <DetailItem
-                          key={`detail_item_${item.id}`}
+                          key={`detail_item_menu_${item.id}`}
                           data={item}
                         />
                       );

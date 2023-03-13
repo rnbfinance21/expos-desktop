@@ -5,6 +5,7 @@ import { Menu } from "../services/MenuService";
 import { arraysEqual2 } from "../utils/array";
 
 export interface Orders {
+  id_detail?: number;
   id: number;
   price: number;
   qty: number;
@@ -25,7 +26,7 @@ export interface Orders {
 }
 
 export interface OrderState {
-  type: string;
+  type: "ADD" | "UPDATE" | "ADDITIONAL" | "VOID";
   id: number | null;
   identity: {
     member_id: number | null;
@@ -34,6 +35,8 @@ export interface OrderState {
     no_bill: string | null;
   };
   orders: Orders[];
+  updateLog: number[];
+  deleteLog: number[];
 }
 
 const initialState: OrderState = {
@@ -46,6 +49,8 @@ const initialState: OrderState = {
     no_bill: null,
   },
   orders: [],
+  updateLog: [],
+  deleteLog: [],
 };
 
 export const findIndexSingleItem = (data: Orders[], value: any) =>
@@ -64,8 +69,13 @@ export const orderSlice = createSlice({
   name: "orders",
   initialState,
   reducers: {
-    setType: (state, actions: PayloadAction<string>) => {
+    setType: (
+      state,
+      actions: PayloadAction<"ADD" | "UPDATE" | "ADDITIONAL" | "VOID">
+    ) => {
       state.type = actions.payload;
+      state.deleteLog = [];
+      state.updateLog = [];
     },
     setId: (state, actions: PayloadAction<number>) => {
       state.id = actions.payload;
@@ -185,6 +195,20 @@ export const orderSlice = createSlice({
     resetOrder: () => {
       return initialState;
     },
+    setLogUpdate: (state, action: PayloadAction<number>) => {
+      let find = state.updateLog.findIndex((e) => e === action.payload);
+
+      if (find === -1) {
+        state.updateLog = [...state.updateLog, action.payload];
+      }
+    },
+    setLogDelete: (state, action: PayloadAction<number>) => {
+      let find = state.deleteLog.findIndex((e) => e === action.payload);
+
+      if (find === -1) {
+        state.deleteLog = [...state.deleteLog, action.payload];
+      }
+    },
   },
 });
 
@@ -203,6 +227,8 @@ export const {
   setOrders,
   setId,
   deleteItem,
+  setLogUpdate,
+  setLogDelete,
 } = orderSlice.actions;
 
 export const getOrder = (state: RootState) => state.order;

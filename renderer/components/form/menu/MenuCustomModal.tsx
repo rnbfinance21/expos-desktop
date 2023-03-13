@@ -12,6 +12,8 @@ import {
 import {
   addItemCustom,
   deleteItem,
+  setLogDelete,
+  setLogUpdate,
   updateItemCustom,
 } from "../../../features/orderSlice";
 import { Menu, Variant, VariantOption } from "../../../services/MenuService";
@@ -291,6 +293,8 @@ const MenuCustomModal = () => {
               })
             );
           }
+
+          dispatch(setLogUpdate(selectedOrder.id_detail));
         }
 
         _closeModal();
@@ -301,6 +305,7 @@ const MenuCustomModal = () => {
   const _onDelete = () => {
     if (selectedOrder) {
       dispatch(deleteItem(selectedOrder));
+      dispatch(setLogDelete(selectedOrder.id_detail));
     }
 
     _closeModal();

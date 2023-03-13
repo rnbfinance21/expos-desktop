@@ -25,7 +25,8 @@ const DetailAction = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { token, kasState, outlet, setKasState } = useAuth();
-  const { identity, orders, type, id } = useSelector(getOrder);
+  const { identity, orders, type, id, updateLog, deleteLog } =
+    useSelector(getOrder);
   const sum = useSelector(getSumOrder);
 
   const [openKasModal, setOpenKasModal] = useState(false);
@@ -111,8 +112,11 @@ const DetailAction = () => {
             name: identity.name,
             table: identity.table,
             no_bill: identity.no_bill,
+            updateLogs: updateLog,
+            deleteLogs: deleteLog,
             details: orders.map((d) => {
               return {
+                id_detail: d.id_detail,
                 menu_id: d.menu.id,
                 box: d.box,
                 description: d.notes,
