@@ -13,6 +13,7 @@ import { BaseResponse } from "../../services/types";
 import Toast from "../../utils/toast";
 import { useAuth } from "../../hooks/AuthContext";
 import { Numpad } from "../globals/keyboard";
+import electron from "electron";
 
 type FormType = {
   username: string;
@@ -27,6 +28,8 @@ const schema = yup
   .required();
 
 const AuthForm = () => {
+  const ipcRenderer = electron.ipcRenderer || false;
+
   const { signIn } = useAuth();
 
   const [secureText, setSecureText] = useState(true);
@@ -69,10 +72,17 @@ const AuthForm = () => {
   );
 
   const _onSubmit = async (data: FormType) => {
-    mutate({
-      username: data.username,
-      password: data.password,
-    });
+    if (ipcRenderer) {
+      let params: LoginUsernameParams = {
+        username: data.username,
+        password: data.password,
+      };
+      const _fcm: any = ipcRenderer.sendSync("electron-store-get", "_fcm");
+
+      params.device_token = _fcm;
+
+      mutate(params);
+    }
   };
 
   const onFocus = (index: number) => {

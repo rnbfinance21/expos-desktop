@@ -23,6 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         `PUSH_RECEIVER:::NOTIFICATION_SERVICE_STARTED`,
         (_, token) => {
           console.log("service successfully started", token);
+          if (ipcRenderer) {
+            ipcRenderer.send("electron-store-set", "_fcm", token);
+          }
         }
       );
       // // Handle notification errors
@@ -35,6 +38,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       // Send FCM token to backend
       ipcRenderer.on(`PUSH_RECEIVER:::TOKEN_UPDATED`, (_, token) => {
         console.log("token updated", token);
+        if (ipcRenderer) {
+          ipcRenderer.send("electron-store-set", "_fcm", token);
+        }
       });
       // Display notification
       ipcRenderer.on(

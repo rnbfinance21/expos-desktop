@@ -11,6 +11,7 @@ enum AuthUrl {
 export type LoginUsernameParams = {
   username: string;
   password: string;
+  device_token?: string;
 };
 
 export type LoginUsernameResponse = {
