@@ -189,6 +189,150 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     });
 });
 
+ipcMain.on("print-order-additional", async (e, data: OrderDetail, print = 2) => {
+  const options: PosPrintOptions = {
+    silent: true,
+    printerName: store.get("printer-kitchen") as string,
+    preview: false,
+    boolean: false,
+    copies: 1,
+    collate: true,
+    margin: "0 0 0 0",
+    timeOutPerLine: 400,
+    margins: {
+      top: 5,
+      left: 10,
+      right: 10,
+      bottom: 5,
+    },
+  };
+
+  const printData: PosPrintData[] = [
+    {
+      type: "text",
+      value: "Pesanan Tambahan",
+      style: {
+        fontWeight: "700",
+        fontSize: "16px",
+        textAlign: "center",
+        marginBottom: "10px",
+      },
+    },
+    {
+      type: "text",
+      value: `<div style='display: flex; flex-direction: row;'>
+                <div style='width: 70px;'>No</div>
+                <div style='flex: 1'>
+                  : ${data.kode_transaksi}
+                </div>
+              </div>`,
+      fontsize: 20,
+      style: {
+        textAlign: "left",
+      },
+    },
+    {
+      type: "text",
+      value: `<div style='display: flex; flex-direction: row;'>
+                <div style='width: 70px;'>Nama</div>
+                <div style='flex: 1'>
+                  : ${data.name}
+                </div>
+              </div>`,
+      fontsize: 20,
+      style: {
+        textAlign: "left",
+      },
+    },
+    {
+      type: "text",
+      value: `<div style='display: flex; flex-direction: row;'>
+                <div style='width: 70px;'>Table</div>
+                <div style='flex: 1'>
+                  : ${data.table}
+                </div>
+              </div>`,
+      fontsize: 20,
+      style: {
+        textAlign: "left",
+      },
+    },
+    {
+      type: "text",
+      value: `<div style='display: flex; flex-direction: row;'>
+                <div style='width: 70px;'>Tanggal</div>
+                <div style='flex: 1'>
+                  : ${data.date}
+                </div>
+              </div>`,
+      fontsize: 20,
+      style: {
+        textAlign: "left",
+        paddingBottom: "10px",
+        borderBottom: "1px dashed black",
+      },
+    },
+  ];
+
+  data.details.filter(e => e.type === 1).forEach((element) => {
+    let variants = "";
+
+    element.variants.forEach((v) => {
+      variants += `<div>
+        <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+      </div>`;
+    });
+
+    printData.push({
+      type: "text",
+      value: `
+        <div style='display: flex; flex-direction: column;'>
+          <div style='display: flex; flex-direction: row'>
+            <div style='flex: 1; text-align: left'>
+              <span>${element.menu.name}</span>
+            </div>
+            <div style='flex: 1; text-align: right'>
+              (${element.qty})
+            </div>
+          </div>
+          ${variants}
+          ${
+            element.description !== null
+              ? `
+            <div style='display: flex; flex-direction: col;'>
+              <div style='flex: 1;text-align: left'>
+                <span>Catatan:</span>
+              </div>
+              <div style='text-align: left'>
+                ${element.description}
+              </div>
+            </div>
+          `
+              : ""
+          }
+        </div>`,
+      fontsize: 20,
+      style: {
+        // fontWeight: '400',
+        marginTop: "5px",
+        marginBottom: "5px",
+        borderBottom: "1px dashed black",
+        paddingTop: "5px",
+        paddingBottom: "5px",
+      },
+    });
+  });
+
+  PosPrinter.print(printData, options)
+    .then(() => {
+      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+      console.log("success");
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+});
+
 ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
   const options: PosPrintOptions = {
     silent: true,
