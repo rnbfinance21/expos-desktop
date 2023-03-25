@@ -24,19 +24,23 @@ const Detail = () => {
   const _showModalUpdate = () => {
     setOpenPasscodeModal(false);
     if (selectedData) {
-      const isCustom = selectedData.menu.variants.length > 0 ?? false;
+      dispatch(setType("UPDATE"));
+      dispatch(setModalCustom(true));
+      dispatch(setSelectedMenuCustom(selectedData.menu));
+      dispatch(setSelectedOrder(selectedData));
+      // const isCustom = selectedData.menu.variants.length > 0 ?? false;
 
-      if (isCustom) {
-        dispatch(setType("UPDATE"));
-        dispatch(setModalCustom(true));
-        dispatch(setSelectedMenuCustom(selectedData.menu));
-        dispatch(setSelectedOrder(selectedData));
-      } else {
-        dispatch(setType("UPDATE"));
-        dispatch(setModalUpdate(true));
-        dispatch(setSelectedMenuCustom(selectedData.menu));
-        dispatch(setSelectedOrder(selectedData));
-      }
+      // if (isCustom) {
+      //   dispatch(setType("UPDATE"));
+      //   dispatch(setModalCustom(true));
+      //   dispatch(setSelectedMenuCustom(selectedData.menu));
+      //   dispatch(setSelectedOrder(selectedData));
+      // } else {
+      //   dispatch(setType("UPDATE"));
+      //   dispatch(setModalUpdate(true));
+      //   dispatch(setSelectedMenuCustom(selectedData.menu));
+      //   dispatch(setSelectedOrder(selectedData));
+      // }
     }
   };
 
@@ -59,9 +63,13 @@ const Detail = () => {
         <Customer />
         <div className="flex-1 overflow-auto scrollbar-hide">
           <div className="h-0">
-            {orders.map((item) => {
+            {orders.map((item, key) => {
               return (
-                <DetailOrderItem data={item} onClick={() => _onClick(item)} />
+                <DetailOrderItem
+                  key={`detail_order_${item.id}_${key}`}
+                  data={item}
+                  onClick={() => _onClick(item)}
+                />
               );
             })}
           </div>

@@ -109,6 +109,7 @@ const Header = () => {
           {kategoriMenu.map((c) => {
             return (
               <CategoryItem
+                key={`kategori_menu_${c.id}`}
                 onClick={() => dispatch(setSelectedCategory(c.id))}
                 isActive={selectedCategory === c.id}
                 title={c.name}

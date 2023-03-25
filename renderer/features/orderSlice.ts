@@ -15,6 +15,7 @@ export interface Orders {
   diskon: number;
   margin_stat: number;
   pajak_stat: number;
+  type_order: number;
   variants: {
     option_id: number;
     price: number;
@@ -62,6 +63,7 @@ export const findIndexCustomItem = (data: Orders[], value: Orders) =>
       e.id === value.id &&
       e.notes === value.notes &&
       e.diskon === value.diskon &&
+      e.type_order === value.type_order &&
       arraysEqual2(e.variants, value.variants)
   );
 
@@ -140,7 +142,7 @@ export const orderSlice = createSlice({
         state.orders = [...state.orders, action.payload];
       } else {
         let object = state.orders[index];
-        object.qty = object.qty + 1;
+        object.qty = object.qty + action.payload.qty;
 
         state.orders[index] = object;
       }
@@ -159,9 +161,23 @@ export const orderSlice = createSlice({
       object.notes = action.payload.new.notes;
       object.price = action.payload.new.price;
       object.variants = action.payload.new.variants;
+      object.type_order = action.payload.new.type_order;
       object.diskon = action.payload.new.diskon;
 
-      state.orders[index] = object;
+      let find = findIndexCustomItem(state.orders, object);
+
+      if (find === -1) {
+        state.orders[index] = object;
+      } else {
+        state.orders.splice(index, 1);
+
+        let object2 = state.orders[find];
+        object2.qty = object2.qty + action.payload.new.qty;
+
+        state.orders[find] = object2;
+      }
+
+      // state.orders[index] = object;
     },
     incrementItemCustom: (state, action: PayloadAction<Orders>) => {
       let index = findIndexCustomItem(state.orders, action.payload);

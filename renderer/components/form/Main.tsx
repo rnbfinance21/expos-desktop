@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  resetModalCustom,
   setModalCustom,
   setSelectedMenuCustom,
   setType,
@@ -50,27 +51,34 @@ const Main = () => {
   const _onClickMenu = (menu: Menu) => {
     const isCustom = menu.variants.length > 0 ? true : false;
 
-    if (isCustom) {
-      // show modal
+    dispatch(resetModalCustom());
+
+    setTimeout(() => {
       dispatch(setSelectedMenuCustom(menu));
       _openModal();
-    } else {
-      dispatch(
-        addItem({
-          id: menu.id,
-          price: menu.price,
-          qty: 1,
-          notes: null,
-          margin: 0,
-          box: 0,
-          diskon: 0,
-          margin_stat: menu.box_state,
-          pajak_stat: menu.tax_state,
-          variants: [],
-          menu: menu,
-        })
-      );
-    }
+    }, 500);
+
+    // if (isCustom) {
+    //   dispatch(setSelectedMenuCustom(menu));
+    //   _openModal();
+    //   // show modal
+    // } else {
+    //   dispatch(
+    //     addItem({
+    //       id: menu.id,
+    //       price: menu.price,
+    //       qty: 1,
+    //       notes: null,
+    //       margin: 0,
+    //       box: 0,
+    //       diskon: 0,
+    //       margin_stat: menu.box_state,
+    //       pajak_stat: menu.tax_state,
+    //       variants: [],
+    //       menu: menu,
+    //     })
+    //   );
+    // }
   };
 
   useEffect(() => {
@@ -98,6 +106,7 @@ const Main = () => {
                 {menuData.map((m) => {
                   return (
                     <MenuItem
+                      key={`menu_${m.id}`}
                       data={m}
                       type={type}
                       onClick={() => _onClickMenu(m)}

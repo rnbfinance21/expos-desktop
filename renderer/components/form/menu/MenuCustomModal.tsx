@@ -7,6 +7,7 @@ import {
   getCustomType,
   getSelectedMenuCustom,
   getSelectedOrder,
+  resetModalCustom,
   setModalCustom,
 } from "../../../features/customSlice";
 import {
@@ -44,6 +45,8 @@ const MenuCustomModal = () => {
   const [diskon, setDiskon] = useState("0");
   const [price, setPrice] = useState(selectedMenuCustom?.price ?? 0);
   const [notes, setNotes] = useState("");
+
+  const [selectTypeOrder, setSelectTypeOrder] = useState(1);
 
   const _closeModal = () => dispatch(setModalCustom(false));
 
@@ -268,6 +271,7 @@ const MenuCustomModal = () => {
               pajak_stat: selectedMenuCustom?.tax_state,
               price,
               qty: parseInt(qty, 10),
+              type_order: selectTypeOrder,
               variants: variantParams,
               menu: selectedMenuCustom,
             })
@@ -287,6 +291,7 @@ const MenuCustomModal = () => {
                   pajak_stat: selectedMenuCustom?.tax_state,
                   price,
                   qty: parseInt(qty, 10),
+                  type_order: selectTypeOrder,
                   variants: variantParams,
                   menu: selectedMenuCustom,
                 },
@@ -303,8 +308,8 @@ const MenuCustomModal = () => {
   };
 
   const _onDelete = () => {
+    dispatch(deleteItem(selectedOrder));
     if (selectedOrder) {
-      dispatch(deleteItem(selectedOrder));
       dispatch(setLogDelete(selectedOrder.id_detail));
     }
 
@@ -322,6 +327,7 @@ const MenuCustomModal = () => {
       setDiskon("0");
       setPrice(0);
       setNotes("");
+      setSelectTypeOrder(1);
     } else {
       if (type === "UPDATE" && selectedOrder) {
         let resultVariant: SelectVariantType[] = [];
@@ -373,6 +379,7 @@ const MenuCustomModal = () => {
         setPrice(selectedOrder?.price);
         setQty(selectedOrder?.qty.toString());
         setDiskon(selectedOrder.diskon.toString());
+        setSelectTypeOrder(selectedOrder.type_order);
       }
     }
   }, [openModalCustom]);
@@ -414,7 +421,7 @@ const MenuCustomModal = () => {
                 <div className="mt-4">
                   {selectedMenuCustom?.variants.map((item) => {
                     return (
-                      <div className="mb-2">
+                      <div key={`modal_custom_${item.id}`} className="mb-2">
                         <div className="pb-2 border-b border-dashed">
                           <p className="text-sm">{ucwords(item.name)}</p>
                           <p className="text-[10px] text-gray-900">
@@ -465,6 +472,41 @@ const MenuCustomModal = () => {
                       </div>
                     );
                   })}
+                  <div className="mb-2">
+                    <div className="pb-2 border-b border-dashed">
+                      <p className="text-sm">Jenis Order</p>
+                      <p className="text-[10px] text-gray-900">Harus Pilih</p>
+                    </div>
+                    <div className={`grid grid-cols-2 gap-2`}>
+                      {[
+                        {
+                          label: "Makan Ditempat",
+                          value: 1,
+                        },
+                        {
+                          label: "Take Awal / Dibungkus",
+                          value: 2,
+                        },
+                      ].map((item) => {
+                        return (
+                          <div
+                            key={`type_order_${item.value}`}
+                            onClick={() => setSelectTypeOrder(item.value)}
+                            className={classNames(
+                              "py-1 px-1 border border-red-500 text-red-600 rounded cursor-pointer flex justify-center items-center",
+                              item.value === selectTypeOrder
+                                ? "bg-red-500 text-white"
+                                : ""
+                            )}
+                          >
+                            <p className="text-xs text-center">
+                              {ucwords(item.label)}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                   <div className="pb-2 bg-white">
                     <div className="pb-2 border-b border-dashed">
                       <p className="text-xs font-medium">Catatan</p>

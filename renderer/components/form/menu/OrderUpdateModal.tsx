@@ -56,6 +56,7 @@ const OrderUpdateModal = () => {
             pajak_stat: selectedMenuCustom?.tax_state,
             price: selectedOrder.price,
             qty: parseInt(qty, 10),
+            type_order: 0,
             variants: [],
             menu: selectedMenuCustom,
           },

@@ -47,6 +47,9 @@ export const customSlice = createSlice({
       }
       state.openModalUpdate = actions.payload;
     },
+    resetModalCustom: () => {
+      return initialState;
+    },
   },
 });
 
@@ -57,6 +60,7 @@ export const {
   setType,
   setModalCustom,
   setModalUpdate,
+  resetModalCustom,
 } = customSlice.actions;
 
 export const getCustom = (state: RootState) => {

@@ -17,7 +17,7 @@ const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
   return (
     <div
       onClick={onClick}
-      className="p-4 border-b border-b-gray-300 border-dashed active:bg-gray-50"
+      className="p-4 border-b border-b-gray-300 border-dashed active:bg-gray-50 cursor-pointer"
     >
       <div className="flex flex-row justify-between">
         <span className="text-xs font-bold text-red-500">
@@ -25,6 +25,13 @@ const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
         </span>
         <span className="text-xs font-bold">Rp{numberFormat(total, 0)}</span>
       </div>
+      {data.type_order === 2 ? (
+        <div className="flex flex-row">
+          <span className="text-[10px] text-gray-800 font-semibold">
+            Take Away / Dibungkus
+          </span>
+        </div>
+      ) : null}
       <div className="flex flex-col mt-1 justify-between">
         {data.variants.map((variant) => {
           return (
