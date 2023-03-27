@@ -280,37 +280,51 @@ const ActionSection = () => {
 
   const _onVoid = () => {
     if (validationSave() && id !== null) {
-      voidMutation.mutate({
-        id,
-        name: identity.name,
-        table: identity.table,
-        no_bill: identity.no_bill,
-        bayar,
-        diskon,
-        kategori_order_id: orderType,
-        kategori_payment_id: paymentType,
-        kembalian,
-        pajak: tax,
-        potongan,
-        total,
-        details: orders.map((d) => {
-          return {
-            menu_id: d.menu.id,
-            box: d.box,
-            description: d.notes,
-            diskon: d.diskon,
-            margin: d.margin,
-            pajak_state: d.pajak_stat,
-            price: d.price,
-            qty: d.qty,
-            variants: d.variants.map((v) => {
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Transaksi ini akan di proses",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Saya yakin",
+        cancelButtonText: "Tidak",
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          voidMutation.mutate({
+            id,
+            name: identity.name,
+            table: identity.table,
+            no_bill: identity.no_bill,
+            bayar,
+            diskon,
+            kategori_order_id: orderType,
+            kategori_payment_id: paymentType,
+            kembalian,
+            pajak: tax,
+            potongan,
+            total,
+            details: orders.map((d) => {
               return {
-                option_id: v.option_id,
-                price: v.price,
+                menu_id: d.menu.id,
+                box: d.box,
+                description: d.notes,
+                diskon: d.diskon,
+                margin: d.margin,
+                pajak_state: d.pajak_stat,
+                price: d.price,
+                qty: d.qty,
+                variants: d.variants.map((v) => {
+                  return {
+                    option_id: v.option_id,
+                    price: v.price,
+                  };
+                }),
               };
             }),
-          };
-        }),
+          });
+        }
       });
     } else {
       Toast.fire({

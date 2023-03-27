@@ -2,6 +2,7 @@ import React from "react";
 import CurrencyInput from "react-currency-input-field";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  autoSetBayar,
   getPayment,
   getPaymentAllSumPrice,
   setBayar,
@@ -12,20 +13,31 @@ import {
 
 const InputSection = () => {
   const dispatch = useDispatch();
-  const { diskon, potongan, bayar } = useSelector(getPayment);
+  const { diskon, potongan, bayar, paymentType } = useSelector(getPayment);
 
   const { total, kembalian } = useSelector(getPaymentAllSumPrice);
 
   const onFocus = (value: number) => dispatch(setFocus(value));
 
-  const setInputDiskon = (value: string) =>
+  const setInputDiskon = (value: string) => {
     dispatch(setDiskon(parseInt(value, 10)));
-
-  const setInputPotongan = (value: string) =>
+    if (paymentType !== 1) {
+      dispatch(autoSetBayar());
+    }
+  };
+  const setInputPotongan = (value: string) => {
     dispatch(setPotongan(parseInt(value, 10)));
+    if (paymentType !== 1) {
+      dispatch(autoSetBayar());
+    }
+  };
 
-  const setInputBayar = (value: string) =>
+  const setInputBayar = (value: string) => {
     dispatch(setBayar(parseInt(value, 10)));
+    if (paymentType !== 1) {
+      dispatch(autoSetBayar());
+    }
+  };
 
   return (
     <div className="mb-4 space-y-2">

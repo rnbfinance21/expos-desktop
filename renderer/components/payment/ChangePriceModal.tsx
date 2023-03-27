@@ -44,8 +44,13 @@ const ChangePriceModal = ({
   useEffect(() => {
     setInputPrice("");
     if (visible && data) {
-      const priceItem =
-        data.price + (data.price * data.margin) / 100 + data.box;
+      const priceMenu =
+        data.price +
+        data.variants.reduce((acc, itm) => {
+          return acc + itm.price;
+        }, 0);
+
+      const priceItem = priceMenu + (priceMenu * data.margin) / 100 + data.box;
 
       setInputPrice(priceItem.toString());
     }

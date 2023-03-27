@@ -14,7 +14,12 @@ const PaymentOrderItem = ({
   change,
   onChange,
 }: PaymentOrderItemProps) => {
-  const sum = data.price * data.qty;
+  const priceMenu =
+    data.price +
+    data.variants.reduce((acc, itm) => {
+      return acc + itm.price;
+    }, 0);
+  const sum = priceMenu * data.qty;
   const box = data.qty * data.box;
 
   const margin = (sum * data.margin) / 100;
@@ -24,7 +29,7 @@ const PaymentOrderItem = ({
 
   const result = price - diskon;
 
-  const priceItem = data.price + (data.price * data.margin) / 100 + data.box;
+  const priceItem = priceMenu + (priceMenu * data.margin) / 100 + data.box;
 
   return (
     <div className="border-b border-b-gray-300 border-dashed flex flex-row">

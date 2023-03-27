@@ -192,7 +192,12 @@ export const paymentSlice = createSlice({
     autoSetBayar: (state) => {
       const sumPaymentNoTax = state.orders.reduce((accumulator, item) => {
         if (item.pajak_stat === 1) {
-          const sum = item.price * item.qty;
+          const priceMenu =
+            item.price +
+            item.variants.reduce((acc, itm) => {
+              return acc + itm.price;
+            }, 0);
+          const sum = priceMenu * item.qty;
           const box = item.qty * item.box;
 
           const margin = (sum * item.margin) / 100;
@@ -208,7 +213,13 @@ export const paymentSlice = createSlice({
       }, 0);
 
       const sumPayment = state.orders.reduce((accumulator, item) => {
-        const sum = item.price * item.qty;
+        const priceMenu =
+          item.price +
+          item.variants.reduce((acc, itm) => {
+            return acc + itm.price;
+          }, 0);
+
+        const sum = priceMenu * item.qty;
         const box = item.qty * item.box;
 
         const margin = (sum * item.margin) / 100;
@@ -286,7 +297,13 @@ export const getPayment = (state: RootState) => state.payment;
 
 export const getPaymentSumPrice = (state: RootState) =>
   state.payment.orders.reduce((accumulator, item) => {
-    const sum = item.price * item.qty;
+    const priceMenu =
+      item.price +
+      item.variants.reduce((acc, itm) => {
+        return acc + itm.price;
+      }, 0);
+
+    const sum = priceMenu * item.qty;
     const box = item.qty * item.box;
 
     const margin = (sum * item.margin) / 100;
@@ -302,7 +319,12 @@ export const getPaymentSumPrice = (state: RootState) =>
 export const getPaymentSumPriceNoTax = (state: RootState) =>
   state.payment.orders.reduce((accumulator, item) => {
     if (item.pajak_stat === 1) {
-      const sum = item.price * item.qty;
+      const priceMenu =
+        item.price +
+        item.variants.reduce((acc, itm) => {
+          return acc + itm.price;
+        }, 0);
+      const sum = priceMenu * item.qty;
       const box = item.qty * item.box;
 
       const margin = (sum * item.margin) / 100;
@@ -320,7 +342,12 @@ export const getPaymentSumPriceNoTax = (state: RootState) =>
 export const getPaymentAllSumPrice = (state: RootState) => {
   const sumPaymentNoTax = state.payment.orders.reduce((accumulator, item) => {
     if (item.pajak_stat === 1) {
-      const sum = item.price * item.qty;
+      const priceMenu =
+        item.price +
+        item.variants.reduce((acc, itm) => {
+          return acc + itm.price;
+        }, 0);
+      const sum = priceMenu * item.qty;
       const box = item.qty * item.box;
 
       const margin = (sum * item.margin) / 100;
@@ -336,7 +363,12 @@ export const getPaymentAllSumPrice = (state: RootState) => {
   }, 0);
 
   const sumPayment = state.payment.orders.reduce((accumulator, item) => {
-    const sum = item.price * item.qty;
+    const priceMenu =
+      item.price +
+      item.variants.reduce((acc, itm) => {
+        return acc + itm.price;
+      }, 0);
+    const sum = priceMenu * item.qty;
     const box = item.qty * item.box;
 
     const margin = (sum * item.margin) / 100;
@@ -364,7 +396,7 @@ export const getPaymentAllSumPrice = (state: RootState) => {
     subtotal,
     pajak_value: pajak,
     diskon_value: diskon,
-    sumPayment
+    sumPayment,
   };
 };
 
