@@ -29,5 +29,41 @@ export const arraysEqual = (a: any[], b: any[]) => {
 };
 
 export const arraysEqual2 = (a: any[], b: any[]) => {
-  return JSON.stringify(a) === JSON.stringify(b);
+  return (
+    JSON.stringify(
+      a.map((item) => {
+        let order = Object.keys(item)
+          .sort()
+          .reduce((obj, key) => {
+            obj[key] = item[key];
+            return obj;
+          }, {});
+
+        return order;
+      })
+    ) ===
+    JSON.stringify(
+      b.map((item) => {
+        let order = Object.keys(item)
+          .sort()
+          .reduce((obj, key) => {
+            obj[key] = item[key];
+            return obj;
+          }, {});
+
+        return order;
+      })
+    )
+  );
+};
+
+export const arraysEqual3 = (x: any[], y: any[]) => {
+  var objectsAreSame = true;
+  for (var propertyName in x) {
+    if (x[propertyName] !== y[propertyName]) {
+      objectsAreSame = false;
+      break;
+    }
+  }
+  return objectsAreSame;
 };

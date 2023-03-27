@@ -21,40 +21,40 @@ const Detail = () => {
   const [selectedData, setSelectedData] = useState<Orders>();
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
 
-  const _showModalUpdate = () => {
+  const _showModalUpdate = (item: Orders) => {
     setOpenPasscodeModal(false);
-    if (selectedData) {
-      dispatch(setType("UPDATE"));
-      dispatch(setModalCustom(true));
-      dispatch(setSelectedMenuCustom(selectedData.menu));
-      dispatch(setSelectedOrder(selectedData));
-      // const isCustom = selectedData.menu.variants.length > 0 ?? false;
+    dispatch(setType("UPDATE"));
+    dispatch(setModalCustom(true));
+    dispatch(setSelectedMenuCustom(item.menu));
+    dispatch(setSelectedOrder(item));
+    // if (selectedData) {
+    // const isCustom = selectedData.menu.variants.length > 0 ?? false;
 
-      // if (isCustom) {
-      //   dispatch(setType("UPDATE"));
-      //   dispatch(setModalCustom(true));
-      //   dispatch(setSelectedMenuCustom(selectedData.menu));
-      //   dispatch(setSelectedOrder(selectedData));
-      // } else {
-      //   dispatch(setType("UPDATE"));
-      //   dispatch(setModalUpdate(true));
-      //   dispatch(setSelectedMenuCustom(selectedData.menu));
-      //   dispatch(setSelectedOrder(selectedData));
-      // }
-    }
+    // if (isCustom) {
+    //   dispatch(setType("UPDATE"));
+    //   dispatch(setModalCustom(true));
+    //   dispatch(setSelectedMenuCustom(selectedData.menu));
+    //   dispatch(setSelectedOrder(selectedData));
+    // } else {
+    //   dispatch(setType("UPDATE"));
+    //   dispatch(setModalUpdate(true));
+    //   dispatch(setSelectedMenuCustom(selectedData.menu));
+    //   dispatch(setSelectedOrder(selectedData));
+    // }
+    // }
   };
 
   const _onClick = (item: Orders) => {
     setSelectedData(item);
     if (type === "ADD") {
-      _showModalUpdate();
+      _showModalUpdate(item);
     } else {
       setOpenPasscodeModal(true);
     }
   };
 
   const _onSuccessPasscode = () => {
-    _showModalUpdate();
+    _showModalUpdate(selectedData);
   };
 
   return (

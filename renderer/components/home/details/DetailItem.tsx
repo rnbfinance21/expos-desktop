@@ -11,7 +11,12 @@ const DetailItem = ({ data }: DetailItemProps) => {
   return (
     <div className="py-4 border-b border-b-gray-300 border-dashed">
       <div className="flex flex-row justify-between">
-        <span className="text-sm font-bold">{ucwords(data.menu.name)}</span>
+        <span className="text-sm font-bold">
+          {ucwords(data.menu.name)}{" "}
+          {data.type === 1 ? (
+            <span className="text-green-500 text-[10px]">(tambahan)</span>
+          ) : null}
+        </span>
         <span className="text-sm font-bold">
           Rp{numberFormat(data.total, 0)}
         </span>

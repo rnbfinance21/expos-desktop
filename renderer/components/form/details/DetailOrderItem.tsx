@@ -1,6 +1,5 @@
 import React from "react";
 import { Orders } from "../../../features/orderSlice";
-import { Detail } from "../../../services/OrderService";
 import { numberFormat } from "../../../utils/currency";
 import { ucwords } from "../../../utils/string";
 
@@ -10,9 +9,15 @@ type DetailOrderItemProps = {
 };
 
 const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
-  const diskon = (data.price * data.qty * data.diskon) / 100;
+  const price =
+    data.price +
+    data.variants.reduce((acc, itm) => {
+      return acc + itm.price;
+    }, 0);
 
-  const total = data.price * data.qty - diskon;
+  const diskon = (price * data.qty * data.diskon) / 100;
+
+  const total = price * data.qty - diskon;
 
   return (
     <div
@@ -35,7 +40,10 @@ const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
       <div className="flex flex-col mt-1 justify-between">
         {data.variants.map((variant) => {
           return (
-            <div className="flex flex-row">
+            <div
+              key={`variant_${variant.category_id}`}
+              className="flex flex-row"
+            >
               <span className="text-[10px] text-gray-500 font-light mr-1">
                 {ucwords(variant.category_name)}:
               </span>

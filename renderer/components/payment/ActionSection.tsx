@@ -4,7 +4,10 @@ import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { resetOrder } from "../../features/orderSlice";
-import { getOrderType, getPaymentType } from "../../features/paymentAttributeSlice";
+import {
+  getOrderType,
+  getPaymentType,
+} from "../../features/paymentAttributeSlice";
 import {
   getPayment,
   getPaymentAllSumPrice,
@@ -44,7 +47,8 @@ const ActionSection = () => {
     diskon,
     potongan,
   } = useSelector(getPayment);
-  const { kembalian, total, diskon_value, pajak_value, subtotal, sumPayment } = useSelector(getPaymentAllSumPrice);
+  const { kembalian, total, diskon_value, pajak_value, subtotal, sumPayment } =
+    useSelector(getPaymentAllSumPrice);
   const orderTypeList = useSelector(getOrderType);
   const paymentTypeList = useSelector(getPaymentType);
 
@@ -184,73 +188,87 @@ const ActionSection = () => {
 
   const _onPayment = () => {
     if (validationSave()) {
-      if (type === "UPDATE" && id !== null) {
-        updateMutation.mutate({
-          id,
-          name: identity.name,
-          table: identity.table,
-          no_bill: identity.no_bill,
-          bayar,
-          diskon,
-          kategori_order_id: orderType,
-          kategori_payment_id: paymentType,
-          kembalian,
-          pajak: tax,
-          potongan,
-          total,
-          details: orders.map((d) => {
-            return {
-              menu_id: d.menu.id,
-              box: d.box,
-              description: d.notes,
-              diskon: d.diskon,
-              margin: d.margin,
-              pajak_state: d.pajak_stat,
-              price: d.price,
-              qty: d.qty,
-              variants: d.variants.map((v) => {
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Transaksi ini akan di proses",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Saya yakin",
+        cancelButtonText: "Tidak",
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (type === "UPDATE" && id !== null) {
+            updateMutation.mutate({
+              id,
+              name: identity.name,
+              table: identity.table,
+              no_bill: identity.no_bill,
+              bayar,
+              diskon,
+              kategori_order_id: orderType,
+              kategori_payment_id: paymentType,
+              kembalian,
+              pajak: tax,
+              potongan,
+              total,
+              details: orders.map((d) => {
                 return {
-                  option_id: v.option_id,
-                  price: v.price,
+                  menu_id: d.menu.id,
+                  box: d.box,
+                  description: d.notes,
+                  diskon: d.diskon,
+                  margin: d.margin,
+                  pajak_state: d.pajak_stat,
+                  price: d.price,
+                  qty: d.qty,
+                  variants: d.variants.map((v) => {
+                    return {
+                      option_id: v.option_id,
+                      price: v.price,
+                    };
+                  }),
                 };
               }),
-            };
-          }),
-        });
-      } else if (type === "ADD") {
-        saveMutation.mutate({
-          outlet_id: outlet.id,
-          name: identity.name,
-          table: identity.table,
-          no_bill: identity.no_bill,
-          bayar,
-          diskon,
-          kategori_order_id: orderType,
-          kategori_payment_id: paymentType,
-          kembalian,
-          pajak: tax,
-          potongan,
-          total,
-          details: orders.map((d) => {
-            return {
-              menu_id: d.menu.id,
-              box: d.box,
-              description: d.notes,
-              diskon: d.diskon,
-              margin: d.margin,
-              pajak_state: d.pajak_stat,
-              price: d.price,
-              qty: d.qty,
-              variants: d.variants.map((v) => {
+            });
+          } else if (type === "ADD") {
+            saveMutation.mutate({
+              outlet_id: outlet.id,
+              name: identity.name,
+              table: identity.table,
+              no_bill: identity.no_bill,
+              bayar,
+              diskon,
+              kategori_order_id: orderType,
+              kategori_payment_id: paymentType,
+              kembalian,
+              pajak: tax,
+              potongan,
+              total,
+              details: orders.map((d) => {
                 return {
-                  option_id: v.option_id,
-                  price: v.price,
+                  menu_id: d.menu.id,
+                  box: d.box,
+                  description: d.notes,
+                  diskon: d.diskon,
+                  margin: d.margin,
+                  pajak_state: d.pajak_stat,
+                  price: d.price,
+                  qty: d.qty,
+                  variants: d.variants.map((v) => {
+                    return {
+                      option_id: v.option_id,
+                      price: v.price,
+                    };
+                  }),
                 };
               }),
-            };
-          }),
-        });
-      }
+            });
+          }
+        }
+      });
     } else {
       Toast.fire({
         icon: "warning",
@@ -304,9 +322,8 @@ const ActionSection = () => {
   };
 
   const _simulatePrint = () => {
-    if(validationSave() && id !== null){
-
-      if(ipcRenderer){
+    if (validationSave() && id !== null) {
+      if (ipcRenderer) {
         let simluateData: OrderDetail = {
           id: 0,
           bayar,
@@ -322,8 +339,8 @@ const ActionSection = () => {
           kategori_order_id: orderType,
           kategori_payment_id: paymentType,
           kategori_order_name: orderTypeList[orderType - 1].name,
-          kategori_payment_name: paymentTypeList[paymentType -1].name,
-          kode_transaksi:"-",
+          kategori_payment_name: paymentTypeList[paymentType - 1].name,
+          kode_transaksi: "-",
           name: identity.name,
           no_bill: identity.no_bill,
           outlet_id: null,
@@ -341,10 +358,10 @@ const ActionSection = () => {
           type: 1,
           type_text: "Dine In",
           details: orders.map((o) => {
-            let margin = o.price * o.margin / 100;
+            let margin = (o.price * o.margin) / 100;
             let sum = o.price + margin + o.box;
-            let diskon = sum * o.diskon / 100;
-            
+            let diskon = (sum * o.diskon) / 100;
+
             let total = (sum - diskon) * o.qty;
 
             return {
@@ -364,18 +381,23 @@ const ActionSection = () => {
               variants: [],
               created_at: "",
               updated_at: "",
-              deleted_at: ""
-            }
-          })
-          
+              deleted_at: "",
+              type: 0,
+              type_order: 1,
+            };
+          }),
         };
-  
-        ipcRenderer.send("print-simulate",{
-          name: outlet.name,
-          address: outlet.address,
-          instagram: "ramenbajuri",
-          kasir: ucwords(user.name),
-        }, simluateData);
+
+        ipcRenderer.send(
+          "print-simulate",
+          {
+            name: outlet.name,
+            address: outlet.address,
+            instagram: "ramenbajuri",
+            kasir: ucwords(user.name),
+          },
+          simluateData
+        );
       }
     } else {
       Toast.fire({
@@ -384,7 +406,7 @@ const ActionSection = () => {
         text: "Silahkan lengkapi data pembayaran",
       });
     }
-  }
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4">

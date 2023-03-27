@@ -140,7 +140,7 @@ const AuthForm = () => {
             <ErrorLabel text={errors.password.message} />
           ) : null}
           <div
-            className="absolute right-3 top-3 cursor-pointer"
+            className="absolute right-3 top-2 cursor-pointer"
             onClick={() => setSecureText(!secureText)}
           >
             <DynamicHeroIcon

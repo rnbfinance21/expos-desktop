@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../config/store";
 import { Menu } from "../services/MenuService";
-import { arraysEqual2 } from "../utils/array";
+import { arraysEqual2, arraysEqual3 } from "../utils/array";
 
 export interface Orders {
   id_detail?: number;
@@ -62,7 +62,16 @@ export const findIndexCustomItem = (data: Orders[], value: Orders) =>
     (e) =>
       e.id === value.id &&
       e.notes === value.notes &&
-      e.diskon === value.diskon &&
+      e.type_order === value.type_order &&
+      arraysEqual2(e.variants, value.variants)
+  );
+
+export const findIndexCustomItem2 = (data: Orders[], value: Orders) =>
+  data.findIndex(
+    (e) =>
+      e.id === value.id &&
+      e.qty === value.qty &&
+      e.notes === value.notes &&
       e.type_order === value.type_order &&
       arraysEqual2(e.variants, value.variants)
   );
@@ -154,30 +163,54 @@ export const orderSlice = createSlice({
         new: Orders;
       }>
     ) => {
-      let index = findIndexCustomItem(state.orders, action.payload.prev);
+      let prevOrders = state.orders;
 
-      let object = state.orders[index];
-      object.qty = action.payload.new.qty;
-      object.notes = action.payload.new.notes;
-      object.price = action.payload.new.price;
-      object.variants = action.payload.new.variants;
-      object.type_order = action.payload.new.type_order;
-      object.diskon = action.payload.new.diskon;
+      let index = findIndexCustomItem2(state.orders, action.payload.prev);
+      let prevPayload = action.payload.prev;
+      let newPayload = action.payload.new;
+      let prevSelect = prevOrders[index];
 
-      let find = findIndexCustomItem(state.orders, object);
-
-      if (find === -1) {
-        state.orders[index] = object;
+      if (
+        prevSelect.type_order === newPayload.type_order &&
+        arraysEqual2(prevPayload.variants, newPayload.variants) &&
+        prevSelect.notes === newPayload.notes
+      ) {
+        prevSelect.qty = newPayload.qty;
+        state.orders[index] = prevSelect;
       } else {
-        state.orders.splice(index, 1);
+        let find = findIndexCustomItem(state.orders, {
+          id: newPayload.id,
+          menu: newPayload.menu,
+          price: newPayload.price,
+          qty: newPayload.qty,
+          notes: newPayload.notes,
+          type_order: newPayload.type_order,
+          variants: newPayload.variants,
+          box: newPayload.box,
+          diskon: newPayload.diskon,
+          margin: newPayload.margin,
+          margin_stat: newPayload.margin_stat,
+          pajak_stat: newPayload.pajak_stat,
+          id_detail: newPayload.id_detail,
+        });
 
-        let object2 = state.orders[find];
-        object2.qty = object2.qty + action.payload.new.qty;
+        if (find !== -1) {
+          let object2 = state.orders[find];
+          object2.qty = object2.qty + newPayload.qty;
+          state.orders[find] = object2;
 
-        state.orders[find] = object2;
+          state.orders.splice(index, 1);
+        } else {
+          let object = state.orders[index];
+          object.qty = action.payload.new.qty;
+          object.notes = action.payload.new.notes;
+          object.price = action.payload.new.price;
+          object.type_order = action.payload.new.type_order;
+          object.variants = action.payload.new.variants;
+
+          state.orders[index] = object;
+        }
       }
-
-      // state.orders[index] = object;
     },
     incrementItemCustom: (state, action: PayloadAction<Orders>) => {
       let index = findIndexCustomItem(state.orders, action.payload);
@@ -202,7 +235,7 @@ export const orderSlice = createSlice({
       }
     },
     deleteItem: (state, action: PayloadAction<Orders>) => {
-      let index = findIndexCustomItem(state.orders, action.payload);
+      let index = findIndexCustomItem2(state.orders, action.payload);
 
       if (index !== -1) {
         state.orders.splice(index, 1);

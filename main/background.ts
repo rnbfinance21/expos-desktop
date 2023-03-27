@@ -471,6 +471,7 @@ const create = async () => {
   //   },
   // });
   mainWindow = new BrowserWindow({
+    title: "Expos",
     center: true,
     width: 1280,
     height: 768,

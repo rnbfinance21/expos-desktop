@@ -63,6 +63,8 @@ const PaidAction = ({ data }: PaidActionProps) => {
             price: d.price,
             qty: d.qty,
             menu: d.menu,
+            type_order: d.type_order,
+            id_detail: d.id,
             variants: d.variants.map((v) => {
               return {
                 option_id: v.variant_option_id,

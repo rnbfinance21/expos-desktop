@@ -269,7 +269,7 @@ const MenuCustomModal = () => {
               diskon: parseInt(diskon, 10),
               notes,
               pajak_stat: selectedMenuCustom?.tax_state,
-              price,
+              price: selectedMenuCustom.price,
               qty: parseInt(qty, 10),
               type_order: selectTypeOrder,
               variants: variantParams,
@@ -289,7 +289,7 @@ const MenuCustomModal = () => {
                   diskon: parseInt(diskon, 10),
                   notes,
                   pajak_stat: selectedMenuCustom?.tax_state,
-                  price,
+                  price: selectedMenuCustom.price,
                   qty: parseInt(qty, 10),
                   type_order: selectTypeOrder,
                   variants: variantParams,
@@ -449,6 +449,7 @@ const MenuCustomModal = () => {
 
                             return (
                               <div
+                                key={`option_${item.max_select}_${val.id}`}
                                 onClick={() =>
                                   onChangeVariants(
                                     item.type,
