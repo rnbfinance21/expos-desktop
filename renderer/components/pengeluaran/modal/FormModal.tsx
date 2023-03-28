@@ -35,7 +35,7 @@ type FormData = {
 const schema = yup.object({
   transaksi: yup.string().required("Masukkan nama transaksi"),
   amount: yup.string().required("Masukkan jumlah transaksi"),
-  description: yup.string().required("Masukkan keterangan"),
+  // description: yup.string().required("Masukkan keterangan"),
 });
 
 const FormModal = ({
@@ -105,7 +105,7 @@ const FormModal = ({
               <ErrorLabel text={errors.transaksi.message ?? ""} />
             ) : null}
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-light mb-2">
               Keterangan
             </label>
@@ -119,7 +119,7 @@ const FormModal = ({
             {errors.description ? (
               <ErrorLabel text={errors.description.message ?? ""} />
             ) : null}
-          </div>
+          </div> */}
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-light mb-2">
               Jumlah

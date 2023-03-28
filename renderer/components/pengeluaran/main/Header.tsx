@@ -64,13 +64,13 @@ const Header = () => {
           <Filter />
         </div>
         <div className="flex flex-row gap-2">
-          <button
+          {/* <button
             onClick={() => _openModal(1)}
             className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"
           >
             <DynamicHeroIcon icon="PlusIcon" />
             Uang Masuk
-          </button>
+          </button> */}
           <button
             onClick={() => _openModal(2)}
             className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"
