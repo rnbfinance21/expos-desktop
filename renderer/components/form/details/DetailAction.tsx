@@ -211,10 +211,6 @@ const DetailAction = () => {
           _onConfirm();
         }
       });
-      // if (!kasState) {
-      // } else {
-      //   _onConfirm();
-      // }
     }
   };
 

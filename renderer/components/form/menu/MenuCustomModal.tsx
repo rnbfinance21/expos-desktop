@@ -269,7 +269,11 @@ const MenuCustomModal = () => {
               diskon: parseInt(diskon, 10),
               notes,
               pajak_stat: selectedMenuCustom?.tax_state,
-              price: selectedMenuCustom.price,
+              price:
+                selectedMenuCustom.price +
+                variantParams.reduce((acc, itm) => {
+                  return acc + itm.price;
+                }, 0),
               qty: parseInt(qty, 10),
               type_order: selectTypeOrder,
               variants: variantParams,
@@ -289,7 +293,11 @@ const MenuCustomModal = () => {
                   diskon: parseInt(diskon, 10),
                   notes,
                   pajak_stat: selectedMenuCustom?.tax_state,
-                  price: selectedMenuCustom.price,
+                  price:
+                    selectedMenuCustom.price +
+                    variantParams.reduce((acc, itm) => {
+                      return acc + itm.price;
+                    }, 0),
                   qty: parseInt(qty, 10),
                   type_order: selectTypeOrder,
                   variants: variantParams,

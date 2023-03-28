@@ -14,11 +14,7 @@ const PaymentOrderItem = ({
   change,
   onChange,
 }: PaymentOrderItemProps) => {
-  const priceMenu =
-    data.price +
-    data.variants.reduce((acc, itm) => {
-      return acc + itm.price;
-    }, 0);
+  const priceMenu = data.price;
   const sum = priceMenu * data.qty;
   const box = data.qty * data.box;
 

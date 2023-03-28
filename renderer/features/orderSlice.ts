@@ -62,6 +62,7 @@ export const findIndexCustomItem = (data: Orders[], value: Orders) =>
     (e) =>
       e.id === value.id &&
       e.notes === value.notes &&
+      e.diskon === value.diskon &&
       e.type_order === value.type_order &&
       arraysEqual2(e.variants, value.variants)
   );
@@ -71,6 +72,7 @@ export const findIndexCustomItem2 = (data: Orders[], value: Orders) =>
     (e) =>
       e.id === value.id &&
       e.qty === value.qty &&
+      e.diskon === value.diskon &&
       e.notes === value.notes &&
       e.type_order === value.type_order &&
       arraysEqual2(e.variants, value.variants)
@@ -173,9 +175,11 @@ export const orderSlice = createSlice({
       if (
         prevSelect.type_order === newPayload.type_order &&
         arraysEqual2(prevPayload.variants, newPayload.variants) &&
-        prevSelect.notes === newPayload.notes
+        prevSelect.notes === newPayload.notes &&
+        prevSelect.diskon === newPayload.diskon
       ) {
         prevSelect.qty = newPayload.qty;
+        // prevSelect.diskon = newPayload.diskon;
         state.orders[index] = prevSelect;
       } else {
         let find = findIndexCustomItem(state.orders, {
@@ -205,6 +209,7 @@ export const orderSlice = createSlice({
           object.qty = action.payload.new.qty;
           object.notes = action.payload.new.notes;
           object.price = action.payload.new.price;
+          object.diskon = action.payload.new.diskon;
           object.type_order = action.payload.new.type_order;
           object.variants = action.payload.new.variants;
 

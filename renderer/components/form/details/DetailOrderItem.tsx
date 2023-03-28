@@ -9,11 +9,7 @@ type DetailOrderItemProps = {
 };
 
 const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
-  const price =
-    data.price +
-    data.variants.reduce((acc, itm) => {
-      return acc + itm.price;
-    }, 0);
+  const price = data.price;
 
   const diskon = (price * data.qty * data.diskon) / 100;
 
@@ -75,7 +71,7 @@ const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
         </div>
         <div className="flex flex-row">
           <span className="text-[10px] text-gray-800 font-semibold">
-            Disc ({data.diskon ?? 0}%) {numberFormat(data.price, 0)}
+            Disc ({data.diskon ?? 0}%) {numberFormat(price, 0)}
           </span>
         </div>
       </div>
