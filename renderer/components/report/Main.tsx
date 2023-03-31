@@ -74,30 +74,43 @@ const Main = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => {
-                return (
-                  <tr className="border-b">
-                    <td className="text-xs font-medium py-2 px-4">
-                      {item.kode_transaksi}
-                    </td>
-                    <td className="text-xs font-medium py-2 px-4">
-                      {ucwords(item.name)}
-                    </td>
-                    <td className="text-xs font-medium py-2 px-4 text-center">
-                      {item.kategori_order_name}
-                    </td>
-                    <td className="text-xs font-medium py-2 px-4 text-center">
-                      {item.kategori_payment_name}
-                    </td>
-                    <td className="text-xs font-medium py-2 px-4 text-end flex flex-row">
-                      <span>Rp</span>
-                      <span className="flex-1">
-                        {numberFormat(item.total, 0)}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
+              {data.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="text-xs font-medium py-2 px-4 text-center"
+                  >
+                    Data tidak tersedia
+                  </td>
+                </tr>
+              ) : (
+                <>
+                  {data.map((item) => {
+                    return (
+                      <tr className="border-b">
+                        <td className="text-xs font-medium py-2 px-4">
+                          {item.kode_transaksi}
+                        </td>
+                        <td className="text-xs font-medium py-2 px-4">
+                          {ucwords(item.name)}
+                        </td>
+                        <td className="text-xs font-medium py-2 px-4 text-center">
+                          {item.kategori_order_name}
+                        </td>
+                        <td className="text-xs font-medium py-2 px-4 text-center">
+                          {item.kategori_payment_name}
+                        </td>
+                        <td className="text-xs font-medium py-2 px-4 text-end flex flex-row">
+                          <span>Rp</span>
+                          <span className="flex-1">
+                            {numberFormat(item.total, 0)}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </>
+              )}
             </tbody>
           </table>
         </div>

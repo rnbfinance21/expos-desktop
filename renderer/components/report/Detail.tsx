@@ -45,7 +45,7 @@ const Detail = () => {
         link.href = url;
         link.setAttribute(
           "download",
-          `Laporan Tutup Transaksi ${formatDate(new Date())}.xlsx`
+          `Laporan Tutup Transaksi ${formatDate(new Date(date))}.xlsx`
         );
         document.body.appendChild(link);
         link.click();
