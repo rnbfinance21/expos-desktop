@@ -49,36 +49,37 @@ const Main = () => {
   );
 
   const _onClickMenu = (menu: Menu) => {
-    const isCustom = menu.variants.length > 0 ? true : false;
+    // const isCustom = menu.variants.length > 0 ? true : false;
 
-    dispatch(resetModalCustom());
+    // dispatch(resetModalCustom());
 
-    setTimeout(() => {
-      dispatch(setSelectedMenuCustom(menu));
-      _openModal();
-    }, 500);
-
-    // if (isCustom) {
+    // setTimeout(() => {
     //   dispatch(setSelectedMenuCustom(menu));
     //   _openModal();
-    //   // show modal
-    // } else {
-    //   dispatch(
-    //     addItem({
-    //       id: menu.id,
-    //       price: menu.price,
-    //       qty: 1,
-    //       notes: null,
-    //       margin: 0,
-    //       box: 0,
-    //       diskon: 0,
-    //       margin_stat: menu.box_state,
-    //       pajak_stat: menu.tax_state,
-    //       variants: [],
-    //       menu: menu,
-    //     })
-    //   );
-    // }
+    // }, 500);
+
+    if (menu.custom_state) {
+      dispatch(setSelectedMenuCustom(menu));
+      _openModal();
+      // show modal
+    } else {
+      dispatch(
+        addItem({
+          id: menu.id,
+          price: menu.price,
+          qty: 1,
+          notes: null,
+          margin: 0,
+          box: 0,
+          diskon: 0,
+          margin_stat: menu.box_state,
+          pajak_stat: menu.tax_state,
+          variants: [],
+          menu: menu,
+          type_order: 1,
+        })
+      );
+    }
   };
 
   useEffect(() => {

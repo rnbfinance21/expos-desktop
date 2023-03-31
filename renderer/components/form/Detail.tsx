@@ -23,25 +23,25 @@ const Detail = () => {
 
   const _showModalUpdate = (item: Orders) => {
     setOpenPasscodeModal(false);
-    dispatch(setType("UPDATE"));
-    dispatch(setModalCustom(true));
-    dispatch(setSelectedMenuCustom(item.menu));
-    dispatch(setSelectedOrder(item));
-    // if (selectedData) {
-    // const isCustom = selectedData.menu.variants.length > 0 ?? false;
+    // dispatch(setType("UPDATE"));
+    // dispatch(setModalCustom(true));
+    // dispatch(setSelectedMenuCustom(item.menu));
+    // dispatch(setSelectedOrder(item));
+    if (selectedData) {
+      // const isCustom = selectedData.menu.variants.length > 0 ?? false;
 
-    // if (isCustom) {
-    //   dispatch(setType("UPDATE"));
-    //   dispatch(setModalCustom(true));
-    //   dispatch(setSelectedMenuCustom(selectedData.menu));
-    //   dispatch(setSelectedOrder(selectedData));
-    // } else {
-    //   dispatch(setType("UPDATE"));
-    //   dispatch(setModalUpdate(true));
-    //   dispatch(setSelectedMenuCustom(selectedData.menu));
-    //   dispatch(setSelectedOrder(selectedData));
-    // }
-    // }
+      if (item.menu.custom_state) {
+        dispatch(setType("UPDATE"));
+        dispatch(setModalCustom(true));
+        dispatch(setSelectedMenuCustom(selectedData.menu));
+        dispatch(setSelectedOrder(selectedData));
+      } else {
+        dispatch(setType("UPDATE"));
+        dispatch(setModalUpdate(true));
+        dispatch(setSelectedMenuCustom(selectedData.menu));
+        dispatch(setSelectedOrder(selectedData));
+      }
+    }
   };
 
   const _onClick = (item: Orders) => {

@@ -54,6 +54,7 @@ export interface Menu {
   kuah_state: number;
   level_state: number;
   show_state: number;
+  custom_state: number;
   state: number;
   deleted_at: string | null;
   created_at: string;

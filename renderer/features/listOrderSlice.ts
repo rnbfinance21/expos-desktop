@@ -46,7 +46,7 @@ export const counterSlice = createSlice({
       state.status = actions.payload.status;
       state.date = actions.payload.date;
     },
-    setSelectedOrder: (state, actions: PayloadAction<number>) => {
+    setSelectedOrder: (state, actions: PayloadAction<number | null>) => {
       state.selectedOrder =
         actions.payload === state.selectedOrder ? null : actions.payload;
     },

@@ -79,7 +79,7 @@ const Main = () => {
     }
   );
 
-  const _onSelectedItem = (id: number) => dispatch(setSelectedOrder(id));
+  const _onSelectedItem = (id: number | null) => dispatch(setSelectedOrder(id));
 
   useEffect(() => {
     if (token !== "") {
@@ -92,6 +92,10 @@ const Main = () => {
       refetch();
     }
   }, [refetchOrder]);
+
+  useEffect(() => {
+    _onSelectedItem(null);
+  }, []);
 
   return (
     <div className="flex-1 flex flex-row bg-gray-100">

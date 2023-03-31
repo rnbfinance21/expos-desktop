@@ -5,7 +5,11 @@ import { DynamicHeroIcon } from "../globals/icons";
 import StatusSelect from "./filters/StatusSelect";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import { getListOrder, setStatusAndDate } from "../../features/listOrderSlice";
+import {
+  getListOrder,
+  setDate,
+  setStatusAndDate,
+} from "../../features/listOrderSlice";
 import { formatDate } from "../../utils/date";
 
 const Filter = () => {
@@ -25,12 +29,11 @@ const Filter = () => {
   };
 
   const _onSubmit = () => {
-    dispatch(
-      setStatusAndDate({
-        status: filterStatus,
-        date: formatDate(filterDate),
-      })
-    );
+    dispatch(setDate(formatDate(filterDate)));
+    // setStatusAndDate({
+    //   status: filterStatus,
+    //   date: formatDate(filterDate),
+    // })
     closeModal();
   };
 
@@ -83,12 +86,12 @@ const Filter = () => {
                     FILTER
                   </Dialog.Title>
                   <div className="mt-4">
-                    <div className="mb-4">
+                    {/* <div className="mb-4">
                       <StatusSelect
                         onChange={setFilterStatus}
                         value={filterStatus}
                       />
-                    </div>
+                    </div> */}
                     <div className="mb-4">
                       <div className="relative">
                         <DatePicker
