@@ -91,6 +91,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
             price: d.price,
             qty: d.qty,
             menu: d.menu,
+            type_order: d.type_order,
             variants: d.variants.map((v) => {
               return {
                 option_id: v.variant_option_id,
