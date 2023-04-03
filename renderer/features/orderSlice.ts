@@ -4,6 +4,16 @@ import { RootState } from "../config/store";
 import { Menu } from "../services/MenuService";
 import { arraysEqual2, arraysEqual3 } from "../utils/array";
 
+export type VariantOrder = {
+  id: number;
+  name: string;
+  data: {
+    option_id: number;
+    option_name: string;
+    price: number;
+  }[];
+};
+
 export interface Orders {
   id_detail?: number;
   id: number;
@@ -16,13 +26,14 @@ export interface Orders {
   margin_stat: number;
   pajak_stat: number;
   type_order: number;
-  variants: {
-    option_id: number;
-    price: number;
-    category_id: number;
-    category_name: string;
-    option_name: string;
-  }[];
+  variants: VariantOrder[];
+  // variants: {
+  //   option_id: number;
+  //   price: number;
+  //   category_id: number;
+  //   category_name: string;
+  //   option_name: string;
+  // }[];
   menu: Menu;
 }
 

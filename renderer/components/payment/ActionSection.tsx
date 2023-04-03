@@ -215,6 +215,20 @@ const ActionSection = () => {
               potongan,
               total,
               details: orders.map((d) => {
+                let resultVariant: {
+                  option_id: number;
+                  price: number;
+                }[] = [];
+
+                d.variants.forEach((e) => {
+                  e.data.forEach((data) => {
+                    resultVariant.push({
+                      option_id: data.option_id,
+                      price: data.price,
+                    });
+                  });
+                });
+
                 return {
                   menu_id: d.menu.id,
                   box: d.box,
@@ -224,12 +238,7 @@ const ActionSection = () => {
                   pajak_state: d.pajak_stat,
                   price: d.price,
                   qty: d.qty,
-                  variants: d.variants.map((v) => {
-                    return {
-                      option_id: v.option_id,
-                      price: v.price,
-                    };
-                  }),
+                  variants: resultVariant,
                 };
               }),
             });
@@ -248,6 +257,20 @@ const ActionSection = () => {
               potongan,
               total,
               details: orders.map((d) => {
+                let resultVariant: {
+                  option_id: number;
+                  price: number;
+                }[] = [];
+
+                d.variants.forEach((e) => {
+                  e.data.forEach((data) => {
+                    resultVariant.push({
+                      option_id: data.option_id,
+                      price: data.price,
+                    });
+                  });
+                });
+
                 return {
                   menu_id: d.menu.id,
                   box: d.box,
@@ -257,12 +280,7 @@ const ActionSection = () => {
                   pajak_state: d.pajak_stat,
                   price: d.price,
                   qty: d.qty,
-                  variants: d.variants.map((v) => {
-                    return {
-                      option_id: v.option_id,
-                      price: v.price,
-                    };
-                  }),
+                  variants: resultVariant,
                 };
               }),
             });
@@ -306,6 +324,20 @@ const ActionSection = () => {
             potongan,
             total,
             details: orders.map((d) => {
+              let resultVariant: {
+                option_id: number;
+                price: number;
+              }[] = [];
+
+              d.variants.forEach((e) => {
+                e.data.forEach((data) => {
+                  resultVariant.push({
+                    option_id: data.option_id,
+                    price: data.price,
+                  });
+                });
+              });
+
               return {
                 menu_id: d.menu.id,
                 box: d.box,
@@ -315,12 +347,7 @@ const ActionSection = () => {
                 pajak_state: d.pajak_stat,
                 price: d.price,
                 qty: d.qty,
-                variants: d.variants.map((v) => {
-                  return {
-                    option_id: v.option_id,
-                    price: v.price,
-                  };
-                }),
+                variants: resultVariant,
               };
             }),
           });

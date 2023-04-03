@@ -15,12 +15,21 @@ export interface Payment {
   margin_stat: number;
   pajak_stat: number;
   variants: {
-    option_id: number;
-    price: number;
-    category_id: number;
-    category_name: string;
-    option_name: string;
+    id: number;
+    name: string;
+    data: {
+      option_id: number;
+      option_name: string;
+      price: number;
+    }[];
   }[];
+  // variants: {
+  //   option_id: number;
+  //   price: number;
+  //   category_id: number;
+  //   category_name: string;
+  //   option_name: string;
+  // }[];
   menu: Menu;
 }
 

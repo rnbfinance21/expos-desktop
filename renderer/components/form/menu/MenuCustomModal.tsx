@@ -84,19 +84,23 @@ const MenuCustomModal = () => {
             setSelectVariants((prevVariants) =>
               prevVariants.map((variant, index) => {
                 if (index === find) {
-                  const data = [
+                  let tmpData = variant.data;
+
+                  tmpData = [
+                    ...tmpData,
                     {
                       option_id: val.id,
+                      option_name: val.name,
                       price: val.price,
                       category_id: item.id,
-                      category_name: ucwords(item.name),
-                      option_name: ucwords(val.name),
+                      category_name: item.name,
                     },
                   ];
                   // return object with updated count values
-                  return { ...variant, data };
+                  return { ...variant, data: tmpData };
+                } else {
+                  return variant;
                 }
-                return variant;
               })
             );
           }
@@ -276,7 +280,7 @@ const MenuCustomModal = () => {
                 }, 0),
               qty: parseInt(qty, 10),
               type_order: selectTypeOrder,
-              variants: variantParams,
+              variants: selectVariants,
               menu: selectedMenuCustom,
             })
           );
@@ -300,7 +304,7 @@ const MenuCustomModal = () => {
                     }, 0),
                   qty: parseInt(qty, 10),
                   type_order: selectTypeOrder,
-                  variants: variantParams,
+                  variants: selectVariants,
                   menu: selectedMenuCustom,
                 },
               })
@@ -338,51 +342,67 @@ const MenuCustomModal = () => {
       setSelectTypeOrder(1);
     } else {
       if (type === "UPDATE" && selectedOrder) {
-        let resultVariant: SelectVariantType[] = [];
+        // let resultVariant: SelectVariantType[] = [];
 
-        selectedOrder?.variants.forEach((e) => {
-          let find = resultVariant.findIndex((f) => f.id === e.category_id);
+        // selectedOrder?.variants.forEach((e) => {
+        //   let find = resultVariant.findIndex((f) => f.id === e.category_id);
 
-          if (find === -1) {
-            resultVariant.push({
-              id: e.category_id,
-              name: e.category_name,
-              data: [
-                {
-                  option_id: e.option_id,
-                  option_name: e.option_name,
-                  price: e.price,
-                  category_id: e.category_id,
-                  category_name: e.category_name,
-                },
-              ],
-            });
-          } else {
-            let tmp = resultVariant;
+        //   if (find === -1) {
+        //     resultVariant.push({
+        //       id: e.category_id,
+        //       name: e.category_name,
+        //       data: [
+        //         {
+        //           option_id: e.option_id,
+        //           option_name: e.option_name,
+        //           price: e.price,
+        //           category_id: e.category_id,
+        //           category_name: e.category_name,
+        //         },
+        //       ],
+        //     });
+        //   } else {
+        //     let tmp = resultVariant;
 
-            let tmpData = tmp[find].data;
+        //     let tmpData = tmp[find].data;
 
-            if (tmpData) {
-              tmpData.push({
-                option_id: e.option_id,
-                option_name: e.option_name,
-                price: e.price,
-                category_id: e.category_id,
-                category_name: e.category_name,
-              });
+        //     if (tmpData) {
+        //       tmpData.push({
+        //         option_id: e.option_id,
+        //         option_name: e.option_name,
+        //         price: e.price,
+        //         category_id: e.category_id,
+        //         category_name: e.category_name,
+        //       });
 
-              tmp[find] = {
-                id: e.category_id,
-                name: e.category_name,
-                data: tmpData,
-              };
-            }
+        //       tmp[find] = {
+        //         id: e.category_id,
+        //         name: e.category_name,
+        //         data: tmpData,
+        //       };
+        //     }
 
-            resultVariant = tmp;
-          }
-        });
+        //     resultVariant = tmp;
+        //   }
+        // });
 
-        setSelectVariants(resultVariant);
+        setSelectVariants(
+          selectedOrder?.variants.map((e) => {
+            return {
+              id: e.id,
+              name: e.name,
+              data: e.data.map((d) => {
+                return {
+                  option_id: d.option_id,
+                  price: d.price,
+                  category_id: e.id,
+                  category_name: e.name,
+                  option_name: d.option_name,
+                };
+              }),
+            };
+          })
+        );
         setNotes(selectedOrder?.notes ?? "");
         setPrice(selectedOrder?.price);
         setQty(selectedOrder?.qty.toString());

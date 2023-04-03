@@ -88,6 +88,19 @@ const DetailAction = () => {
             table: identity.table,
             no_bill: identity.no_bill,
             details: orders.map((d) => {
+              let resultVariant: {
+                option_id: number;
+                price: number;
+              }[] = [];
+
+              d.variants.forEach((e) => {
+                e.data.forEach((data) => {
+                  resultVariant.push({
+                    option_id: data.option_id,
+                    price: data.price,
+                  });
+                });
+              });
               return {
                 menu_id: d.menu.id,
                 box: d.box,
@@ -97,12 +110,7 @@ const DetailAction = () => {
                 pajak_state: d.pajak_stat,
                 price: d.price,
                 qty: d.qty,
-                variants: d.variants.map((v) => {
-                  return {
-                    option_id: v.option_id,
-                    price: v.price,
-                  };
-                }),
+                variants: resultVariant,
               };
             }),
           });
@@ -115,6 +123,20 @@ const DetailAction = () => {
             updateLogs: updateLog,
             deleteLogs: deleteLog,
             details: orders.map((d) => {
+              let resultVariant: {
+                option_id: number;
+                price: number;
+              }[] = [];
+
+              d.variants.forEach((e) => {
+                e.data.forEach((data) => {
+                  resultVariant.push({
+                    option_id: data.option_id,
+                    price: data.price,
+                  });
+                });
+              });
+
               return {
                 id_detail: d.id_detail,
                 menu_id: d.menu.id,
@@ -125,12 +147,7 @@ const DetailAction = () => {
                 pajak_state: d.pajak_stat,
                 price: d.price,
                 qty: d.qty,
-                variants: d.variants.map((v) => {
-                  return {
-                    option_id: v.option_id,
-                    price: v.price,
-                  };
-                }),
+                variants: resultVariant,
               };
             }),
           });
@@ -163,15 +180,16 @@ const DetailAction = () => {
             price: d.price,
             qty: d.qty,
             menu: d.menu,
-            variants: d.variants.map((v) => {
-              return {
-                option_id: v.option_id,
-                price: v.price,
-                category_id: v.category_id,
-                category_name: v.category_name,
-                option_name: v.option_name,
-              };
-            }),
+            variants: d.variants,
+            // variants: d.variants.map((v) => {
+            //   return {
+            //     option_id: v.option_id,
+            //     price: v.price,
+            //     category_id: v.category_id,
+            //     category_name: v.category_name,
+            //     option_name: v.option_name,
+            //   };
+            // }),
           };
         }),
       })

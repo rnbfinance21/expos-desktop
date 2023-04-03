@@ -2,12 +2,50 @@ import React from "react";
 import { Detail } from "../../../services/OrderService";
 import { numberFormat } from "../../../utils/currency";
 import { ucwords } from "../../../utils/string";
+import { VariantOrder } from "../../../features/orderSlice";
 
 type DetailItemProps = {
   data: Detail;
 };
 
 const DetailItem = ({ data }: DetailItemProps) => {
+  let tmpVariant: VariantOrder[] = [];
+
+  data.variants.forEach((e) => {
+    let find = tmpVariant.findIndex((f) => f.id === e.variant_id);
+
+    if (find === -1) {
+      tmpVariant.push({
+        id: e.variant_id,
+        name: e.variant_name,
+        data: [
+          {
+            option_id: e.variant_option_id,
+            option_name: e.option_name,
+            price: e.price,
+          },
+        ],
+      });
+    } else {
+      let selected = tmpVariant[find];
+
+      let tmpData: {
+        option_id: number;
+        option_name: string;
+        price: number;
+      }[] = [
+        ...selected.data,
+        {
+          option_id: e.variant_option_id,
+          option_name: e.option_name,
+          price: e.price,
+        },
+      ];
+
+      tmpVariant[find].data = tmpData;
+    }
+  });
+
   return (
     <div className="py-4 border-b border-b-gray-300 border-dashed">
       <div className="flex flex-row justify-between">
@@ -29,14 +67,19 @@ const DetailItem = ({ data }: DetailItemProps) => {
         </div>
       ) : null}
       <div className="flex flex-col mt-1 justify-between">
-        {data.variants.map((variant) => {
+        {tmpVariant.map((variant) => {
           return (
             <div key={`detail_variant_${variant.id}`} className="flex flex-row">
               <span className="text-[10px] text-gray-500 font-light mr-1">
-                {ucwords(variant.variant_name)}:
+                {ucwords(variant.name)}:
               </span>
               <span className="text-[10px] text-gray-800 font-semibold">
-                {ucwords(variant.option_name)}
+                {variant.data
+                  .map((opt: any, oi: number) => {
+                    let result = `${opt.option_name} `;
+                    return result;
+                  })
+                  .toString()}
               </span>
             </div>
           );

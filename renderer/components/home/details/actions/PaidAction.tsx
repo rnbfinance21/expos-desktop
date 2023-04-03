@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { setRefetchOrder } from "../../../../features/listOrderSlice";
 import {
+  VariantOrder,
   setId,
   setIdentity,
   setOrders,
@@ -52,6 +53,43 @@ const PaidAction = ({ data }: PaidActionProps) => {
     dispatch(
       setOrders(
         data.details.map((d) => {
+          let tmpVariant: VariantOrder[] = [];
+
+          d.variants.forEach((e) => {
+            let find = tmpVariant.findIndex((f) => f.id === e.id);
+
+            if (find === -1) {
+              tmpVariant.push({
+                id: e.id,
+                name: e.variant_name,
+                data: [
+                  {
+                    option_id: e.variant_option_id,
+                    option_name: e.option_name,
+                    price: e.price,
+                  },
+                ],
+              });
+            } else {
+              let selected = tmpVariant[find];
+
+              let tmpData: {
+                option_id: number;
+                option_name: string;
+                price: number;
+              }[] = [
+                ...selected.data,
+                {
+                  option_id: e.variant_option_id,
+                  option_name: e.option_name,
+                  price: e.price,
+                },
+              ];
+
+              tmpVariant[find].data = tmpData;
+            }
+          });
+
           return {
             id: d.menu.id,
             box: d.box,
@@ -65,15 +103,16 @@ const PaidAction = ({ data }: PaidActionProps) => {
             menu: d.menu,
             type_order: d.type_order,
             id_detail: d.id,
-            variants: d.variants.map((v) => {
-              return {
-                option_id: v.variant_option_id,
-                price: v.price,
-                category_id: v.variant_id,
-                category_name: v.variant_name,
-                option_name: v.option_name,
-              };
-            }),
+            variants: tmpVariant,
+            // variants: d.variants.map((v) => {
+            //   return {
+            //     option_id: v.variant_option_id,
+            //     price: v.price,
+            //     category_id: v.variant_id,
+            //     category_name: v.variant_name,
+            //     option_name: v.option_name,
+            //   };
+            // }),
           };
         })
       )

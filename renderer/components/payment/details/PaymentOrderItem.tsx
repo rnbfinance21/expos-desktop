@@ -41,10 +41,16 @@ const PaymentOrderItem = ({
             return (
               <div className="flex flex-row">
                 <span className="text-[10px] text-gray-500 font-light mr-1">
-                  {ucwords(variant.category_name)}:
+                  {ucwords(variant.name)}:
                 </span>
                 <span className="text-[10px] text-gray-800 font-semibold">
-                  {ucwords(variant.option_name)}
+                  {/* {ucwords(variant.option_name)} */}
+                  {variant.data
+                    .map((opt: any, oi: number) => {
+                      let result = `${opt.option_name} `;
+                      return result;
+                    })
+                    .toString()}
                 </span>
               </div>
             );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Orders } from "../../../features/orderSlice";
+import { Orders, VariantOrder } from "../../../features/orderSlice";
 import { numberFormat } from "../../../utils/currency";
 import { ucwords } from "../../../utils/string";
 
@@ -36,15 +36,17 @@ const DetailOrderItem = ({ data, onClick }: DetailOrderItemProps) => {
       <div className="flex flex-col mt-1 justify-between">
         {data.variants.map((variant) => {
           return (
-            <div
-              key={`variant_${variant.category_id}`}
-              className="flex flex-row"
-            >
+            <div key={`variant_${variant.id}`} className="flex flex-row">
               <span className="text-[10px] text-gray-500 font-light mr-1">
-                {ucwords(variant.category_name)}:
+                {ucwords(variant.name)}:
               </span>
               <span className="text-[10px] text-gray-800 font-semibold">
-                {ucwords(variant.option_name)}
+                {variant.data
+                  .map((opt: any, oi: number) => {
+                    let result = `${opt.option_name} `;
+                    return result;
+                  })
+                  .toString()}
               </span>
             </div>
           );
