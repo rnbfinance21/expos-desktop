@@ -84,7 +84,7 @@ const Header = () => {
           </button>
         </div>
       </div>
-      <div className="w-full overflow-x-auto scrollbar-hide">
+      <div className="w-full overflow-x-auto">
         <div className="flex flex-row w-0">
           <CategoryItem
             onClick={() => dispatch(setSelectedCategory(null))}

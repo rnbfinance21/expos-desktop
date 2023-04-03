@@ -46,6 +46,8 @@ ipcMain.on("printer-list", async (event) => {
 });
 
 ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
+  let sizeType = store.get("printer-kitchen-size") as string;
+
   const options: PosPrintOptions = {
     silent: true,
     printerName: store.get("printer-kitchen") as string,
@@ -53,10 +55,13 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     boolean: false,
     copies: 1,
     collate: true,
-    pageSize: {
-      width: 273,
-      height: 100,
-    },
+    pageSize:
+      sizeType === "1"
+        ? {
+            width: 273,
+            height: 100,
+          }
+        : "80mm",
     margin: "0 0 0 0",
     timeOutPerLine: 400,
     margins: {
@@ -190,6 +195,8 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
 ipcMain.on(
   "print-order-additional",
   async (e, data: OrderDetail, print = 2) => {
+    let sizeType = store.get("printer-kitchen-size") as string;
+
     const options: PosPrintOptions = {
       silent: true,
       printerName: store.get("printer-kitchen") as string,
@@ -197,10 +204,13 @@ ipcMain.on(
       boolean: false,
       copies: 1,
       collate: true,
-      pageSize: {
-        width: 273,
-        height: 100,
-      },
+      pageSize:
+        sizeType === "1"
+          ? {
+              width: 273,
+              height: 100,
+            }
+          : "80mm",
       margin: "0 0 0 0",
       timeOutPerLine: 400,
       margins: {
@@ -336,6 +346,8 @@ ipcMain.on(
 );
 
 ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
+  let sizeType = store.get("printer-cashier-size") as string;
+
   const options: PosPrintOptions = {
     silent: true,
     printerName: store.get("printer-cashier") as string,
@@ -343,10 +355,13 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
     boolean: false,
     copies: 1,
     collate: true,
-    pageSize: {
-      width: 273,
-      height: 100,
-    },
+    pageSize:
+      sizeType === "1"
+        ? {
+            width: 273,
+            height: 100,
+          }
+        : "80mm",
     margin: "5 30 5 20",
     timeOutPerLine: 400,
     // margins: {
@@ -362,6 +377,141 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
   PosPrinter.print(printData, options)
     .then(() => {
       Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+      console.log("success");
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+});
+
+ipcMain.on(
+  "print-account",
+  async (
+    e,
+    info: {
+      name: string;
+      username: string;
+      password: string;
+    }
+  ) => {
+    let sizeType = store.get("printer-cashier-size") as string;
+
+    const options: PosPrintOptions = {
+      silent: true,
+      printerName: store.get("printer-cashier") as string,
+      preview: false,
+      boolean: false,
+      copies: 1,
+      collate: true,
+      pageSize:
+        sizeType === "1"
+          ? {
+              width: 273,
+              height: 100,
+            }
+          : "80mm",
+      margin: "5 30 5 20",
+      timeOutPerLine: 400,
+    };
+
+    const printData: PosPrintData[] = [
+      {
+        type: "text",
+        value: "Akun Customer",
+        style: {
+          fontWeight: "700",
+          fontSize: "16px",
+          textAlign: "center",
+          marginBottom: "10px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+              <div style='width: 70px;'>Nama</div>
+              <div style='flex: 1'>
+                : ${info.name}
+              </div>
+            </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+              <div style='width: 70px;'>Username</div>
+              <div style='flex: 1'>
+                : ${info.username}
+              </div>
+            </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+              <div style='width: 70px;'>Password</div>
+              <div style='flex: 1'>
+                : ${info.password}
+              </div>
+            </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+        },
+      },
+    ];
+
+    PosPrinter.print(printData, options)
+      .then(() => {
+        Toast.fire("Berhasil", "Akun berhasil dicetak", "success");
+        console.log("success");
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+  }
+);
+
+ipcMain.on("print-testing", async (e, name: string, sizeType = 1) => {
+  const options: PosPrintOptions = {
+    silent: true,
+    printerName: name,
+    preview: false,
+    boolean: false,
+    copies: 1,
+    collate: true,
+    pageSize:
+      sizeType === 1
+        ? {
+            width: 273,
+            height: 100,
+          }
+        : "80mm",
+    margin: "5 30 5 20",
+    timeOutPerLine: 400,
+  };
+
+  const printData: PosPrintData[] = [
+    {
+      type: "text",
+      value: "Hanya testing",
+      style: {
+        fontWeight: "700",
+        fontSize: "16px",
+        textAlign: "center",
+        marginBottom: "10px",
+      },
+    },
+  ];
+
+  PosPrinter.print(printData, options)
+    .then(() => {
+      Toast.fire("Berhasil", "Akun berhasil dicetak", "success");
       console.log("success");
     })
     .catch((error: any) => {

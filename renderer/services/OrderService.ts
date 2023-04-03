@@ -95,6 +95,13 @@ export type Detail = {
 export interface OrderDetail extends Order {
   details: Detail[];
   reason: string | null;
+  member: null | {
+    id: number;
+    name: string;
+    username: string;
+    password_show: string | null;
+    type: number;
+  };
 }
 
 export type GetOrderOutletParams = {

@@ -7,6 +7,17 @@ import { Button } from "../components/globals/buttons";
 import Toast from "../utils/toast";
 import { TextInput } from "../components/globals/forms";
 
+const LIST_SIZE = [
+  {
+    label: "Custom 80mm",
+    value: "1",
+  },
+  {
+    label: "80mm",
+    value: "2",
+  },
+];
+
 const config = () => {
   const ipcRenderer = electron.ipcRenderer || false;
 
@@ -18,9 +29,11 @@ const config = () => {
   >([]);
 
   const [printCashier, setPrintCashier] = useState<string>("");
+  const [printCashierSize, setPrintCashierSize] = useState<string>("1");
   const [printCashierCopies, setPrintCashierCopies] = useState<string>("1");
 
   const [printKitchen, setPrintKitchen] = useState<string>("");
+  const [printKitchenSize, setPrintKitchenSize] = useState<string>("1");
   const [printKitchenCopies, setPrintKitchenCopies] = useState<string>("1");
 
   const _onSavePrinterCashier = () => {
@@ -30,6 +43,11 @@ const config = () => {
         "electron-store-set",
         "printer-cashier-copies",
         printCashierCopies
+      );
+      ipcRenderer.send(
+        "electron-store-set",
+        "printer-cashier-size",
+        printCashierSize
       );
 
       Toast.fire("Berhasil", "Konfigruasi Printer Kasir Berhasil", "success");
@@ -44,8 +62,35 @@ const config = () => {
         "printer-kitchen-copies",
         printKitchenCopies
       );
+      ipcRenderer.send(
+        "electron-store-set",
+        "printer-kitchen-size",
+        printKitchenSize
+      );
 
       Toast.fire("Berhasil", "Konfigruasi Printer Dapur Berhasil", "success");
+    }
+  };
+
+  const _onPressTest = (type = 1) => {
+    if (ipcRenderer) {
+      if (type === 1) {
+        if (printCashier !== "" && printCashierSize !== "") {
+          ipcRenderer.send(
+            "print-testing",
+            printCashier,
+            parseInt(printCashierSize, 10)
+          );
+        }
+      } else if (type === 2) {
+        if (printKitchen !== "" && printKitchenSize !== "") {
+          ipcRenderer.send(
+            "print-testing",
+            printKitchen,
+            parseInt(printKitchenSize, 10)
+          );
+        }
+      }
     }
   };
 
@@ -68,12 +113,18 @@ const config = () => {
       setPrintCashierCopies(
         ipcRenderer.sendSync("electron-store-get", "printer-cashier-copies")
       );
+      setPrintCashierSize(
+        ipcRenderer.sendSync("electron-store-get", "printer-cashier-size")
+      );
 
       setPrintKitchen(
         ipcRenderer.sendSync("electron-store-get", "printer-kitchen")
       );
       setPrintKitchenCopies(
         ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies")
+      );
+      setPrintKitchenSize(
+        ipcRenderer.sendSync("electron-store-get", "printer-kitchen-size")
       );
     }
   }, [ipcRenderer]);
@@ -104,6 +155,28 @@ const config = () => {
                 />
               </div>
             </div>
+            <div className="px-4">
+              <span className="text-sm font-medium">Ukuran Kertas</span>
+              <div className="flex flex-row gap-4 mt-4">
+                <Select
+                  id="selectCashierSize"
+                  placeholder="Pilih Ukuran"
+                  options={LIST_SIZE}
+                  onChange={(e) => {
+                    if (e !== null) {
+                      setPrintCashierSize(e.value);
+                    }
+                  }}
+                  value={
+                    LIST_SIZE.filter((e) => e.value === printCashierSize)
+                      .length > 0
+                      ? LIST_SIZE.filter((e) => e.value === printCashierSize)[0]
+                      : null
+                  }
+                  className="w-[300px]"
+                />
+              </div>
+            </div>
             <div className="px-4 items-end">
               <span className="text-sm font-medium">Copies</span>
               <div className="flex flex-row gap-4 mt-3">
@@ -118,7 +191,9 @@ const config = () => {
               </div>
             </div>
             <div className="flex flex-row gap-4 items-end">
-              <Button type="button">Test Printer</Button>
+              <Button type="button" onClick={() => _onPressTest(1)}>
+                Test Printer
+              </Button>
               <Button type="button" onClick={_onSavePrinterCashier}>
                 Simpan
               </Button>
@@ -146,6 +221,28 @@ const config = () => {
                 />
               </div>
             </div>
+            <div className="px-4">
+              <span className="text-sm font-medium">Ukuran Kertas</span>
+              <div className="flex flex-row gap-4 mt-4">
+                <Select
+                  id="selectKitchenSize"
+                  placeholder="Pilih Ukuran"
+                  options={LIST_SIZE}
+                  onChange={(e) => {
+                    if (e !== null) {
+                      setPrintKitchenSize(e.value);
+                    }
+                  }}
+                  value={
+                    LIST_SIZE.filter((e) => e.value === printKitchenSize)
+                      .length > 0
+                      ? LIST_SIZE.filter((e) => e.value === printKitchenSize)[0]
+                      : null
+                  }
+                  className="w-[300px]"
+                />
+              </div>
+            </div>
             <div className="px-4 items-end">
               <span className="text-sm font-medium">Copies</span>
               <div className="flex flex-row gap-4 mt-3">
@@ -160,7 +257,9 @@ const config = () => {
               </div>
             </div>
             <div className="flex flex-row gap-4 items-end">
-              <Button type="button">Test Printer</Button>
+              <Button type="button" onClick={() => _onPressTest(2)}>
+                Test Printer
+              </Button>
               <Button type="button" onClick={_onSavePrinterKitchen}>
                 Simpan
               </Button>
