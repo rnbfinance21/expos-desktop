@@ -19,6 +19,7 @@ import OrderService, {
   OrderDetail,
   SavePaymentParams,
   UpdatePaymentParams,
+  VoidPaymentParams,
 } from "../../services/OrderService";
 import { handleErrorAxios } from "../../utils/errors";
 import Toast from "../../utils/toast";
@@ -46,6 +47,7 @@ const ActionSection = () => {
     bayar,
     diskon,
     potongan,
+    keterangan,
   } = useSelector(getPayment);
   const { kembalian, total, diskon_value, pajak_value, subtotal, sumPayment } =
     useSelector(getPaymentAllSumPrice);
@@ -144,7 +146,7 @@ const ActionSection = () => {
   );
 
   const voidMutation = useMutation(
-    (params: UpdatePaymentParams) => OrderService.voidPayment(token, params),
+    (params: VoidPaymentParams) => OrderService.voidPayment(token, params),
     {
       onSuccess: (res) => {
         if (ipcRenderer) {
@@ -297,7 +299,7 @@ const ActionSection = () => {
   };
 
   const _onVoid = () => {
-    if (validationSave() && id !== null) {
+    if (validationSave() && id !== null && keterangan !== "") {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Transaksi ini akan di proses",
@@ -323,6 +325,7 @@ const ActionSection = () => {
             pajak: tax,
             potongan,
             total,
+            keterangan,
             details: orders.map((d) => {
               let resultVariant: {
                 option_id: number;
@@ -352,6 +355,12 @@ const ActionSection = () => {
             }),
           });
         }
+      });
+    } else if (keterangan === "") {
+      Toast.fire({
+        icon: "warning",
+        title: "Peringatan!",
+        text: "Silahkan isi keterangan void",
       });
     } else {
       Toast.fire({
@@ -427,6 +436,13 @@ const ActionSection = () => {
               type_order: 1,
             };
           }),
+          member: {
+            id: 0,
+            name: "",
+            username: "",
+            password_show: "",
+            type: 1,
+          },
         };
 
         ipcRenderer.send(

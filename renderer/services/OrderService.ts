@@ -192,6 +192,10 @@ export interface SavePaymentParams extends SaveDraftParams, PaymentParams {}
 
 export interface UpdatePaymentParams extends UpdateDraftParams, PaymentParams {}
 
+export interface VoidPaymentParams extends UpdateDraftParams, PaymentParams {
+  keterangan: string;
+}
+
 export type PaymentResponse = {
   code: number;
   message: string;
@@ -381,7 +385,7 @@ const updatePayment = async (
 
 const voidPayment = async (
   token: string,
-  params: UpdatePaymentParams
+  params: VoidPaymentParams
 ): Promise<PaymentResponse> => {
   try {
     const response = await axios.post(`${OrderUrl.VOID}`, params, {

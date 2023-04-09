@@ -52,6 +52,7 @@ export interface PaymentState extends PaymentOrder {
   diskon: number;
   potongan: number;
   bayar: number;
+  keterangan: string;
   inputNumpad: number;
   focus: number;
   changeState: boolean;
@@ -82,6 +83,7 @@ const initialState: PaymentState = {
   // update price
   openModal: false,
   selectedItem: null,
+  keterangan: "",
 };
 
 export const findIndexSingleItem = (data: Payment[], value: any) =>
@@ -269,6 +271,9 @@ export const paymentSlice = createSlice({
 
       state.orders[index] = object;
     },
+    setKeterangan: (state, actions: PayloadAction<string>) => {
+      state.keterangan = actions.payload;
+    },
   },
 });
 
@@ -292,6 +297,7 @@ export const {
   setOpenModal,
   setSelectedItem,
   updateItemCustom,
+  setKeterangan,
 } = paymentSlice.actions;
 
 export const getPayment = (state: RootState) => state.payment;

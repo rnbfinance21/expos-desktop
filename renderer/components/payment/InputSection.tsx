@@ -8,12 +8,14 @@ import {
   setBayar,
   setDiskon,
   setFocus,
+  setKeterangan,
   setPotongan,
 } from "../../features/paymentSlice";
 
 const InputSection = () => {
   const dispatch = useDispatch();
-  const { diskon, potongan, bayar, paymentType } = useSelector(getPayment);
+  const { diskon, potongan, bayar, paymentType, type, keterangan } =
+    useSelector(getPayment);
 
   const { total, kembalian } = useSelector(getPaymentAllSumPrice);
 
@@ -135,6 +137,21 @@ const InputSection = () => {
           className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
         />
       </div>
+      {type === "VOID" ? (
+        <div className="w-full flex rounded-md shadow-sm">
+          <span className="inline-flex pl-2 items-center w-32 rounded-l-md border border-r-0  bg-gray-50 text-gray-800 font-semibold sm:text-xs">
+            Keterangan
+          </span>
+          <input
+            type="text"
+            name="keterangan"
+            placeholder="Keterangan void"
+            value={keterangan}
+            onChange={(e) => dispatch(setKeterangan(e.currentTarget.value))}
+            className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
+          />
+        </div>
+      ) : null}
     </div>
   );
 };
