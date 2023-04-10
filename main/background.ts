@@ -628,8 +628,11 @@ const create = async () => {
     minHeight: 768,
     minWidth: 1280,
     webPreferences: {
+      plugins: true,
       nodeIntegration: true,
       contextIsolation: false,
+      webSecurity: false,
+      allowRunningInsecureContent: true,
     },
   });
 
@@ -686,6 +689,8 @@ const create = async () => {
 
   setupPushReceiver(mainWindow.webContents);
 };
+
+app.commandLine.appendSwitch("ignore-certificate-errors");
 
 app.on("window-all-closed", () => {
   // Respect the OSX convention of having the application in memory even
