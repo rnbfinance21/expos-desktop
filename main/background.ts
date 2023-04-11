@@ -55,6 +55,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     boolean: false,
     copies: 1,
     collate: true,
+    width: "260px",
     pageSize:
       sizeType === "1"
         ? {
@@ -94,6 +95,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
       fontsize: 20,
       style: {
         textAlign: "left",
+        fontSize: "14px",
       },
     },
     {
@@ -107,6 +109,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
       fontsize: 20,
       style: {
         textAlign: "left",
+        fontSize: "14px",
       },
     },
     {
@@ -120,6 +123,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
       fontsize: 20,
       style: {
         textAlign: "left",
+        fontSize: "14px",
       },
     },
     {
@@ -133,6 +137,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
       fontsize: 20,
       style: {
         textAlign: "left",
+        fontSize: "14px",
         paddingBottom: "10px",
         borderBottom: "1px dashed black",
       },
@@ -173,6 +178,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
       fontsize: 20,
       style: {
         // fontWeight: '400',
+        fontSize: "14px",
         marginTop: "5px",
         marginBottom: "5px",
         borderBottom: "1px dashed black",
@@ -211,6 +217,7 @@ ipcMain.on(
               height: 100,
             }
           : "80mm",
+      width: "260px",
       margin: "0 0 0 0",
       timeOutPerLine: 400,
       margins: {
@@ -243,6 +250,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
         },
       },
       {
@@ -256,6 +264,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
         },
       },
       {
@@ -269,6 +278,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
         },
       },
       {
@@ -282,6 +292,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
           paddingBottom: "10px",
           borderBottom: "1px dashed black",
         },
@@ -324,6 +335,7 @@ ipcMain.on(
         </div>`,
           fontsize: 20,
           style: {
+            fontSize: "14px",
             // fontWeight: '400',
             marginTop: "5px",
             marginBottom: "5px",
@@ -362,6 +374,7 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
             height: 100,
           }
         : "80mm",
+    width: "260px",
     margin: "5 30 5 20",
     timeOutPerLine: 400,
     // margins: {
@@ -403,6 +416,7 @@ ipcMain.on(
       boolean: false,
       copies: 1,
       collate: true,
+      width: "260px",
       pageSize:
         sizeType === "1"
           ? {
@@ -436,6 +450,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
         },
       },
       {
@@ -449,6 +464,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
         },
       },
       {
@@ -462,6 +478,7 @@ ipcMain.on(
         fontsize: 20,
         style: {
           textAlign: "left",
+          fontSize: "14px",
         },
       },
     ];
@@ -492,6 +509,7 @@ ipcMain.on("print-testing", async (e, name: string, sizeType = 1) => {
             height: 100,
           }
         : "80mm",
+    width: "260px",
     margin: "5 30 5 20",
     timeOutPerLine: 400,
   };
@@ -533,6 +551,7 @@ ipcMain.on(
         width: 273,
         height: 100,
       },
+      width: "260px",
       margin: "0 0 0 0",
       timeOutPerLine: 400,
       margins: {
@@ -574,6 +593,7 @@ ipcMain.on(
         width: 273,
         height: 100,
       },
+      width: "260px",
       margin: "0 0 0 0",
       timeOutPerLine: 400,
       margins: {

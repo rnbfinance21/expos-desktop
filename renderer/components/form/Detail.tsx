@@ -32,14 +32,20 @@ const Detail = () => {
 
       if (item.menu.custom_state) {
         dispatch(setType("UPDATE"));
-        dispatch(setModalCustom(true));
         dispatch(setSelectedMenuCustom(selectedData.menu));
         dispatch(setSelectedOrder(selectedData));
+
+        setTimeout(() => {
+          dispatch(setModalCustom(true));
+        }, 500);
       } else {
         dispatch(setType("UPDATE"));
-        dispatch(setModalUpdate(true));
         dispatch(setSelectedMenuCustom(selectedData.menu));
         dispatch(setSelectedOrder(selectedData));
+
+        setTimeout(() => {
+          dispatch(setModalUpdate(true));
+        }, 500);
       }
     }
   };

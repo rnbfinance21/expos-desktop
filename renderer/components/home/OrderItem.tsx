@@ -44,8 +44,10 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
       )}
     >
       <div className="flex-1 flex flex-row gap-4 items-center">
-        <div className="w-11 h-11 bg-gray-100 border rounded-md overflow-hidden flex justify-center items-center">
-          <span className="font-bold text-gray-900">{data.table}</span>
+        <div className="h-11 bg-gray-100 border rounded-md overflow-hidden flex justify-center items-center px-4">
+          <span className="font-bold text-gray-900 text-center">
+            {data.table}
+          </span>
         </div>
         <div className="flex flex-col justify-end h-full">
           <div className="flex flex-row items-center gap-2 mb-1">
