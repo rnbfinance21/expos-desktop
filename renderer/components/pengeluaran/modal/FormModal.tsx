@@ -18,6 +18,7 @@ import { Button } from "../../globals/buttons";
 import { TextInput } from "../../globals/forms";
 import { ErrorLabel } from "../../globals/labels";
 import MyModal from "../../globals/modal/MyModal";
+import ButtonAttributes from "../../payment/ButtonAttributes";
 
 interface FormModalProps {
   visible: boolean;
@@ -30,11 +31,13 @@ type FormData = {
   transaksi: string;
   amount: string;
   description: string;
+  type_transaction: number;
 };
 
 const schema = yup.object({
   transaksi: yup.string().required("Masukkan nama transaksi"),
   amount: yup.string().required("Masukkan jumlah transaksi"),
+  type_transaction: yup.number().required("Pilih tipe transaksi"),
   // description: yup.string().required("Masukkan keterangan"),
 });
 
@@ -50,9 +53,14 @@ const FormModal = ({
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      type_transaction: 1,
+    },
   });
 
   const pengeluaranMutation = useMutation(
@@ -74,6 +82,7 @@ const FormModal = ({
       amount: data.amount,
       description: data.description,
       type: formType,
+      type_transaction: data.type_transaction,
     });
   };
 
@@ -103,6 +112,26 @@ const FormModal = ({
             />
             {errors.transaksi ? (
               <ErrorLabel text={errors.transaksi.message ?? ""} />
+            ) : null}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-light mb-2">
+              Tipe Pengeluaran
+            </label>
+            <div className="grid grid-cols-2 gap-4">
+              <ButtonAttributes
+                label="Food"
+                isSelected={watch("type_transaction") === 1 ? true : false}
+                onClick={() => setValue("type_transaction", 1)}
+              />
+              <ButtonAttributes
+                label="Non Food"
+                isSelected={watch("type_transaction") === 2 ? true : false}
+                onClick={() => setValue("type_transaction", 2)}
+              />
+            </div>
+            {errors.type_transaction ? (
+              <ErrorLabel text={errors.type_transaction.message ?? ""} />
             ) : null}
           </div>
           {/* <div className="mb-4">

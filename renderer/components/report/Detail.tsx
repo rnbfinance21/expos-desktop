@@ -22,6 +22,7 @@ const Detail = () => {
     kasKeluar: 0,
     kasMasuk: 0,
     sum: 0,
+    sum_no_kas: 0,
     totalPenjualan: 0,
     details: [],
   });
@@ -75,14 +76,14 @@ const Detail = () => {
             {formatDate(date)}
           </span>
         </div>
-        <div className="flex flex-row justify-between items-start mb-1 pb-1">
+        {/* <div className="flex flex-row justify-between items-start mb-1 pb-1">
           <span className="text-sm font-tight text-gray-500 w-[150px]">
             Uang Kas / Laci
           </span>
           <span className="text-sm font-semibold text-gray-900 text-end">
             {numberFormat(data.kas, 2)}
           </span>
-        </div>
+        </div> */}
         <div className="flex flex-row justify-between items-start mb-1 pb-1">
           <span className="text-sm font-tight text-gray-500 w-[150px]">
             Kas Penjualan
@@ -108,14 +109,14 @@ const Detail = () => {
             );
           })}
         </div>
-        <div className="flex flex-row justify-between items-start mb-1 pb-1">
+        {/* <div className="flex flex-row justify-between items-start mb-1 pb-1">
           <span className="text-sm font-tight text-gray-500 w-[150px]">
             Kas Masuk
           </span>
           <span className="text-sm font-medium text-gray-900 text-end">
             {numberFormat(data.kasMasuk, 2)}
           </span>
-        </div>
+        </div> */}
         <div className="flex flex-row justify-between items-start mb-1 pb-1">
           <span className="text-sm font-tight text-gray-500 w-[150px]">
             Kas Keluar
@@ -129,7 +130,8 @@ const Detail = () => {
             Total
           </span>
           <span className="text-sm font-medium text-red-500 text-end">
-            Rp {numberFormat(data.sum, 2)}
+            Rp {data.sum_no_kas < 0 ? "-" : ""}
+            {numberFormat(data.sum_no_kas, 2)}
           </span>
         </div>
       </div>

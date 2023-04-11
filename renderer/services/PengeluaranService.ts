@@ -17,6 +17,7 @@ export type PengeluaranData = {
   date: string;
   amount: number;
   type: number;
+  type_transaction: number;
   state: number;
   deleted_at: string | null;
   created_at: string;
@@ -37,6 +38,7 @@ export type SavePengeluaranParams = {
   description?: string;
   amount: string;
   type: number;
+  type_transaction: number;
 };
 
 export type GetPengeluaranResponse = {

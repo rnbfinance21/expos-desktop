@@ -15,6 +15,7 @@ export type ResumeData = {
   totalPenjualan: number;
   details: Resume[];
   sum: number;
+  sum_no_kas: number;
   kasMasuk: number;
   kasKeluar: number;
 };

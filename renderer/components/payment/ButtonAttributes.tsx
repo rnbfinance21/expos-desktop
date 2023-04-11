@@ -16,7 +16,7 @@ const ButtonAttributes = ({
     <div
       onClick={onClick}
       className={classNames(
-        "p-2 border border-red-500 rounded text-center active:bg-red-500 active:text-white",
+        "p-2 border border-red-500 rounded text-center active:bg-red-500 active:text-white cursor-pointer",
         isSelected ? "bg-red-500 text-white" : ""
       )}
     >
