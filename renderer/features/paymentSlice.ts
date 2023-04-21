@@ -71,8 +71,8 @@ const initialState: PaymentState = {
   },
   orders: [],
   // select attribute
-  orderType: null,
-  paymentType: null,
+  orderType: 1,
+  paymentType: 1,
   tax: 0,
   diskon: 0,
   potongan: 0,

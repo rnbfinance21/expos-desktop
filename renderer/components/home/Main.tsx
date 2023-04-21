@@ -60,7 +60,11 @@ const Main = () => {
 
   const [data, setData] = useState<Order[]>([]);
 
-  const { status: statusQuery, refetch } = useQuery(
+  const {
+    status: statusQuery,
+    refetch,
+    isRefetching,
+  } = useQuery(
     ["orders", token],
     () =>
       OrderService.getOrderOutlet(token, {
@@ -101,7 +105,7 @@ const Main = () => {
     <div className="flex-1 flex flex-row bg-gray-100">
       <div className="flex-1 flex flex-col overflow-auto bg-white">
         <Header />
-        {statusQuery === "loading" ? (
+        {statusQuery === "loading" || isRefetching ? (
           <div className="flex-1 flex justify-center items-center">
             <Loading />
           </div>

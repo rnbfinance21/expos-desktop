@@ -78,7 +78,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 
   const [kasState, setKasState] = useState(false);
   const [openState, setOpenState] = useState(false);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(null);
   const [user, setUser] = useState<UserDetail>();
   const [outlet, setOutlet] = useState<OutletDetail>();
 
@@ -88,7 +88,11 @@ export const AuthContextProvider = ({ children }: Props) => {
       //   Cookie.get("_token") === undefined ? "" : Cookie.get("_token");
       const _token: any = ipcRenderer.sendSync("electron-store-get", "_token");
 
-      setToken(_token);
+      if (_token !== undefined && _token !== "") {
+        setToken(_token);
+      } else {
+        setToken("");
+      }
     }
   }, []);
 
@@ -97,6 +101,7 @@ export const AuthContextProvider = ({ children }: Props) => {
     () => AuthService.userDetail(token),
     {
       enabled: false,
+      retry: 3,
       onSuccess: (res) => {
         const { data } = res;
         setUser({
@@ -121,7 +126,18 @@ export const AuthContextProvider = ({ children }: Props) => {
         if (err.isAxiosError && err.response) {
           if (err.response.status === 401) {
             Toast.fire("Pemberitahuan", "Waktu sesi telah habis", "warning");
+            logout();
+          } else if (err.response.status === 500) {
+            Toast.fire(
+              "Pemberitahuan",
+              "Terjadi kesalahan pada server",
+              "warning"
+            );
+            logout();
+          } else {
+            Toast.fire("Pemberitahuan", "Waktu sesi telah habis", "warning");
           }
+        } else {
           logout();
         }
       },
@@ -142,13 +158,13 @@ export const AuthContextProvider = ({ children }: Props) => {
       ipcRenderer.send("electron-store-remove", "_token");
     }
     // Cookie.remove("_token");
-    setToken("");
+    setToken(null);
     setUser(undefined);
     setOutlet(undefined);
   };
 
   useEffect(() => {
-    if (token !== "") {
+    if (token !== null && token !== "") {
       fetchUser.refetch();
     }
   }, [token]);

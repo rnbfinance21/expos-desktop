@@ -1,8 +1,8 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useSelector } from "react-redux";
-import { getListOrder } from "../../features/listOrderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getListOrder, setSelectedOrder } from "../../features/listOrderSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import OrderService, { OrderDetail } from "../../services/OrderService";
 import { numberFormat } from "../../utils/currency";
@@ -13,8 +13,11 @@ import PendingAction from "./details/actions/PendingAction";
 import ProsesAction from "./details/actions/ProsesAction";
 import DetailItem from "./details/DetailItem";
 import InfoItem from "./details/InfoItem";
+import DetailActionButton from "../form/details/DetailActionButton";
+import { twMerge } from "tailwind-merge";
 
 const Detail = () => {
+  const dispatch = useDispatch();
   const { token } = useAuth();
   const { selectedOrder, refetchOrder } = useSelector(getListOrder);
 
@@ -71,6 +74,15 @@ const Detail = () => {
               ) : (
                 <div className="h-full w-full overflow-auto scroll-smooth scrollbar-hide">
                   <div className="p-4 border-b sticky top-0 bg-white space-y-2">
+                    <button
+                      onClick={() => dispatch(setSelectedOrder(null))}
+                      className="p-1 bg-red-500 text-xs text-white font-bold rounded-full"
+                    >
+                      <DynamicHeroIcon
+                        icon="XMarkIcon"
+                        className="text-white"
+                      />
+                    </button>
                     <div className="space-y-2 pb-4 border-b border-gray-300 border-dashed">
                       <InfoItem
                         title="Kode Transaksi"

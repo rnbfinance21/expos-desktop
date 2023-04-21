@@ -10,7 +10,7 @@ export const withOutAuth = (WrappedComponent: any) => {
     const { token } = useAuth();
 
     useEffect(() => {
-      if (token) {
+      if (token !== null && token !== "") {
         Router.replace(redirectTo, redirectTo, { shallow: true });
       }
     }, [token]);
