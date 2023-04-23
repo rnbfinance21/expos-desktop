@@ -66,6 +66,8 @@ const AuthForm = () => {
               Toast.fire("Error!", message, "error");
               break;
           }
+        } else {
+          Toast.fire("Error!", "Terjadi kesalahan pada sistem", "error");
         }
       },
     }
