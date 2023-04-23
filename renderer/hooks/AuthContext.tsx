@@ -100,7 +100,7 @@ export const AuthContextProvider = ({ children }: Props) => {
     ["user_detail", token],
     () => AuthService.userDetail(token),
     {
-      enabled: false,
+      enabled: token !== null && token !== "" ? true : false,
       retry: 3,
       onSuccess: (res) => {
         const { data } = res;
@@ -163,11 +163,13 @@ export const AuthContextProvider = ({ children }: Props) => {
     setOutlet(undefined);
   };
 
-  useEffect(() => {
-    if (token !== null && token !== "") {
-      fetchUser.refetch();
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token !== null && token !== "") {
+  //     fetchUser.refetch({
+  //       throwOnError: true,
+  //     });
+  //   }
+  // }, [token]);
 
   const context = {
     token,

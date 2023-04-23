@@ -12,6 +12,8 @@ import OrderService, { Order } from "../../services/OrderService";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
 import Header from "./Header";
 import OrderItem from "./OrderItem";
+import { AxiosError } from "axios";
+import { BaseResponse } from "../../services/types";
 
 const EmptyItem = () => {
   return (
@@ -73,6 +75,7 @@ const Main = () => {
         date,
       }),
     {
+      enabled: token !== null && token !== "" ? true : false,
       onSuccess: (res) => {
         setData(res.data);
       },
@@ -86,13 +89,13 @@ const Main = () => {
   const _onSelectedItem = (id: number | null) => dispatch(setSelectedOrder(id));
 
   useEffect(() => {
-    if (token !== "") {
+    if (token !== null && token !== "") {
       refetch();
     }
   }, [date, status, search, token]);
 
   useEffect(() => {
-    if (refetchOrder && token !== "") {
+    if (refetchOrder && token !== null && token !== "") {
       refetch();
     }
   }, [refetchOrder]);
