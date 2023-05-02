@@ -41,9 +41,8 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
             "printer-kitchen-copies"
           ) ?? 2;
 
-        for (let index = 0; index < copies; index++) {
-          ipcRenderer.send("print-order-additional", data, 1);
-        }
+        for (let index = 0; index < copies; index++) {}
+        ipcRenderer.send("print-order-additional", data, 1);
       } else {
         Toast.fire(
           "Peringatan!",
@@ -63,6 +62,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
           address: outlet.address,
           instagram: "ramenbajuri",
           kasir: ucwords(user.name),
+          tax: outlet.tax,
         },
         data
       );

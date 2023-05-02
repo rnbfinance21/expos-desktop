@@ -40,6 +40,7 @@ export type UserDetailResponse = {
       code: string;
       open_state: number;
       kas_state: number;
+      tax: number;
     };
   };
 };

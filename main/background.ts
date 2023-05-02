@@ -387,14 +387,16 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
 
   const printData: PosPrintData[] = PrinterService.cetakBill(outlet, data);
 
-  PosPrinter.print(printData, options)
-    .then(() => {
-      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-      console.log("success");
-    })
-    .catch((error: any) => {
-      console.error(error);
-    });
+  await PosPrinter.print(printData, options);
+
+  // PosPrinter.print(printData, options)
+  //   .then(() => {
+  //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+  //     console.log("success");
+  //   })
+  //   .catch((error: any) => {
+  //     console.error(error);
+  //   });
 });
 
 ipcMain.on(
@@ -582,6 +584,8 @@ ipcMain.on(
 ipcMain.on(
   "print-simulate",
   async (e, outlet: InfoOutlet, data: OrderDetail) => {
+    let sizeType = store.get("printer-cashier-size") as string;
+    
     const options: PosPrintOptions = {
       silent: true,
       printerName: store.get("printer-cashier") as string,
@@ -589,10 +593,13 @@ ipcMain.on(
       boolean: false,
       copies: 1,
       collate: true,
-      pageSize: {
-        width: 273,
-        height: 100,
-      },
+      pageSize:
+        sizeType === "1"
+          ? {
+              width: 273,
+              height: 100,
+            }
+          : "80mm",
       width: "260px",
       margin: "0 0 0 0",
       timeOutPerLine: 400,

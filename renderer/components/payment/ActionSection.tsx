@@ -28,6 +28,7 @@ import { Numpad } from "../globals/keyboard";
 import electron from "electron";
 import { ucwords } from "../../utils/string";
 import { formatFullDate } from "../../utils/date";
+import { DetailVariant } from "../../services/OrderService";
 
 const ActionSection = () => {
   const ipcRenderer = electron.ipcRenderer || false;
@@ -414,6 +415,44 @@ const ActionSection = () => {
 
             let total = (sum - diskon) * o.qty;
 
+            let myVariants: DetailVariant[] = [];
+
+            o.variants.forEach((e) => {
+              e.data.forEach((f) => {
+                myVariants.push({
+                  id: 0,
+                  transaksi_detail_id: o.id,
+                  variant_option_id: f.option_id,
+                  price: f.price,
+                  state: 1,
+                  deleted_at: null,
+                  created_at: "",
+                  updated_at: "",
+                  option_name: f.option_name,
+                  variant_name: e.name,
+                  variant_id: e.id,
+                });
+              });
+            });
+
+            o.variants.map((e) => {
+              return e.data.map((f) => {
+                return {
+                  id: 0,
+                  transaksi_detail_id: o.id,
+                  variant_option_id: f.option_id,
+                  price: f.price,
+                  state: 1,
+                  deleted_at: null,
+                  created_at: "",
+                  updated_at: "",
+                  option_name: f.option_name,
+                  variant_name: e.name,
+                  variant_id: e.id,
+                };
+              });
+            });
+
             return {
               box: o.box,
               id: o.id,
@@ -428,7 +467,7 @@ const ActionSection = () => {
               status: 1,
               total: total,
               transaksi_id: 1,
-              variants: [],
+              variants: myVariants,
               created_at: "",
               updated_at: "",
               deleted_at: "",

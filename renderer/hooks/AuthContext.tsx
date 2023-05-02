@@ -28,6 +28,7 @@ type OutletDetail = {
   address: string;
   code: string;
   open_state: boolean;
+  tax: number;
 };
 
 type authContextType = {
@@ -64,6 +65,7 @@ const authContextDefaultValues: authContextType = {
     address: "",
     code: "",
     open_state: false,
+    tax: 0,
   },
   signIn: (token: string) => {},
   setKasState: (state: boolean) => {},
@@ -118,6 +120,7 @@ export const AuthContextProvider = ({ children }: Props) => {
           address: data.outlet.address,
           code: data.outlet.code,
           open_state: data.outlet.open_state ? true : false,
+          tax: data.outlet.tax,
         });
         setKasState(data.outlet.kas_state === 1 ? true : false);
         setOpenState(data.outlet.open_state === 1 ? true : false);
