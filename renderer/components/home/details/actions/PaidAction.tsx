@@ -22,6 +22,7 @@ import DetailActionButton from "../../../form/details/DetailActionButton";
 import PasscodeModal from "../../../modals/PasscodeModal";
 import electron from "electron";
 import { ucwords } from "../../../../utils/string";
+import Toast from "../../../../utils/toast";
 
 interface PaidActionProps {
   data: OrderDetail;
@@ -121,6 +122,40 @@ const PaidAction = ({ data }: PaidActionProps) => {
     router.push("/form");
   };
 
+  const _sendToKitchen = () => {
+    if (ipcRenderer) {
+      let copies =
+        ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
+        2;
+
+      for (let index = 0; index < copies; index++) {
+        ipcRenderer.send("print-order", data, 1);
+      }
+    }
+  };
+
+  const _sendToKitchenAdditional = () => {
+    if (ipcRenderer) {
+      if (data.details.filter((e) => e.type === 1).length > 0) {
+        let copies =
+          ipcRenderer.sendSync(
+            "electron-store-get",
+            "printer-kitchen-copies"
+          ) ?? 2;
+
+        for (let index = 0; index < copies; index++) {
+          ipcRenderer.send("print-order-additional", data, 1);
+        }
+      } else {
+        Toast.fire(
+          "Peringatan!",
+          "Tidak terdapat item tambahan pada pesanan ini",
+          "warning"
+        );
+      }
+    }
+  };
+
   const _rePrint = () => {
     if (ipcRenderer) {
       ipcRenderer.send(
@@ -144,6 +179,16 @@ const PaidAction = ({ data }: PaidActionProps) => {
           icon="PrinterIcon"
           title="Cetak Struk"
           onClick={_rePrint}
+        />
+        <DetailActionButton
+          icon="PrinterIcon"
+          title="Cetak Pesanan"
+          onClick={_sendToKitchen}
+        />
+        <DetailActionButton
+          icon="PrinterIcon"
+          title="Cetak Tambahan"
+          onClick={_sendToKitchenAdditional}
         />
         <DetailActionButton
           icon="XMarkIcon"

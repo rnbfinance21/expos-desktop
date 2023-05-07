@@ -41,8 +41,8 @@ const DetailActionButton = ({
           )}
         />
       </div>
-      <div className="w-14 h-6 truncate mt-1 flex flex-col justify-start items-center">
-        <span className="text-[10px] font-light">{title}</span>
+      <div className="w-14 h-6  mt-1 flex flex-col justify-start items-center flex-wrap">
+        <span className="text-[10px] font-light text-center">{title}</span>
       </div>
     </div>
   );
