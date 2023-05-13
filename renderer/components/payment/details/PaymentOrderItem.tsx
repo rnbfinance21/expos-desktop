@@ -36,6 +36,13 @@ const PaymentOrderItem = ({
           </span>
           <span className="text-xs font-bold">Rp{numberFormat(result, 0)}</span>
         </div>
+        {data.type_order === 2 ? (
+          <div className="mt-1">
+            <p className="text-[10px] text-gray-500 font-light mr-1">
+              Take Away / Dibungkus
+            </p>
+          </div>
+        ) : null}
         <div className="flex flex-col mt-1 justify-between">
           {data.variants.map((variant) => {
             return (

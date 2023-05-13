@@ -54,7 +54,8 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     preview: false,
     boolean: false,
     copies: 1,
-    collate: true,
+    pagesPerSheet: 1,
+    collate: false,
     width: "260px",
     pageSize:
       sizeType === "1"
@@ -162,6 +163,7 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
               (${element.qty}) <span>${element.menu.name}</span>
             </div>
           </div>
+          ${element.type_order === 2 ? "<span>Takeaway / dibungkus</span>" : ""}
           ${variants}
           ${
             element.description !== null
@@ -188,14 +190,16 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     });
   });
 
-  PosPrinter.print(printData, options)
-    .then(() => {
-      Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-      console.log("success");
-    })
-    .catch((error: any) => {
-      console.error(error);
-    });
+  PosPrinter.print(printData, options);
+
+  // PosPrinter.print(printData, options)
+  //   .then(() => {
+  //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+  //     console.log("success");
+  //   })
+  //   .catch((error: any) => {
+  //     console.error(error);
+  //   });
 });
 
 ipcMain.on(
@@ -210,6 +214,7 @@ ipcMain.on(
       boolean: false,
       copies: 1,
       collate: true,
+      duplexMode: "simplex",
       pageSize:
         sizeType === "1"
           ? {
@@ -319,6 +324,7 @@ ipcMain.on(
               (${element.qty}) <span>${element.menu.name}</span>
             </div>
           </div>
+          ${element.type_order === 2 ? "<span>Takeaway / dibungkus</span>" : ""}
           ${variants}
           ${
             element.description !== null
@@ -346,14 +352,15 @@ ipcMain.on(
         });
       });
 
-    PosPrinter.print(printData, options)
-      .then(() => {
-        Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-        console.log("success");
-      })
-      .catch((error: any) => {
-        console.error(error);
-      });
+    await PosPrinter.print(printData, options);
+    // PosPrinter.print(printData, options)
+    //   .then(() => {
+    //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+    //     console.log("success");
+    //   })
+    //   .catch((error: any) => {
+    //     console.error(error);
+    //   });
   }
 );
 
@@ -367,6 +374,7 @@ ipcMain.on("print-bill", async (e, outlet: InfoOutlet, data: OrderDetail) => {
     boolean: false,
     copies: 1,
     collate: true,
+    duplexMode: "simplex",
     pageSize:
       sizeType === "1"
         ? {
@@ -570,14 +578,15 @@ ipcMain.on(
       type
     );
 
-    PosPrinter.print(printData, options)
-      .then(() => {
-        Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-        console.log("success");
-      })
-      .catch((error: any) => {
-        console.error(error);
-      });
+    await PosPrinter.print(printData, options);
+    // PosPrinter.print(printData, options)
+    //   .then(() => {
+    //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+    //     console.log("success");
+    //   })
+    //   .catch((error: any) => {
+    //     console.error(error);
+    //   });
   }
 );
 
@@ -585,7 +594,7 @@ ipcMain.on(
   "print-simulate",
   async (e, outlet: InfoOutlet, data: OrderDetail) => {
     let sizeType = store.get("printer-cashier-size") as string;
-    
+
     const options: PosPrintOptions = {
       silent: true,
       printerName: store.get("printer-cashier") as string,
@@ -616,14 +625,15 @@ ipcMain.on(
       data
     );
 
-    PosPrinter.print(printData, options)
-      .then(() => {
-        Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-        console.log("success");
-      })
-      .catch((error: any) => {
-        console.error(error);
-      });
+    await PosPrinter.print(printData, options);
+    // PosPrinter.print(printData, options)
+    //   .then(() => {
+    //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
+    //     console.log("success");
+    //   })
+    //   .catch((error: any) => {
+    //     console.error(error);
+    //   });
   }
 );
 

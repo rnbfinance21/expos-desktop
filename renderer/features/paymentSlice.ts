@@ -23,6 +23,7 @@ export interface Payment {
       price: number;
     }[];
   }[];
+  type_order: number;
   // variants: {
   //   option_id: number;
   //   price: number;

@@ -111,6 +111,7 @@ const DetailAction = () => {
                 price: d.price,
                 qty: d.qty,
                 variants: resultVariant,
+                type_order: d.type_order,
               };
             }),
           });
@@ -148,6 +149,7 @@ const DetailAction = () => {
                 price: d.price,
                 qty: d.qty,
                 variants: resultVariant,
+                type_order: d.type_order,
               };
             }),
           });
@@ -181,6 +183,7 @@ const DetailAction = () => {
             qty: d.qty,
             menu: d.menu,
             variants: d.variants,
+            type_order: d.type_order,
             // variants: d.variants.map((v) => {
             //   return {
             //     option_id: v.option_id,

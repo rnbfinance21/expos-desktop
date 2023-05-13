@@ -153,6 +153,7 @@ export type SaveDraftParams = {
     diskon: number;
     pajak_state: number;
     variants: VariantParams[];
+    type_order: number;
   }[];
 };
 
@@ -174,6 +175,7 @@ export type UpdateDraftParams = {
     diskon: number;
     pajak_state: number;
     variants: VariantParams[];
+    type_order: number;
   }[];
 };
 

@@ -68,6 +68,14 @@ const ActionSection = () => {
     return false;
   };
 
+  const validationSimulate = () => {
+    if (orderType !== null && paymentType !== null && tax !== null) {
+      return true;
+    }
+
+    return false;
+  };
+
   const saveMutation = useMutation(
     (params: SavePaymentParams) => OrderService.savePayment(token, params),
     {
@@ -242,6 +250,7 @@ const ActionSection = () => {
                   price: d.price,
                   qty: d.qty,
                   variants: resultVariant,
+                  type_order: d.type_order,
                 };
               }),
             });
@@ -284,6 +293,7 @@ const ActionSection = () => {
                   price: d.price,
                   qty: d.qty,
                   variants: resultVariant,
+                  type_order: d.type_order,
                 };
               }),
             });
@@ -352,6 +362,7 @@ const ActionSection = () => {
                 price: d.price,
                 qty: d.qty,
                 variants: resultVariant,
+                type_order: d.type_order,
               };
             }),
           });
@@ -373,7 +384,7 @@ const ActionSection = () => {
   };
 
   const _simulatePrint = () => {
-    if (validationSave() && id !== null) {
+    if (validationSimulate() && id !== null) {
       if (ipcRenderer) {
         let simluateData: OrderDetail = {
           id: 0,
