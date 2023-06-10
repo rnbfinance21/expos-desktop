@@ -1,9 +1,12 @@
 import React from "react";
-import { Order } from "../../services/OrderService";
+import { Order, OrderDetail } from "../../services/OrderService";
 import { classNames, ucwords } from "../../utils/string";
+import PendingAction from "./details/actions/PendingAction";
+import ProsesAction from "./details/actions/ProsesAction";
+import PaidAction from "./details/actions/PaidAction";
 
 interface OrderItemProps {
-  data: Order;
+  data: OrderDetail;
   onClick?: () => void;
   selected?: boolean;
 }
@@ -39,17 +42,17 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
     <div
       onClick={onClick}
       className={classNames(
-        "flex flex-col w-full p-4 border-b justify-between gap-4 hover:bg-gray-50 cursor-pointer",
+        "flex flex-col w-full p-4 border-b hover:bg-gray-50 cursor-pointer",
         selected ? "bg-gray-50" : ""
       )}
     >
-      <div className="flex-1 flex flex-row gap-4 items-center">
+      <div className="flex-1 flex flex-row items-center">
         <div className="h-11 bg-gray-100 border rounded-md overflow-hidden flex justify-center items-center px-4">
-          <span className="font-bold text-gray-900 text-center">
+          <span className="text-sm font-bold text-gray-900 text-center">
             {data.table}
           </span>
         </div>
-        <div className="flex flex-col justify-end h-full">
+        <div className="flex-1 flex flex-col justify-end h-full mx-4">
           <div className="flex flex-row items-center gap-2 mb-1">
             <p className="text-sm font-bold">{ucwords(data.name)}</p>
             <button
@@ -69,6 +72,16 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
               {data.items_count} items
             </p>
           </div>
+        </div>
+
+        <div className="w-[350px]">
+          {data.status === 0 ? (
+            <PendingAction data={data} />
+          ) : data?.status === 1 ? (
+            <ProsesAction data={data} />
+          ) : data?.status === 2 ? (
+            <PaidAction data={data} />
+          ) : null}
         </div>
       </div>
     </div>

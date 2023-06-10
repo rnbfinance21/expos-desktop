@@ -22,13 +22,13 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
 
   const _sendToKitchen = () => {
     if (ipcRenderer) {
-      let copies =
-        ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
-        2;
+      // let copies =
+      //   ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
+      //   2;
 
-      for (let index = 0; index < copies; index++) {
-        ipcRenderer.send("print-order", data, 1);
-      }
+      // for (let index = 0; index < copies; index++) {
+      // }
+      ipcRenderer.send("print-order", data, 1);
     }
   };
 

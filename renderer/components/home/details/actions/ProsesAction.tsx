@@ -250,13 +250,13 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
 
   const _sendToKitchen = () => {
     if (ipcRenderer) {
-      let copies =
-        ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
-        2;
+      // let copies =
+      //   ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
+      //   2;
 
-      for (let index = 0; index < copies; index++) {
-        ipcRenderer.send("print-order", data, 1);
-      }
+      // for (let index = 0; index < copies; index++) {
+      // }
+      ipcRenderer.send("print-order", data, 1);
     }
   };
 
@@ -305,7 +305,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
 
   return (
     <>
-      <div className="flex-1 grid grid-cols-6 gap-2">
+      <div className="flex-1 flex flex-row flex-wrap items-end justify-end gap-2">
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak"
