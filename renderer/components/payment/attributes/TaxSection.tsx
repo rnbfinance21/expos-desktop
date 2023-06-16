@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getListTax } from "../../../features/paymentAttributeSlice";
 import {
@@ -8,10 +8,12 @@ import {
   setTax,
 } from "../../../features/paymentSlice";
 import ButtonAttributes from "../ButtonAttributes";
+import { useAuth } from "../../../hooks/AuthContext";
 
 const TaxSection = () => {
   const dispatch = useDispatch();
   const listTax = useSelector(getListTax);
+  const { outlet } = useAuth();
   const { tax, paymentType } = useSelector(getPayment);
 
   const _onClick = (val: number) => {
@@ -21,6 +23,10 @@ const TaxSection = () => {
       dispatch(autoSetBayar());
     }
   };
+
+  useEffect(() => {
+    dispatch(setTax(outlet.tax));
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 px-4 py-2 cursor-pointer">

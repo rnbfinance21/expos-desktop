@@ -65,7 +65,7 @@ const authContextDefaultValues: authContextType = {
     address: "",
     code: "",
     open_state: false,
-    tax: 0,
+    tax: 10,
   },
   signIn: (token: string) => {},
   setKasState: (state: boolean) => {},
