@@ -49,6 +49,7 @@ const ActionSection = () => {
     diskon,
     potongan,
     keterangan,
+    changeState,
   } = useSelector(getPayment);
   const { kembalian, total, diskon_value, pajak_value, subtotal, sumPayment } =
     useSelector(getPaymentAllSumPrice);
@@ -79,19 +80,33 @@ const ActionSection = () => {
   const saveMutation = useMutation(
     (params: SavePaymentParams) => OrderService.savePayment(token, params),
     {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (ipcRenderer) {
-          ipcRenderer.send(
-            "print-reprint",
-            {
-              name: outlet.name,
-              address: outlet.address,
-              instagram: "ramenbajuri",
-              kasir: ucwords(user.name),
-            },
-            res.data,
-            2
-          );
+          if (changeState) {
+            ipcRenderer.send(
+              "print-reprint-with-struk",
+              {
+                name: outlet.name,
+                address: outlet.address,
+                instagram: "ramenbajuri",
+                kasir: ucwords(user.name),
+              },
+              res.data,
+              2
+            );
+          } else {
+            ipcRenderer.send(
+              "print-reprint",
+              {
+                name: outlet.name,
+                address: outlet.address,
+                instagram: "ramenbajuri",
+                kasir: ucwords(user.name),
+              },
+              res.data,
+              2
+            );
+          }
         }
         Swal.fire({
           title: "Berhasil",

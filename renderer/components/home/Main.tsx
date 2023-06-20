@@ -8,7 +8,7 @@ import {
   setSelectedOrder,
 } from "../../features/listOrderSlice";
 import { useAuth } from "../../hooks/AuthContext";
-import OrderService, { Order } from "../../services/OrderService";
+import OrderService, { Order, OrderDetail } from "../../services/OrderService";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
 import Header from "./Header";
 import OrderItem from "./OrderItem";
@@ -60,7 +60,7 @@ const Main = () => {
   const { date, status, search, refetchOrder, selectedOrder } =
     useSelector(getListOrder);
 
-  const [data, setData] = useState<Order[]>([]);
+  const [data, setData] = useState<OrderDetail[]>([]);
 
   const {
     status: statusQuery,
@@ -69,7 +69,7 @@ const Main = () => {
   } = useQuery(
     ["orders", token],
     () =>
-      OrderService.getOrderOutlet(token, {
+      OrderService.getOrderOutletNew(token, {
         search,
         status,
         date,
@@ -82,11 +82,13 @@ const Main = () => {
       onSettled: () => {
         dispatch(setRefetchOrder(false));
       },
-      refetchInterval: 30000,
+      // refetchInterval: 18000, // refetch every 5 minutes
+      refetchOnWindowFocus: true,
+      retry: 3,
     }
   );
 
-  const _onSelectedItem = (id: number | null) => dispatch(setSelectedOrder(id));
+  // const _onSelectedItem = (id: number | null) => dispatch(setSelectedOrder(id));
 
   useEffect(() => {
     if (token !== null && token !== "") {
@@ -100,9 +102,9 @@ const Main = () => {
     }
   }, [refetchOrder]);
 
-  useEffect(() => {
-    _onSelectedItem(null);
-  }, []);
+  // useEffect(() => {
+  //   _onSelectedItem(null);
+  // }, []);
 
   return (
     <div className="flex-1 flex flex-row bg-gray-100">
@@ -132,7 +134,7 @@ const Main = () => {
                     <OrderItem
                       key={`order_item_${item.id}`}
                       data={item}
-                      onClick={() => _onSelectedItem(item.id)}
+                      onClick={() => {}}
                       selected={selectedOrder === item.id}
                     />
                   );

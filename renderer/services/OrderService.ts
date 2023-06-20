@@ -4,6 +4,7 @@ import { BaseResponse } from "./types";
 
 enum OrderUrl {
   ORDER_OUTLET = "/api/transaksi/all",
+  ORDER_OUTLET_NEW = "/api/transaksi/all-new",
   ORDER_MERGE = "/api/transaksi/gabung/transaksi",
   ORDER_DETAIL = "/api/transaksi/detail",
   ORDER_STATE = "/api/transaksi/state",
@@ -116,6 +117,12 @@ export type GetOrderOutletResponse = {
   data: Order[];
 };
 
+export type GetOrderOutletNewResponse = {
+  code: number;
+  message: string;
+  data: OrderDetail[];
+};
+
 export type GetOrderDetailResponse = {
   code: number;
   message: string;
@@ -215,6 +222,25 @@ const getOrderOutlet = async (
 ): Promise<GetOrderOutletResponse> => {
   try {
     const resp = await axios.get(OrderUrl.ORDER_OUTLET, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      params: params,
+    });
+
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getOrderOutletNew = async (
+  token: string,
+  params: GetOrderOutletParams
+): Promise<GetOrderOutletNewResponse> => {
+  try {
+    const resp = await axios.get(OrderUrl.ORDER_OUTLET_NEW, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
@@ -435,6 +461,7 @@ const OrderService = {
   voidPayment,
   getOrderMerge,
   gabungOrder,
+  getOrderOutletNew,
 };
 
 export default OrderService;

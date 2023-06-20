@@ -9,7 +9,7 @@ function Home() {
     <DefaultLayout title="Home">
       <div className="flex-grow w-full flex flex-row">
         <Main />
-        <Detail />
+        {/* <Detail /> */}
       </div>
     </DefaultLayout>
   );

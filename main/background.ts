@@ -74,132 +74,263 @@ ipcMain.on("print-order", async (e, data: OrderDetail, print = 2) => {
     },
   };
 
-  const printData: PosPrintData[] = [
-    {
-      type: "text",
-      value: "Pesanan Masuk",
-      style: {
-        fontWeight: "700",
-        fontSize: "16px",
-        textAlign: "center",
-        marginBottom: "10px",
-      },
-    },
-    {
-      type: "text",
-      value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>No</div>
-                <div style='flex: 1'>
-                  : ${data.kode_transaksi}
-                </div>
-              </div>`,
-      fontsize: 20,
-      style: {
-        textAlign: "left",
-        fontSize: "14px",
-      },
-    },
-    {
-      type: "text",
-      value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Nama</div>
-                <div style='flex: 1'>
-                  : ${data.name}
-                </div>
-              </div>`,
-      fontsize: 20,
-      style: {
-        textAlign: "left",
-        fontSize: "14px",
-      },
-    },
-    {
-      type: "text",
-      value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Table</div>
-                <div style='flex: 1'>
-                  : ${data.table}
-                </div>
-              </div>`,
-      fontsize: 20,
-      style: {
-        textAlign: "left",
-        fontSize: "14px",
-      },
-    },
-    {
-      type: "text",
-      value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Tanggal</div>
-                <div style='flex: 1'>
-                  : ${data.date}
-                </div>
-              </div>`,
-      fontsize: 20,
-      style: {
-        textAlign: "left",
-        fontSize: "14px",
-        paddingBottom: "10px",
-        borderBottom: "1px dashed black",
-      },
-    },
-  ];
+  let checkHasFood =
+    data.details.filter((e) => e.menu.type !== 2).length === 0 ? false : true;
 
-  data.details.forEach((element) => {
-    let variants = "";
+  let checkHasDrink =
+    data.details.filter((e) => e.menu.type === 2).length === 0 ? false : true;
 
-    element.variants.forEach((v) => {
-      variants += `<div>
-        <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
-      </div>`;
-    });
+  if (checkHasFood) {
+    const printData: PosPrintData[] = [
+      {
+        type: "text",
+        value: "Pesanan Masuk",
+        style: {
+          fontWeight: "700",
+          fontSize: "16px",
+          textAlign: "center",
+          marginBottom: "10px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>No</div>
+                  <div style='flex: 1'>
+                    : ${data.kode_transaksi}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Nama</div>
+                  <div style='flex: 1'>
+                    : ${data.name}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Table</div>
+                  <div style='flex: 1'>
+                    : ${data.table}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Tanggal</div>
+                  <div style='flex: 1'>
+                    : ${data.date}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+          paddingBottom: "10px",
+          borderBottom: "1px dashed black",
+        },
+      },
+    ];
 
-    printData.push({
-      type: "text",
-      value: `
-        <div style='display: flex; flex-direction: column;'>
-          <div style='display: flex; flex-direction: row'>
-            <div style='flex: 1; text-align: left'>
-              (${element.qty}) <span>${element.menu.name}</span>
-            </div>
-          </div>
-          ${element.type_order === 2 ? "<span>Takeaway / dibungkus</span>" : ""}
-          ${variants}
-          ${
-            element.description !== null
-              ? `
-              <div style='text-align: left'>
-                <span>Catatan:</span>
+    data.details
+      .filter((e) => e.menu.type !== 2)
+      .forEach((element) => {
+        let variants = "";
+
+        element.variants.forEach((v) => {
+          variants += `<div>
+          <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+        </div>`;
+        });
+
+        printData.push({
+          type: "text",
+          value: `
+          <div style='display: flex; flex-direction: column;'>
+            <div style='display: flex; flex-direction: row'>
+              <div style='flex: 1; text-align: left'>
+                (${element.qty}) <span>${element.menu.name}</span>
               </div>
-              <div style='text-align: left'>
-                ${element.description}
-              </div>`
-              : ""
-          }
-        </div>`,
-      fontsize: 20,
-      style: {
-        // fontWeight: '400',
-        fontSize: "14px",
-        marginTop: "5px",
-        marginBottom: "5px",
-        borderBottom: "1px dashed black",
-        paddingTop: "5px",
-        paddingBottom: "5px",
+            </div>
+            ${
+              element.type_order === 2
+                ? "<span>Takeaway / dibungkus</span>"
+                : ""
+            }
+            ${variants}
+            ${
+              element.description !== null
+                ? `
+                <div style='text-align: left'>
+                  <span>Catatan:</span>
+                </div>
+                <div style='text-align: left'>
+                  ${element.description}
+                </div>`
+                : ""
+            }
+          </div>`,
+          fontsize: 20,
+          style: {
+            // fontWeight: '400',
+            fontSize: "14px",
+            marginTop: "5px",
+            marginBottom: "5px",
+            borderBottom: "1px dashed black",
+            paddingTop: "5px",
+            paddingBottom: "5px",
+          },
+        });
+      });
+
+    await PosPrinter.print(printData, options);
+  }
+
+  if (checkHasDrink) {
+    const printData: PosPrintData[] = [
+      {
+        type: "text",
+        value: "Pesanan Masuk",
+        style: {
+          fontWeight: "700",
+          fontSize: "16px",
+          textAlign: "center",
+          marginBottom: "10px",
+        },
       },
-    });
-  });
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>No</div>
+                  <div style='flex: 1'>
+                    : ${data.kode_transaksi}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Nama</div>
+                  <div style='flex: 1'>
+                    : ${data.name}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Table</div>
+                  <div style='flex: 1'>
+                    : ${data.table}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+        },
+      },
+      {
+        type: "text",
+        value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Tanggal</div>
+                  <div style='flex: 1'>
+                    : ${data.date}
+                  </div>
+                </div>`,
+        fontsize: 20,
+        style: {
+          textAlign: "left",
+          fontSize: "14px",
+          paddingBottom: "10px",
+          borderBottom: "1px dashed black",
+        },
+      },
+    ];
 
-  PosPrinter.print(printData, options);
+    data.details
+      .filter((e) => e.menu.type === 2)
+      .forEach((element) => {
+        let variants = "";
 
-  // PosPrinter.print(printData, options)
-  //   .then(() => {
-  //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-  //     console.log("success");
-  //   })
-  //   .catch((error: any) => {
-  //     console.error(error);
-  //   });
+        element.variants.forEach((v) => {
+          variants += `<div>
+          <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+        </div>`;
+        });
+
+        printData.push({
+          type: "text",
+          value: `
+          <div style='display: flex; flex-direction: column;'>
+            <div style='display: flex; flex-direction: row'>
+              <div style='flex: 1; text-align: left'>
+                (${element.qty}) <span>${element.menu.name}</span>
+              </div>
+            </div>
+            ${
+              element.type_order === 2
+                ? "<span>Takeaway / dibungkus</span>"
+                : ""
+            }
+            ${variants}
+            ${
+              element.description !== null
+                ? `
+                <div style='text-align: left'>
+                  <span>Catatan:</span>
+                </div>
+                <div style='text-align: left'>
+                  ${element.description}
+                </div>`
+                : ""
+            }
+          </div>`,
+          fontsize: 20,
+          style: {
+            // fontWeight: '400',
+            fontSize: "14px",
+            marginTop: "5px",
+            marginBottom: "5px",
+            borderBottom: "1px dashed black",
+            paddingTop: "5px",
+            paddingBottom: "5px",
+          },
+        });
+      });
+
+    await PosPrinter.print(printData, options);
+  }
 });
 
 ipcMain.on(
@@ -233,134 +364,265 @@ ipcMain.on(
       },
     };
 
-    const printData: PosPrintData[] = [
-      {
-        type: "text",
-        value: "Pesanan Tambahan",
-        style: {
-          fontWeight: "700",
-          fontSize: "16px",
-          textAlign: "center",
-          marginBottom: "10px",
-        },
-      },
-      {
-        type: "text",
-        value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>No</div>
-                <div style='flex: 1'>
-                  : ${data.kode_transaksi}
-                </div>
-              </div>`,
-        fontsize: 20,
-        style: {
-          textAlign: "left",
-          fontSize: "14px",
-        },
-      },
-      {
-        type: "text",
-        value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Nama</div>
-                <div style='flex: 1'>
-                  : ${data.name}
-                </div>
-              </div>`,
-        fontsize: 20,
-        style: {
-          textAlign: "left",
-          fontSize: "14px",
-        },
-      },
-      {
-        type: "text",
-        value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Table</div>
-                <div style='flex: 1'>
-                  : ${data.table}
-                </div>
-              </div>`,
-        fontsize: 20,
-        style: {
-          textAlign: "left",
-          fontSize: "14px",
-        },
-      },
-      {
-        type: "text",
-        value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Tanggal</div>
-                <div style='flex: 1'>
-                  : ${data.date}
-                </div>
-              </div>`,
-        fontsize: 20,
-        style: {
-          textAlign: "left",
-          fontSize: "14px",
-          paddingBottom: "10px",
-          borderBottom: "1px dashed black",
-        },
-      },
-    ];
+    let checkHasFood =
+      data.details.filter((e) => e.type === 1 && e.menu.type !== 2).length === 0
+        ? false
+        : true;
 
-    data.details
-      .filter((e) => e.type === 1)
-      .forEach((element) => {
-        let variants = "";
+    let checkHasDrink =
+      data.details.filter((e) => e.menu.type === 2).length === 0 ? false : true;
 
-        element.variants.forEach((v) => {
-          variants += `<div>
-        <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
-      </div>`;
-        });
-
-        printData.push({
+    if (checkHasFood) {
+      const printData: PosPrintData[] = [
+        {
           type: "text",
-          value: `
-        <div style='display: flex; flex-direction: column;'>
-          <div style='display: flex; flex-direction: row'>
-            <div style='flex: 1; text-align: left'>
-              (${element.qty}) <span>${element.menu.name}</span>
-            </div>
-          </div>
-          ${element.type_order === 2 ? "<span>Takeaway / dibungkus</span>" : ""}
-          ${variants}
-          ${
-            element.description !== null
-              ? `
-              <div style='flex: 1;text-align: left'>
-                <span>Catatan:</span>
-              </div>
-              <div style='text-align: left'>
-                ${element.description}
-              </div>
-          `
-              : ""
-          }
-        </div>`,
+          value: "Pesanan Masuk",
+          style: {
+            fontWeight: "700",
+            fontSize: "16px",
+            textAlign: "center",
+            marginBottom: "10px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>No</div>
+                  <div style='flex: 1'>
+                    : ${data.kode_transaksi}
+                  </div>
+                </div>`,
           fontsize: 20,
           style: {
+            textAlign: "left",
             fontSize: "14px",
-            // fontWeight: '400',
-            marginTop: "5px",
-            marginBottom: "5px",
-            borderBottom: "1px dashed black",
-            paddingTop: "5px",
-            paddingBottom: "5px",
           },
-        });
-      });
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Nama</div>
+                  <div style='flex: 1'>
+                    : ${data.name}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Table</div>
+                  <div style='flex: 1'>
+                    : ${data.table}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Tanggal</div>
+                  <div style='flex: 1'>
+                    : ${data.date}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+            paddingBottom: "10px",
+            borderBottom: "1px dashed black",
+          },
+        },
+      ];
 
-    await PosPrinter.print(printData, options);
-    // PosPrinter.print(printData, options)
-    //   .then(() => {
-    //     Toast.fire("Berhasil", "Pesanan berhasil di cetak ke dapur", "success");
-    //     console.log("success");
-    //   })
-    //   .catch((error: any) => {
-    //     console.error(error);
-    //   });
+      data.details
+        .filter((e) => e.menu.type !== 2)
+        .forEach((element) => {
+          let variants = "";
+
+          element.variants.forEach((v) => {
+            variants += `<div>
+          <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+        </div>`;
+          });
+
+          printData.push({
+            type: "text",
+            value: `
+          <div style='display: flex; flex-direction: column;'>
+            <div style='display: flex; flex-direction: row'>
+              <div style='flex: 1; text-align: left'>
+                (${element.qty}) <span>${element.menu.name}</span>
+              </div>
+            </div>
+            ${
+              element.type_order === 2
+                ? "<span>Takeaway / dibungkus</span>"
+                : ""
+            }
+            ${variants}
+            ${
+              element.description !== null
+                ? `
+                <div style='text-align: left'>
+                  <span>Catatan:</span>
+                </div>
+                <div style='text-align: left'>
+                  ${element.description}
+                </div>`
+                : ""
+            }
+          </div>`,
+            fontsize: 20,
+            style: {
+              // fontWeight: '400',
+              fontSize: "14px",
+              marginTop: "5px",
+              marginBottom: "5px",
+              borderBottom: "1px dashed black",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            },
+          });
+        });
+
+      await PosPrinter.print(printData, options);
+    }
+
+    if (checkHasDrink) {
+      const printData: PosPrintData[] = [
+        {
+          type: "text",
+          value: "Pesanan Tambahan",
+          style: {
+            fontWeight: "700",
+            fontSize: "16px",
+            textAlign: "center",
+            marginBottom: "10px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>No</div>
+                  <div style='flex: 1'>
+                    : ${data.kode_transaksi}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Nama</div>
+                  <div style='flex: 1'>
+                    : ${data.name}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Table</div>
+                  <div style='flex: 1'>
+                    : ${data.table}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Tanggal</div>
+                  <div style='flex: 1'>
+                    : ${data.date}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+            paddingBottom: "10px",
+            borderBottom: "1px dashed black",
+          },
+        },
+      ];
+
+      data.details
+        .filter((e) => e.type === 1 && e.menu.type === 2)
+        .forEach((element) => {
+          let variants = "";
+
+          element.variants.forEach((v) => {
+            variants += `<div>
+          <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+        </div>`;
+          });
+
+          printData.push({
+            type: "text",
+            value: `
+          <div style='display: flex; flex-direction: column;'>
+            <div style='display: flex; flex-direction: row'>
+              <div style='flex: 1; text-align: left'>
+                (${element.qty}) <span>${element.menu.name}</span>
+              </div>
+            </div>
+            ${
+              element.type_order === 2
+                ? "<span>Takeaway / dibungkus</span>"
+                : ""
+            }
+            ${variants}
+            ${
+              element.description !== null
+                ? `
+                <div style='text-align: left'>
+                  <span>Catatan:</span>
+                </div>
+                <div style='text-align: left'>
+                  ${element.description}
+                </div>`
+                : ""
+            }
+          </div>`,
+            fontsize: 20,
+            style: {
+              // fontWeight: '400',
+              fontSize: "14px",
+              marginTop: "5px",
+              marginBottom: "5px",
+              borderBottom: "1px dashed black",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            },
+          });
+        });
+
+      await PosPrinter.print(printData, options);
+    }
   }
 );
 
@@ -587,6 +849,327 @@ ipcMain.on(
     //   .catch((error: any) => {
     //     console.error(error);
     //   });
+  }
+);
+
+ipcMain.on(
+  "print-reprint-with-struk",
+  async (e, outlet: InfoOutlet, data: OrderDetail, type = 2) => {
+    let sizeType = store.get("printer-kitchen-size") as string;
+    
+    const options: PosPrintOptions = {
+      silent: true,
+      printerName: store.get("printer-cashier") as string,
+      preview: false,
+      boolean: false,
+      copies: 1,
+      collate: true,
+      pageSize: {
+        width: 273,
+        height: 100,
+      },
+      width: "260px",
+      margin: "0 0 0 0",
+      timeOutPerLine: 400,
+      margins: {
+        top: 5,
+        left: 10,
+        right: 10,
+        bottom: 5,
+      },
+    };
+
+    const printData: PosPrintData[] = PrinterService.cetakStruk(
+      outlet,
+      data,
+      type
+    );
+
+    await PosPrinter.print(printData, options);
+
+    // Prin order
+    const options2: PosPrintOptions = {
+      silent: true,
+      printerName: store.get("printer-kitchen") as string,
+      preview: false,
+      boolean: false,
+      copies: 1,
+      pagesPerSheet: 1,
+      collate: false,
+      width: "260px",
+      pageSize:
+        sizeType === "1"
+          ? {
+              width: 273,
+              height: 100,
+            }
+          : "80mm",
+      margin: "0 0 0 0",
+      timeOutPerLine: 400,
+      margins: {
+        top: 5,
+        left: 10,
+        right: 10,
+        bottom: 5,
+      },
+    };
+    let checkHasFood =
+      data.details.filter((e) => e.menu.type !== 2).length === 0 ? false : true;
+
+    let checkHasDrink =
+      data.details.filter((e) => e.menu.type === 2).length === 0 ? false : true;
+
+    if (checkHasFood) {
+      const printData: PosPrintData[] = [
+        {
+          type: "text",
+          value: "Pesanan Masuk",
+          style: {
+            fontWeight: "700",
+            fontSize: "16px",
+            textAlign: "center",
+            marginBottom: "10px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>No</div>
+                  <div style='flex: 1'>
+                    : ${data.kode_transaksi}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Nama</div>
+                  <div style='flex: 1'>
+                    : ${data.name}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Table</div>
+                  <div style='flex: 1'>
+                    : ${data.table}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Tanggal</div>
+                  <div style='flex: 1'>
+                    : ${data.date}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+            paddingBottom: "10px",
+            borderBottom: "1px dashed black",
+          },
+        },
+      ];
+
+      data.details
+        .filter((e) => e.menu.type !== 2)
+        .forEach((element) => {
+          let variants = "";
+
+          element.variants.forEach((v) => {
+            variants += `<div>
+          <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+        </div>`;
+          });
+
+          printData.push({
+            type: "text",
+            value: `
+          <div style='display: flex; flex-direction: column;'>
+            <div style='display: flex; flex-direction: row'>
+              <div style='flex: 1; text-align: left'>
+                (${element.qty}) <span>${element.menu.name}</span>
+              </div>
+            </div>
+            ${
+              element.type_order === 2
+                ? "<span>Takeaway / dibungkus</span>"
+                : ""
+            }
+            ${variants}
+            ${
+              element.description !== null
+                ? `
+                <div style='text-align: left'>
+                  <span>Catatan:</span>
+                </div>
+                <div style='text-align: left'>
+                  ${element.description}
+                </div>`
+                : ""
+            }
+          </div>`,
+            fontsize: 20,
+            style: {
+              // fontWeight: '400',
+              fontSize: "14px",
+              marginTop: "5px",
+              marginBottom: "5px",
+              borderBottom: "1px dashed black",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            },
+          });
+        });
+
+      await PosPrinter.print(printData, options2);
+    }
+
+    if (checkHasDrink) {
+      const printData: PosPrintData[] = [
+        {
+          type: "text",
+          value: "Pesanan Masuk",
+          style: {
+            fontWeight: "700",
+            fontSize: "16px",
+            textAlign: "center",
+            marginBottom: "10px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>No</div>
+                  <div style='flex: 1'>
+                    : ${data.kode_transaksi}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Nama</div>
+                  <div style='flex: 1'>
+                    : ${data.name}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Table</div>
+                  <div style='flex: 1'>
+                    : ${data.table}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+          },
+        },
+        {
+          type: "text",
+          value: `<div style='display: flex; flex-direction: row;'>
+                  <div style='width: 70px;'>Tanggal</div>
+                  <div style='flex: 1'>
+                    : ${data.date}
+                  </div>
+                </div>`,
+          fontsize: 20,
+          style: {
+            textAlign: "left",
+            fontSize: "14px",
+            paddingBottom: "10px",
+            borderBottom: "1px dashed black",
+          },
+        },
+      ];
+
+      data.details
+        .filter((e) => e.menu.type === 2)
+        .forEach((element) => {
+          let variants = "";
+
+          element.variants.forEach((v) => {
+            variants += `<div>
+          <span>- &nbsp;&nbsp;&nbsp; ${v.variant_name}: ${v.option_name}</span>
+        </div>`;
+          });
+
+          printData.push({
+            type: "text",
+            value: `
+          <div style='display: flex; flex-direction: column;'>
+            <div style='display: flex; flex-direction: row'>
+              <div style='flex: 1; text-align: left'>
+                (${element.qty}) <span>${element.menu.name}</span>
+              </div>
+            </div>
+            ${
+              element.type_order === 2
+                ? "<span>Takeaway / dibungkus</span>"
+                : ""
+            }
+            ${variants}
+            ${
+              element.description !== null
+                ? `
+                <div style='text-align: left'>
+                  <span>Catatan:</span>
+                </div>
+                <div style='text-align: left'>
+                  ${element.description}
+                </div>`
+                : ""
+            }
+          </div>`,
+            fontsize: 20,
+            style: {
+              // fontWeight: '400',
+              fontSize: "14px",
+              marginTop: "5px",
+              marginBottom: "5px",
+              borderBottom: "1px dashed black",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            },
+          });
+        });
+
+      await PosPrinter.print(printData, options2);
+    }
   }
 );
 
