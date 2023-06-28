@@ -365,12 +365,14 @@ ipcMain.on(
     };
 
     let checkHasFood =
-      data.details.filter((e) => e.type === 1 && e.menu.type !== 2).length === 0
+      data.details.filter((e) => e.menu.type !== 2 && e.type === 1).length === 0
         ? false
         : true;
 
     let checkHasDrink =
-      data.details.filter((e) => e.menu.type === 2).length === 0 ? false : true;
+      data.details.filter((e) => e.menu.type === 2 && e.type === 1).length === 0
+        ? false
+        : true;
 
     if (checkHasFood) {
       const printData: PosPrintData[] = [
@@ -445,7 +447,7 @@ ipcMain.on(
       ];
 
       data.details
-        .filter((e) => e.menu.type !== 2)
+        .filter((e) => e.menu.type !== 2 && e.type === 1)
         .forEach((element) => {
           let variants = "";
 
@@ -571,7 +573,7 @@ ipcMain.on(
       ];
 
       data.details
-        .filter((e) => e.type === 1 && e.menu.type === 2)
+        .filter((e) => e.menu.type === 2 && e.type === 1)
         .forEach((element) => {
           let variants = "";
 
@@ -856,7 +858,7 @@ ipcMain.on(
   "print-reprint-with-struk",
   async (e, outlet: InfoOutlet, data: OrderDetail, type = 2) => {
     let sizeType = store.get("printer-kitchen-size") as string;
-    
+
     const options: PosPrintOptions = {
       silent: true,
       printerName: store.get("printer-cashier") as string,
@@ -1282,7 +1284,7 @@ ipcMain.on("play-sound", async () => {
     mainWindow.webContents.openDevTools();
   }
 
-  setupPushReceiver(mainWindow.webContents);
+  // setupPushReceiver(mainWindow.webContents);
 })();
 
 // const create = async () => {

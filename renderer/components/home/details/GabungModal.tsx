@@ -130,7 +130,7 @@ const GabungModal = ({ show, onClose, data }: GabungModalProps) => {
                         }}
                         className="p-4 flex flex-row items-center border-b cursor-pointer hover:bg-gray-100"
                       >
-                        <div className="w-11 h-11 bg-gray-100 border rounded-md overflow-hidden flex justify-center items-center">
+                        <div className="h-11 px-4 bg-gray-100 border rounded-md overflow-hidden flex justify-center items-center">
                           <span className="font-bold text-gray-900">
                             {item.table}
                           </span>

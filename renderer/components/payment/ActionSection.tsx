@@ -51,8 +51,16 @@ const ActionSection = () => {
     keterangan,
     changeState,
   } = useSelector(getPayment);
-  const { kembalian, total, diskon_value, pajak_value, subtotal, sumPayment } =
-    useSelector(getPaymentAllSumPrice);
+  const {
+    kembalian,
+    total,
+    diskon_value,
+    pajak_value,
+    subtotal,
+    sumPayment,
+    sumSubtotalPajak,
+    sumSubtotalBox,
+  } = useSelector(getPaymentAllSumPrice);
   const orderTypeList = useSelector(getOrderType);
   const paymentTypeList = useSelector(getPaymentType);
 
@@ -428,8 +436,8 @@ const ActionSection = () => {
           status: 1,
           status_text: "Proses",
           subtotal,
-          subtotal_box: 0,
-          subtotal_pajak: sumPayment,
+          subtotal_box: sumSubtotalBox,
+          subtotal_pajak: sumSubtotalPajak,
           table: identity.table,
           total: total,
           type: 1,

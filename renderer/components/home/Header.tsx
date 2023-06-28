@@ -81,7 +81,7 @@ const Header = () => {
           ) : null}
           <button
             onClick={() => {
-              dispatch(setSelectedOrder(null));
+              // dispatch(setSelectedOrder(null));
               dispatch(setRefetchOrder(true));
             }}
             className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"

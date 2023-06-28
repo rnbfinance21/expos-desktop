@@ -139,10 +139,14 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
     },
   ];
 
-  order.details.forEach((element) => {
-    data.push({
-      type: "text",
-      value: `
+  let dataNoPajak: PosPrintData[] = [];
+
+  order.details
+    .filter((e) => e.pajak_state === 1)
+    .forEach((element) => {
+      data.push({
+        type: "text",
+        value: `
           <div style='display: flex; flex-direction: row'>
             <div style='flex: 1; text-align: left'>
               <span>${element.menu.name}</span> <br> 
@@ -161,20 +165,67 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
             </div>
             <div style='flex: 1; text-align: right'>
               (${element.diskon}%) (${element.qty}) <span>${numberFormat(
-        element.total,
-        0
-      )}</span>
+          element.total,
+          0
+        )}</span>
             </div>
           </div>
         `,
-      fontsize: 20,
-      style: {
-        // fontWeight: '400',
-        marginTop: "5px",
-        marginBottom: "5px",
-      },
+        fontsize: 20,
+        style: {
+          // fontWeight: '400',
+          marginTop: "5px",
+          marginBottom: "5px",
+        },
+      });
     });
-  });
+
+  order.details
+    .filter((e) => e.pajak_state === 0)
+    .forEach((element) => {
+      dataNoPajak.push({
+        type: "text",
+        value: `
+          <div style='display: flex; flex-direction: row'>
+            <div style='flex: 1; text-align: left'>
+              <span>${element.menu.name}</span> <br> 
+              <span>${numberFormat(element.menu.price, 0)}</span> <br>
+              ${element.variants
+                .filter((e) => e.price !== 0)
+                .reduce((acc, e) => {
+                  return (
+                    acc +
+                    `<span>- ${e.option_name} + ${numberFormat(
+                      e.price,
+                      0
+                    )}</span> <br>`
+                  );
+                }, "")}
+            </div>
+            <div style='flex: 1; text-align: right'>
+              (${element.diskon}%) (${element.qty}) <span>${numberFormat(
+          element.total,
+          0
+        )}</span>
+            </div>
+          </div>
+        `,
+        fontsize: 20,
+        style: {
+          // fontWeight: '400',
+          marginTop: "5px",
+          marginBottom: "5px",
+        },
+      });
+    });
+
+  let subtotal = order.subtotal_pajak;
+  let pajak =
+    order.status === 2
+      ? order.pajak_value
+      : (order.subtotal_pajak * outlet.tax) / 100;
+
+  let total = order.status === 2 ? order.total : subtotal + pajak + order.subtotal_box;
 
   data = [
     ...data,
@@ -191,7 +242,7 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
                   <div style='width: 70px;'>Subtotal</div>
                   <div>:</div>
                   <div style='flex: 1; text-align: right;'>
-                    <span>${numberFormat(order.total, 0)}</span>
+                    <span>${numberFormat(subtotal, 0)}</span>
                   </div>
                 </div>`,
       fontsize: 20,
@@ -206,10 +257,7 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
                     <div style='width: 70px;'>Ppn</div>
                     <div>:</div>
                     <div style='flex: 1; text-align: right;'>
-                      <span>${numberFormat(
-                        (order.total * outlet.tax) / 100,
-                        0
-                      )}</span>
+                      <span>${numberFormat(pajak, 0)}</span>
                     </div>
                   </div>`,
       fontsize: 20,
@@ -218,16 +266,14 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
         textAlign: "left",
       },
     },
+    ...dataNoPajak,
     {
       type: "text",
       value: `<div style='display: flex; flex-direction: row;'>
                   <div style='width: 70px;'>Total</div>
                   <div>:</div>
                   <div style='flex: 1; text-align: right;'>
-                    <span>${numberFormat(
-                      order.total + (order.total * outlet.tax) / 100,
-                      0
-                    )}</span>
+                    <span>${numberFormat(total, 0)}</span>
                   </div>
                 </div>`,
       fontsize: 20,
@@ -236,18 +282,6 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
         textAlign: "left",
       },
     },
-    // {
-    //   type: "text",
-    //   value: `<div style='display: flex; flex-direction: row;'>
-    //                 <div>*Harga belum termasuk PPN</div>
-    //               </div>`,
-    //   fontsize: 20,
-    //   style: {
-    //     // fontWeight: '400',
-    //     textAlign: "left",
-    //     marginTop: "20px",
-    //   },
-    // },
     {
       type: "text",
       value: `--Terima Kasih--`,

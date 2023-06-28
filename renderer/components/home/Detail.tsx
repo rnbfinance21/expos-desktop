@@ -19,11 +19,11 @@ import { twMerge } from "tailwind-merge";
 const Detail = () => {
   const dispatch = useDispatch();
   const { token } = useAuth();
-  const { selectedOrder, refetchOrder } = useSelector(getListOrder);
+  const { selectedOrder } = useSelector(getListOrder);
 
   const [selectedData, setSelectedData] = useState<OrderDetail>();
 
-  const { isLoading, isRefetching, refetch, isError } = useQuery(
+  const { isRefetching, refetch, status } = useQuery(
     ["orderDetail", token],
     () => OrderService.getOrderDetail(token, selectedOrder),
     {
@@ -31,32 +31,34 @@ const Detail = () => {
       onSuccess: (res) => {
         setSelectedData(res.data);
       },
+      refetchOnWindowFocus: false,
+      retry: 3,
     }
   );
 
   useEffect(() => {
-    if (selectedOrder !== null && token !== "") {
+    if (selectedOrder && selectedOrder !== null) {
       refetch();
     }
   }, [selectedOrder]);
 
-  useEffect(() => {
-    if (refetchOrder && token !== "" && selectedOrder !== null) {
-      refetch();
-    }
-  }, [refetchOrder]);
+  // useEffect(() => {
+  //   if (selectedOrder) {
+  //     refetch();
+  //   }
+  // }, [refetchOrder]);
 
   return (
     <>
-      <Transition as={Fragment} show={selectedOrder !== null ? true : false}>
-        <div className="w-[400px] h-full bg-white border-l">
-          {isLoading || isRefetching ? (
-            <div className="w-full h-full flex justify-center items-center">
-              <Loading />
-            </div>
-          ) : (
+      <Transition as={Fragment} show={true}>
+        <div className="w-[400px] h-full bg-white border-l flex flex-col">
+          {selectedOrder && selectedOrder !== null ? (
             <>
-              {isError ? (
+              {status === "loading" || isRefetching ? (
+                <div className="w-full h-full flex justify-center items-center">
+                  <Loading />
+                </div>
+              ) : status === "error" ? (
                 <div className="w-full h-full flex justify-center items-center">
                   <div className="flex flex-col space-y-2">
                     <span className="font-medium text-sm text-gray-900">
@@ -64,7 +66,7 @@ const Detail = () => {
                     </span>
                     <button
                       onClick={() => refetch()}
-                      className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md"
+                      className="flex flex-row border py-2 px-2 text-xs gap-2 rounded-md justify-center"
                     >
                       <DynamicHeroIcon icon="ArrowPathIcon" />
                       Perbarui
@@ -74,7 +76,7 @@ const Detail = () => {
               ) : (
                 <div className="h-full w-full overflow-auto scroll-smooth scrollbar-hide">
                   <div className="p-4 border-b sticky top-0 bg-white space-y-2">
-                    <button
+                    {/* <button
                       onClick={() => dispatch(setSelectedOrder(null))}
                       className="p-1 bg-red-500 text-xs text-white font-bold rounded-full"
                     >
@@ -82,7 +84,7 @@ const Detail = () => {
                         icon="XMarkIcon"
                         className="text-white"
                       />
-                    </button>
+                    </button> */}
                     <div className="space-y-2 pb-4 border-b border-gray-300 border-dashed">
                       <InfoItem
                         title="Kode Transaksi"
@@ -111,11 +113,9 @@ const Detail = () => {
                     </div>
                     {selectedData?.status === 0 ? (
                       <PendingAction data={selectedData} />
-                    ) : null}
-                    {selectedData?.status === 1 ? (
+                    ) : selectedData?.status === 1 ? (
                       <ProsesAction data={selectedData} />
-                    ) : null}
-                    {selectedData?.status === 2 ? (
+                    ) : selectedData?.status === 2 ? (
                       <PaidAction data={selectedData} />
                     ) : null}
                   </div>
@@ -132,6 +132,12 @@ const Detail = () => {
                 </div>
               )}
             </>
+          ) : (
+            <div className="flex-1 flex flex-row justify-center items-center">
+              <p className="text-sm font-bold text-gray-900">
+                Pilih / klik Transaksi disamping
+              </p>
+            </div>
           )}
         </div>
       </Transition>

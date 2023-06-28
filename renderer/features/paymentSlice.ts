@@ -373,6 +373,40 @@ export const getPaymentAllSumPrice = (state: RootState) => {
     return accumulator + result;
   }, 0);
 
+  const sumSubtotalPajak = state.payment.orders
+    .filter((e) => e.pajak_stat === 1)
+    .reduce((accumulator, item) => {
+      const priceMenu = item.price;
+      const sum = priceMenu * item.qty;
+      const box = item.qty * item.box;
+
+      const margin = (sum * item.margin) / 100;
+      const price = sum + margin + box;
+
+      const diskon = (price * item.diskon) / 100;
+
+      const result = price - diskon;
+
+      return accumulator + result;
+    }, 0);
+
+  const sumSubtotalBox = state.payment.orders
+    .filter((e) => e.pajak_stat === 0)
+    .reduce((accumulator, item) => {
+      const priceMenu = item.price;
+      const sum = priceMenu * item.qty;
+      const box = item.qty * item.box;
+
+      const margin = (sum * item.margin) / 100;
+      const price = sum + margin + box;
+
+      const diskon = (price * item.diskon) / 100;
+
+      const result = price - diskon;
+
+      return accumulator + result;
+    }, 0);
+
   const pajak = (sumPaymentNoTax * (state.payment.tax ?? 0)) / 100;
   const subtotal = sumPayment + pajak;
 
@@ -389,6 +423,8 @@ export const getPaymentAllSumPrice = (state: RootState) => {
     pajak_value: pajak,
     diskon_value: diskon,
     sumPayment,
+    sumSubtotalPajak,
+    sumSubtotalBox,
   };
 };
 

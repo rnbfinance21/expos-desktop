@@ -5,6 +5,7 @@ import { BaseResponse } from "./types";
 enum OrderUrl {
   ORDER_OUTLET = "/api/transaksi/all",
   ORDER_OUTLET_NEW = "/api/transaksi/all-new",
+  ORDER_OUTLET_PAGINATE = "/api/transaksi/all-paginate",
   ORDER_MERGE = "/api/transaksi/gabung/transaksi",
   ORDER_DETAIL = "/api/transaksi/detail",
   ORDER_STATE = "/api/transaksi/state",
@@ -111,6 +112,10 @@ export type GetOrderOutletParams = {
   date: string;
 };
 
+export interface GetOrderOutletPaginateParams extends GetOrderOutletParams {
+  page: number;
+}
+
 export type GetOrderOutletResponse = {
   code: number;
   message: string;
@@ -121,6 +126,41 @@ export type GetOrderOutletNewResponse = {
   code: number;
   message: string;
   data: OrderDetail[];
+};
+
+export type OrderPaginate = {
+  id: number;
+  kode_transaksi: string;
+  no_bill: string | null;
+  table: string;
+  date: string;
+  pajak: number;
+  diskon: number;
+  potongan: number;
+  status: number;
+  status_text: string;
+  status_additional: number;
+  type: number;
+  type_text: string;
+  deleted_at: string | null;
+  kategori_order_name: string | null;
+  kategori_payment_name: string | null;
+  name: string;
+  member_id: number | null;
+  reason: string | null;
+  items_count: number;
+};
+
+export type GetOrderOutletPaginateResponse = {
+  code: number;
+  message: string;
+  pagination: {
+    perPage: number;
+    page: number;
+    pageTotal: number;
+    totalData: number;
+  };
+  data: OrderPaginate[];
 };
 
 export type GetOrderDetailResponse = {
@@ -241,6 +281,25 @@ const getOrderOutletNew = async (
 ): Promise<GetOrderOutletNewResponse> => {
   try {
     const resp = await axios.get(OrderUrl.ORDER_OUTLET_NEW, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      params: params,
+    });
+
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getOrderOutletNew2 = async (
+  token: string,
+  params: GetOrderOutletParams
+): Promise<GetOrderOutletPaginateResponse> => {
+  try {
+    const resp = await axios.get(OrderUrl.ORDER_OUTLET_PAGINATE, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
@@ -462,6 +521,7 @@ const OrderService = {
   getOrderMerge,
   gabungOrder,
   getOrderOutletNew,
+  getOrderOutletNew2,
 };
 
 export default OrderService;

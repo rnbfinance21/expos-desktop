@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import React, { useEffect, useRef, useState } from "react";
+import { useInfiniteQuery, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Shimmer } from "react-shimmer";
 import {
@@ -8,7 +8,13 @@ import {
   setSelectedOrder,
 } from "../../features/listOrderSlice";
 import { useAuth } from "../../hooks/AuthContext";
-import OrderService, { Order, OrderDetail } from "../../services/OrderService";
+import OrderService, {
+  GetOrderOutletPaginateParams,
+  GetOrderOutletParams,
+  Order,
+  OrderDetail,
+  OrderPaginate,
+} from "../../services/OrderService";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
 import Header from "./Header";
 import OrderItem from "./OrderItem";
@@ -55,40 +61,107 @@ const OrderItemShimmer = () => {
 };
 
 const Main = () => {
+  const ref = useRef();
   const dispatch = useDispatch();
   const { token } = useAuth();
   const { date, status, search, refetchOrder, selectedOrder } =
     useSelector(getListOrder);
 
-  const [data, setData] = useState<OrderDetail[]>([]);
+  const [data, setData] = useState<OrderPaginate[]>([]);
+
+  // const {
+  //   status: statusQuery,
+  //   refetch,
+  //   isRefetching,
+  // } = useQuery(
+  //   ["orders", token],
+  //   () =>
+  //     OrderService.getOrderOutletNew(token, {
+  //       search,
+  //       status,
+  //       date,
+  //     }),
+  //   {
+  //     enabled: token !== null && token !== "" ? true : false,
+  //     onSuccess: (res) => {
+  //       setData(res.data);
+  //     },
+  //     onSettled: () => {
+  //       dispatch(setRefetchOrder(false));
+  //     },
+  //     // refetchInterval: 18000, // refetch every 5 minutes
+  //     refetchOnWindowFocus: true,
+  //     retry: 3,
+  //   }
+  // );
 
   const {
     status: statusQuery,
     refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    // isFetching,
+    // isLoading,
     isRefetching,
-  } = useQuery(
-    ["orders", token],
-    () =>
-      OrderService.getOrderOutletNew(token, {
-        search,
-        status,
+  } = useInfiniteQuery(
+    ["fetchMenu"],
+    ({ pageParam = 1 }) => {
+      let params: GetOrderOutletPaginateParams = {
         date,
-      }),
+        status,
+        search,
+        page: pageParam,
+      };
+
+      return OrderService.getOrderOutletNew2(token as string, params);
+    },
     {
       enabled: token !== null && token !== "" ? true : false,
       onSuccess: (res) => {
-        setData(res.data);
+        let tmpMenu: OrderPaginate[] = [];
+
+        res.pages.forEach((item) => {
+          item.data.forEach((menu) => {
+            tmpMenu = [...tmpMenu, menu];
+          });
+        });
+
+        setData([...tmpMenu]);
+      },
+      getPreviousPageParam: (firstPage) => {
+        let prev = undefined;
+
+        if (firstPage.pagination) {
+          prev =
+            firstPage.pagination.page === 1
+              ? undefined
+              : firstPage.pagination.page - 1;
+        }
+
+        return prev;
+      },
+      getNextPageParam: (lastPage) => {
+        let next = undefined;
+
+        if (lastPage.pagination) {
+          next =
+            lastPage.pagination.page >= lastPage.pagination.pageTotal
+              ? undefined
+              : lastPage.pagination.page + 1;
+        }
+
+        return next;
       },
       onSettled: () => {
         dispatch(setRefetchOrder(false));
       },
-      // refetchInterval: 18000, // refetch every 5 minutes
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       retry: 3,
     }
   );
 
-  // const _onSelectedItem = (id: number | null) => dispatch(setSelectedOrder(id));
+  const _onSelectedItem = (id: number) => dispatch(setSelectedOrder(id));
 
   useEffect(() => {
     if (token !== null && token !== "") {
@@ -102,15 +175,20 @@ const Main = () => {
     }
   }, [refetchOrder]);
 
-  // useEffect(() => {
-  //   _onSelectedItem(null);
-  // }, []);
-
   return (
     <div className="flex-1 flex flex-row bg-gray-100">
-      <div className="flex-1 flex flex-col overflow-auto bg-white">
+      <div
+        ref={ref}
+        onScroll={() => {
+          const { scrollTop, scrollHeight, clientHeight } = ref.current as any;
+          if (scrollTop + clientHeight === scrollHeight && hasNextPage) {
+            fetchNextPage();
+          }
+        }}
+        className="flex-1 flex flex-col overflow-auto bg-white"
+      >
         <Header />
-        {statusQuery === "loading" || isRefetching ? (
+        {statusQuery === "loading" || (isRefetching && !isFetchingNextPage) ? (
           <div className="flex-1 flex justify-center items-center">
             <Loading />
           </div>
@@ -134,7 +212,7 @@ const Main = () => {
                     <OrderItem
                       key={`order_item_${item.id}`}
                       data={item}
-                      onClick={() => {}}
+                      onClick={() => _onSelectedItem(item.id)}
                       selected={selectedOrder === item.id}
                     />
                   );

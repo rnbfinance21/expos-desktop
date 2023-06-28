@@ -9,6 +9,7 @@ export interface CounterState {
   date: string;
   refetchOrder: boolean;
   selectedOrder: number | null;
+  openDetail: boolean;
 }
 
 const initialState: CounterState = {
@@ -17,6 +18,7 @@ const initialState: CounterState = {
   date: formatDate(new Date()),
   refetchOrder: true,
   selectedOrder: null,
+  openDetail: false,
 };
 
 export const counterSlice = createSlice({
@@ -25,16 +27,20 @@ export const counterSlice = createSlice({
   reducers: {
     setSearch: (state, actions: PayloadAction<string>) => {
       state.search = actions.payload;
+      state.selectedOrder = null;
     },
     setStatus: (state, actions: PayloadAction<number | null>) => {
       state.status = actions.payload;
+      state.selectedOrder = null;
     },
     setDate: (state, actions: PayloadAction<string>) => {
       state.date = actions.payload;
+      state.selectedOrder = null;
     },
     setRefetchOrder: (state, actions: PayloadAction<boolean>) => {
       // state.selectedOrder = null;
       state.refetchOrder = actions.payload;
+      state.selectedOrder = null;
     },
     setStatusAndDate: (
       state,
@@ -45,10 +51,12 @@ export const counterSlice = createSlice({
     ) => {
       state.status = actions.payload.status;
       state.date = actions.payload.date;
+      state.selectedOrder = null;
     },
     setSelectedOrder: (state, actions: PayloadAction<number | null>) => {
-      state.selectedOrder =
-        actions.payload === state.selectedOrder ? null : actions.payload;
+      // state.selectedOrder =
+      //   actions.payload === state.selectedOrder ? null : actions.payload;
+      state.selectedOrder = actions.payload;
     },
   },
 });

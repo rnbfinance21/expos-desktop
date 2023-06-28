@@ -27,13 +27,13 @@ const PendingAction = ({ data }: PendingActionProps) => {
     (params: UpdateStateParams) => OrderService.updateState(token, params),
     {
       onSuccess: (res) => {
-        if(ipcRenderer) {
-          if(typeConfirm === 1) {
-            let copies =  ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
+        if (ipcRenderer) {
+          if (typeConfirm === 1) {
+            // let copies =  ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
 
-            for (let index = 0; index < copies; index++) {
-              ipcRenderer.send("print-order", data, 1);
-            }
+            // for (let index = 0; index < copies; index++) {
+            // }
+            ipcRenderer.send("print-order", data, 1);
           }
         }
         Swal.fire("Berhasil!", res.message, "success");

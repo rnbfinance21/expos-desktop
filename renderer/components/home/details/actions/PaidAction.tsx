@@ -174,7 +174,7 @@ const PaidAction = ({ data }: PaidActionProps) => {
 
   return (
     <>
-      <div className="flex-1 flex flex-row flex-wrap items-end justify-end gap-2">
+      <div className="flex-1 flex flex-row flex-wrap items-start justify-start gap-2">
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak Struk"

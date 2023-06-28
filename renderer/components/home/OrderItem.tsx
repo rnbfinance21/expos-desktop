@@ -1,12 +1,12 @@
 import React from "react";
-import { Order, OrderDetail } from "../../services/OrderService";
+import { Order, OrderDetail, OrderPaginate } from "../../services/OrderService";
 import { classNames, ucwords } from "../../utils/string";
 import PendingAction from "./details/actions/PendingAction";
 import ProsesAction from "./details/actions/ProsesAction";
 import PaidAction from "./details/actions/PaidAction";
 
 interface OrderItemProps {
-  data: OrderDetail;
+  data: OrderPaginate;
   onClick?: () => void;
   selected?: boolean;
 }
@@ -74,7 +74,7 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
           </div>
         </div>
 
-        <div className="w-[350px]">
+        {/* <div className="w-[350px]">
           {data.status === 0 ? (
             <PendingAction data={data} />
           ) : data?.status === 1 ? (
@@ -82,7 +82,7 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
           ) : data?.status === 2 ? (
             <PaidAction data={data} />
           ) : null}
-        </div>
+        </div> */}
       </div>
     </div>
   );
