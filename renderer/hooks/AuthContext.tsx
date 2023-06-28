@@ -29,6 +29,7 @@ type OutletDetail = {
   code: string;
   open_state: boolean;
   tax: number;
+  instagram: string;
 };
 
 type authContextType = {
@@ -66,6 +67,7 @@ const authContextDefaultValues: authContextType = {
     code: "",
     open_state: false,
     tax: 10,
+    instagram: "ramenbajuri",
   },
   signIn: (token: string) => {},
   setKasState: (state: boolean) => {},
@@ -104,6 +106,7 @@ export const AuthContextProvider = ({ children }: Props) => {
     {
       enabled: token !== null && token !== "" ? true : false,
       retry: 3,
+      refetchOnWindowFocus: false,
       onSuccess: (res) => {
         const { data } = res;
         setUser({
@@ -121,6 +124,7 @@ export const AuthContextProvider = ({ children }: Props) => {
           code: data.outlet.code,
           open_state: data.outlet.open_state ? true : false,
           tax: data.outlet.tax,
+          instagram: data.outlet.instagram,
         });
         setKasState(data.outlet.kas_state === 1 ? true : false);
         setOpenState(data.outlet.open_state === 1 ? true : false);

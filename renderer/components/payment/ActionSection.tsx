@@ -96,7 +96,7 @@ const ActionSection = () => {
               {
                 name: outlet.name,
                 address: outlet.address,
-                instagram: "ramenbajuri",
+                instagram: outlet.instagram,
                 kasir: ucwords(user.name),
               },
               res.data,
@@ -108,7 +108,7 @@ const ActionSection = () => {
               {
                 name: outlet.name,
                 address: outlet.address,
-                instagram: "ramenbajuri",
+                instagram: outlet.instagram,
                 kasir: ucwords(user.name),
               },
               res.data,
@@ -148,7 +148,7 @@ const ActionSection = () => {
             {
               name: outlet.name,
               address: outlet.address,
-              instagram: "ramenbajuri",
+              instagram: outlet.instagram,
               kasir: ucwords(user.name),
             },
             res.data,
@@ -187,7 +187,7 @@ const ActionSection = () => {
             {
               name: outlet.name,
               address: outlet.address,
-              instagram: "ramenbajuri",
+              instagram: outlet.instagram,
               kasir: ucwords(user.name),
             },
             res.data,
@@ -523,7 +523,7 @@ const ActionSection = () => {
           {
             name: outlet.name,
             address: outlet.address,
-            instagram: "ramenbajuri",
+            instagram: outlet.instagram,
             kasir: ucwords(user.name),
           },
           simluateData

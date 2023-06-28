@@ -60,7 +60,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
         {
           name: outlet.name,
           address: outlet.address,
-          instagram: "ramenbajuri",
+          instagram: outlet.instagram,
           kasir: ucwords(user.name),
           tax: outlet.tax,
         },
@@ -84,7 +84,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
       <div className="mt-4">
         <div
           onClick={_sendToKitchen}
-          className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center"
+          className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="TruckIcon" className="mr-4 h-6 w-6" />
           <span className="text-sm font-medium text-gray-900">
@@ -93,7 +93,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
         </div>
         <div
           onClick={_sendToKitchenAdditional}
-          className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center"
+          className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="DocumentPlusIcon" className="mr-4 h-6 w-6" />
           <span className="text-sm font-medium text-gray-900">
@@ -102,7 +102,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
         </div>
         <div
           onClick={_printBill}
-          className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center"
+          className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="PrinterIcon" className="mr-4 h-6 w-6" />
           <span className="text-sm font-medium text-gray-900">Cetak Struk</span>
@@ -110,7 +110,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
         {data.member !== null ? (
           <div
             onClick={_printAccount}
-            className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center"
+            className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
           >
             <DynamicHeroIcon icon="UserIcon" className="mr-4 h-6 w-6" />
             <span className="text-sm font-medium text-gray-900">

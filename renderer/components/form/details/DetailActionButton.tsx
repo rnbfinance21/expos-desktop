@@ -21,15 +21,13 @@ const DetailActionButton = ({
   onClick,
 }: DetailActionButtonProps) => {
   return (
-    <div
-      onClick={onClick}
-      className="cursor-pointer flex flex-col justify-center items-center"
-    >
+    <div className="cursor-pointer flex flex-col justify-center items-center">
       <div
+        onClick={onClick}
         className={classNames(
           "p-3 rounded-full  flex justify-center items-center",
           outline
-            ? `border border-red-500 active:border-red-600`
+            ? `border border-red-500 active:border-red-600 active:bg-red-200`
             : `bg-${color}-500 active:bg-${color}-600`
         )}
       >

@@ -41,6 +41,7 @@ export type UserDetailResponse = {
       open_state: number;
       kas_state: number;
       tax: number;
+      instagram: string;
     };
   };
 };

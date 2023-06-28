@@ -68,6 +68,8 @@ const GabungModal = ({ show, onClose, data }: GabungModalProps) => {
   useEffect(() => {
     if (show) {
       refetch();
+    } else {
+      setListData([]);
     }
   }, [show]);
 
