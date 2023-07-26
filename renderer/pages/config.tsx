@@ -6,6 +6,9 @@ import { ucwords } from "../utils/string";
 import { Button } from "../components/globals/buttons";
 import Toast from "../utils/toast";
 import { TextInput } from "../components/globals/forms";
+import { useAuth } from "../hooks/AuthContext";
+import { useMutation } from "react-query";
+import AuthService from "../services/AuthService";
 
 const LIST_SIZE = [
   {
@@ -20,6 +23,7 @@ const LIST_SIZE = [
 
 const config = () => {
   const ipcRenderer = electron.ipcRenderer || false;
+  const { accessCode, tableCount, token, refetch } = useAuth();
 
   const [printers, setPrinters] = useState<
     {
@@ -93,6 +97,19 @@ const config = () => {
       }
     }
   };
+
+  const _onPrintCode = () => {
+    if (ipcRenderer) {
+      ipcRenderer.send("print-code", accessCode, tableCount);
+    }
+  };
+
+  const mutation = useMutation(() => AuthService.regenerateCode(token), {
+    onSuccess: () => {
+      refetch();
+      Toast.fire("Berhasil", "Kode berhasil diperbaharui", "success");
+    },
+  });
 
   useEffect(() => {
     if (ipcRenderer) {
@@ -199,7 +216,7 @@ const config = () => {
               </Button>
             </div>
           </div>
-          <form className="flex flex-row">
+          <form className="flex flex-row mb-4">
             <div className="px-4">
               <span className="text-sm font-medium">Printer Dapur</span>
               <div className="flex flex-row gap-4 mt-4">
@@ -265,6 +282,15 @@ const config = () => {
               </Button>
             </div>
           </form>
+        </div>
+        <div className="flex flex-row px-4 gap-4">
+          <TextInput type="text" readOnly value={accessCode} className="mr-4" />
+          <Button type="button" onClick={() => mutation.mutate()}>
+            Ganti Kode
+          </Button>
+          <Button type="button" onClick={() => _onPrintCode()}>
+            Cetak Kode
+          </Button>
         </div>
       </div>
     </DefaultLayout>

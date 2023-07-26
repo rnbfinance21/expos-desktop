@@ -6,6 +6,7 @@ enum AuthUrl {
   UserDetail = "/api/auth/detail",
   KAS = "/api/kas",
   PASSCODE = "/api/passcode",
+  REGENERATE_CODE = "/api/regenerate-code",
 }
 
 export type LoginUsernameParams = {
@@ -43,6 +44,8 @@ export type UserDetailResponse = {
       tax: number;
       instagram: string;
     };
+    access_code: null | string;
+    table_count: null;
   };
 };
 
@@ -131,11 +134,31 @@ const checkPasscode = async (
   }
 };
 
+const regenerateCode = async (token: string): Promise<BaseResponse> => {
+  try {
+    const response = await axios.post(
+      AuthUrl.REGENERATE_CODE,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const AuthService = {
   loginUsername,
   userDetail,
   uangKas,
   checkPasscode,
+  regenerateCode,
 };
 
 export default AuthService;

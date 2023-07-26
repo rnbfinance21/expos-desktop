@@ -38,10 +38,13 @@ type authContextType = {
   token: string;
   user: UserDetail;
   outlet: OutletDetail;
+  accessCode: string | null;
+  tableCount: number;
   signIn: (token: string) => void;
   setKasState: (state: boolean) => void;
   logout: () => void;
   setOpenState: (state: boolean) => void;
+  refetch: () => void;
 };
 
 type Props = {
@@ -69,10 +72,13 @@ const authContextDefaultValues: authContextType = {
     tax: 10,
     instagram: "ramenbajuri",
   },
+  accessCode: null,
+  tableCount: 0,
   signIn: (token: string) => {},
   setKasState: (state: boolean) => {},
   setOpenState: (state: boolean) => {},
   logout: () => {},
+  refetch: () => {},
 };
 
 const AuthContext = createContext<authContextType>(authContextDefaultValues);
@@ -85,6 +91,8 @@ export const AuthContextProvider = ({ children }: Props) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState<UserDetail>();
   const [outlet, setOutlet] = useState<OutletDetail>();
+  const [accessCode, setAccessCode] = useState<string | null>(null);
+  const [tableCount, setTableCount] = useState<number>(0);
 
   useEffect(() => {
     if (ipcRenderer) {
@@ -128,6 +136,8 @@ export const AuthContextProvider = ({ children }: Props) => {
         });
         setKasState(data.outlet.kas_state === 1 ? true : false);
         setOpenState(data.outlet.open_state === 1 ? true : false);
+        setAccessCode(data.access_code);
+        setTableCount(data.table_count);
       },
       onError: (err: AxiosError<BaseResponse>) => {
         if (err.isAxiosError && err.response) {
@@ -170,6 +180,10 @@ export const AuthContextProvider = ({ children }: Props) => {
     setOutlet(undefined);
   };
 
+  const refetch = () => {
+    fetchUser.refetch();
+  };
+
   // useEffect(() => {
   //   if (token !== null && token !== "") {
   //     fetchUser.refetch({
@@ -188,6 +202,9 @@ export const AuthContextProvider = ({ children }: Props) => {
     setKasState,
     openState,
     setOpenState,
+    accessCode,
+    tableCount,
+    refetch,
   };
 
   return (

@@ -768,6 +768,52 @@ ipcMain.on(
   }
 );
 
+ipcMain.on("print-code", async (e, code = "", copies = 2) => {
+  let sizeType = store.get("printer-cashier-size") as string;
+
+  const options: PosPrintOptions = {
+    silent: true,
+    printerName: store.get("printer-cashier") as string,
+    preview: false,
+    boolean: false,
+    copies,
+    collate: true,
+    width: "260px",
+    pageSize:
+      sizeType === "1"
+        ? {
+            width: 273,
+            height: 100,
+          }
+        : "80mm",
+    margin: "5 30 5 20",
+    timeOutPerLine: 400,
+  };
+
+  const printData: PosPrintData[] = [
+    {
+      type: "text",
+      value: code,
+      style: {
+        fontWeight: "700",
+        fontSize: "20px",
+        textAlign: "center",
+        border: "1px solid black",
+        padding: "2px 4px",
+      },
+    },
+  ];
+
+  PosPrinter.print(printData, options)
+    .then(() => {
+      Toast.fire("Berhasil", "Akun berhasil dicetak", "success");
+      console.log("success");
+    })
+    .catch((error: any) => {
+      console.error(error);
+    });
+});
+
 ipcMain.on("print-testing", async (e, name: string, sizeType = 1) => {
   const options: PosPrintOptions = {
     silent: true,

@@ -10,7 +10,7 @@ import {
   setSelectedOrder,
   setStatus,
 } from "../../features/listOrderSlice";
-import { resetOrder, setType } from "../../features/orderSlice";
+import { getOrder, resetOrder, setType } from "../../features/orderSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import { DynamicHeroIcon } from "../globals/icons";
 import Filter from "./Filter";
@@ -20,6 +20,7 @@ const Header = () => {
   const router = useRouter();
   const { openState } = useAuth();
   const { status } = useSelector(getListOrder);
+  const { type } = useSelector(getOrder);
 
   const [inputSearch, setInputSearch] = useState("");
 
@@ -69,7 +70,9 @@ const Header = () => {
           {openState ? (
             <button
               onClick={() => {
-                dispatch(resetOrder());
+                if (type !== "ADD") {
+                  dispatch(resetOrder());
+                }
                 router.push("/form");
               }}
             >
