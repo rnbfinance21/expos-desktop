@@ -134,6 +134,13 @@ const SideBar = ({ show, onClose }: SideBarProps) => {
                     </div>
                     <div>
                       <SideBarMenu
+                        title="Supplier"
+                        onClick={() => router.push("/supplier")}
+                        icon="TruckIcon"
+                      />
+                    </div>
+                    <div>
+                      <SideBarMenu
                         title="Stok Menu"
                         onClick={() => router.push("/stok/")}
                         icon="DocumentArrowUpIcon"

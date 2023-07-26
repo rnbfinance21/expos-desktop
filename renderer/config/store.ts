@@ -8,6 +8,7 @@ import paymentAttributeReducer from "../features/paymentAttributeSlice";
 import reportReducer from "../features/reportSlice";
 import pengeluaranReducer from "../features/pengeluaranSlice";
 import stokMenuReducer from "../features/stokMenuSlice";
+import supplierReducer from "../features/supplierSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     report: reportReducer,
     pengeluaran: pengeluaranReducer,
     stok: stokMenuReducer,
+    supplier: supplierReducer,
   },
 });
 
