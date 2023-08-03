@@ -1276,10 +1276,10 @@ ipcMain.on("play-sound", async () => {
   await app.whenReady();
 
   mainWindow = createWindow("main", {
-    width: 1280,
-    height: 1024,
-    minWidth: 1280,
-    minHeight: 600,
+    width: 1024,
+    height: 768,
+    // minWidth: 1280,
+    // minHeight: 600,
     title: "EXPOS",
   });
 
