@@ -29,6 +29,7 @@ import electron from "electron";
 import { ucwords } from "../../utils/string";
 import { formatFullDate } from "../../utils/date";
 import { DetailVariant } from "../../services/OrderService";
+import axios from "../../utils/axios";
 
 const ActionSection = () => {
   const ipcRenderer = electron.ipcRenderer || false;
@@ -214,6 +215,22 @@ const ActionSection = () => {
       },
       onError: handleErrorAxios,
     }
+  );
+
+  const mutationLogs = useMutation((deskription: string) =>
+    axios.post(
+      "/api/transaksi/logs",
+      {
+        transaksi_id: id,
+        type: 0,
+        deskripsi: deskription,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
   );
 
   const _onChange = (val: string) => {
@@ -528,6 +545,8 @@ const ActionSection = () => {
           },
           simluateData
         );
+
+        mutationLogs.mutate("[Belum Lunas][Simulasi Print] Cetak struk");
       }
     } else {
       Toast.fire({

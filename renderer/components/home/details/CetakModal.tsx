@@ -8,6 +8,8 @@ import electron from "electron";
 import { OrderDetail } from "../../../services/OrderService";
 import { ucwords } from "../../../utils/string";
 import Toast from "../../../utils/toast";
+import { useMutation } from "react-query";
+import axios from "../../../utils/axios";
 
 interface CetakModalProps {
   show: boolean;
@@ -19,6 +21,22 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const { token, outlet, user } = useAuth();
+
+  const mutationLogs = useMutation((deskription: string) =>
+    axios.post(
+      "/api/transaksi/logs",
+      {
+        transaksi_id: data.id,
+        type: 0,
+        deskripsi: deskription,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+  );
 
   const _sendToKitchen = () => {
     if (ipcRenderer) {
@@ -66,6 +84,8 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
         },
         data
       );
+
+      mutationLogs.mutate("[Belum Lunas] cetak struk");
     }
   };
 

@@ -23,6 +23,7 @@ import PasscodeModal from "../../../modals/PasscodeModal";
 import electron from "electron";
 import { ucwords } from "../../../../utils/string";
 import Toast from "../../../../utils/toast";
+import axios from "../../../../utils/axios";
 
 interface PaidActionProps {
   data: OrderDetail;
@@ -32,9 +33,25 @@ const PaidAction = ({ data }: PaidActionProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
   const router = useRouter();
-  const { outlet, user } = useAuth();
+  const { token, outlet, user } = useAuth();
 
   const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
+
+  const mutationLogs = useMutation((deskription: string) =>
+    axios.post(
+      "/api/transaksi/logs",
+      {
+        transaksi_id: data.id,
+        type: 0,
+        deskripsi: deskription,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+  );
 
   const _onCancel = () => {
     setOpenPasscodeModal(true);
@@ -169,6 +186,8 @@ const PaidAction = ({ data }: PaidActionProps) => {
         data,
         1
       );
+
+      mutationLogs.mutate("[Lunas] cetak ulang struk");
     }
   };
 
