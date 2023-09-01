@@ -793,7 +793,7 @@ ipcMain.on("print-code", async (e, code = "", copies = 2) => {
   const printData: PosPrintData[] = [
     {
       type: "text",
-      value: code,
+      value: `Kode Outlet: ${code}`,
       style: {
         fontWeight: "700",
         fontSize: "20px",
