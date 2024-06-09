@@ -182,6 +182,7 @@ const PaidAction = ({ data }: PaidActionProps) => {
           address: outlet.address,
           instagram: outlet.instagram,
           kasir: ucwords(user.name),
+          contact: outlet.contact
         },
         data,
         1

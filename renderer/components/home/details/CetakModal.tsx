@@ -81,6 +81,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
           instagram: outlet.instagram,
           kasir: ucwords(user.name),
           tax: outlet.tax,
+          contact: outlet.contact
         },
         data
       );
