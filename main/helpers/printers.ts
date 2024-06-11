@@ -258,7 +258,7 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
         {
             type: "text",
             value: `<div style='display: flex; flex-direction: row;'>
-                    <div style='width: 70px;'>Ppn</div>
+                    <div style='width: 70px;'>Pb1</div>
                     <div>:</div>
                     <div style='flex: 1; text-align: right;'>
                       <span>${numberFormat(pajak, 0)}</span>
@@ -543,7 +543,7 @@ const cetakStruk = (
         {
             type: "text",
             value: `<div style='display: flex; flex-direction: row;'>
-                    <div style='width: 70px;'>Ppn</div>
+                    <div style='width: 70px;'>Pb1</div>
                     <div>:</div>
                     <div style='flex: 1; text-align: right;'>
                       <span>${numberFormat(order.pajak_value, 0)}</span>
@@ -942,7 +942,7 @@ const simulateStruk = (
         {
             type: "text",
             value: `<div style='display: flex; flex-direction: row;'>
-                      <div style='width: 70px;'>Ppn</div>
+                      <div style='width: 70px;'>Pb1</div>
                       <div>:</div>
                       <div style='flex: 1; text-align: right;'>
                         <span>${numberFormat(order.pajak_value, 0)}</span>
