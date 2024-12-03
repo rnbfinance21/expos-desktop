@@ -24,6 +24,8 @@ export type PengeluaranData = {
   updated_at: string;
   outlet_name: string;
   user_name: string;
+  qty: number;
+  price: number;
 };
 
 export type GetPengeluaranParams = {
@@ -37,6 +39,8 @@ export type SavePengeluaranParams = {
   transaksi: string;
   description?: string;
   amount: string;
+  qty: string;
+  price: string;
   type: number;
   type_transaction: number;
 };

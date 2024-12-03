@@ -30,6 +30,8 @@ interface FormModalProps {
 type FormData = {
     transaksi: string;
     amount: string;
+    qty: string;
+    price: string;
     description: string;
     type_transaction: number;
 };
@@ -80,6 +82,8 @@ const FormModal = ({
             outlet_id: outlet.id,
             transaksi: data.transaksi,
             amount: data.amount,
+            qty: data.qty,
+            price: data.price,
             description: data.description,
             type: formType,
             type_transaction: data.type_transaction,
@@ -175,7 +179,47 @@ const FormModal = ({
                             htmlFor="username"
                             className="block text-sm font-light mb-2"
                         >
-                            Jumlah
+                            Quantity
+                        </label>
+                        <CurrencyInput
+                            allowDecimals={false}
+                            defaultValue={0}
+                            decimalSeparator=","
+                            groupSeparator="."
+                            placeholder="Quantity"
+                            className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
+                            {...register("qty")}
+                        />
+                        {errors.qty ? (
+                            <ErrorLabel text={errors.qty.message ?? ""} />
+                        ) : null}
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="username"
+                            className="block text-sm font-light mb-2"
+                        >
+                            Harga Satuan
+                        </label>
+                        <CurrencyInput
+                            allowDecimals={false}
+                            defaultValue={0}
+                            decimalSeparator=","
+                            groupSeparator="."
+                            placeholder="Harga Satuan"
+                            className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
+                            {...register("price")}
+                        />
+                        {errors.price ? (
+                            <ErrorLabel text={errors.price.message ?? ""} />
+                        ) : null}
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="username"
+                            className="block text-sm font-light mb-2"
+                        >
+                            Total
                         </label>
                         <CurrencyInput
                             allowDecimals={false}
