@@ -9,20 +9,22 @@ import reportReducer from "../features/reportSlice";
 import pengeluaranReducer from "../features/pengeluaranSlice";
 import stokMenuReducer from "../features/stokMenuSlice";
 import supplierReducer from "../features/supplierSlice";
+import purchaseReducer from "../features/purchaseSlice";
 
 export const store = configureStore({
-  reducer: {
-    listOrder: listOrderReducer,
-    menu: menuReducer,
-    order: orderReducer,
-    custom: customReducer,
-    payment: paymentReducer,
-    paymentAttribute: paymentAttributeReducer,
-    report: reportReducer,
-    pengeluaran: pengeluaranReducer,
-    stok: stokMenuReducer,
-    supplier: supplierReducer,
-  },
+    reducer: {
+        listOrder: listOrderReducer,
+        menu: menuReducer,
+        order: orderReducer,
+        custom: customReducer,
+        payment: paymentReducer,
+        paymentAttribute: paymentAttributeReducer,
+        report: reportReducer,
+        pengeluaran: pengeluaranReducer,
+        stok: stokMenuReducer,
+        supplier: supplierReducer,
+        purchase: purchaseReducer,
+    },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
