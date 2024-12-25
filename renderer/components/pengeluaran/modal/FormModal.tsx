@@ -32,15 +32,19 @@ type FormData = {
     amount: string;
     qty: string;
     price: string;
+    satuan: string;
     description: string;
     type_transaction: number;
 };
 
 const schema = yup.object({
     transaksi: yup.string().required("Masukkan nama transaksi"),
-    amount: yup.string().required("Masukkan jumlah transaksi"),
+    amount: yup.string().required("Masukkan total transaksi"),
     type_transaction: yup.number().required("Pilih tipe transaksi"),
-    // description: yup.string().required("Masukkan keterangan"),
+    description: yup.string().required("Masukkan keterangan"),
+    qty: yup.string().required("Masukan jumlah barang"),
+    price: yup.string().required("Masukan harga barang"),
+    satuan: yup.string().required("Masukan satuan barang"),
 });
 
 const FormModal = ({
@@ -84,6 +88,7 @@ const FormModal = ({
             amount: data.amount,
             qty: data.qty,
             price: data.price,
+            satuan: data.satuan,
             description: data.description,
             type: formType,
             type_transaction: data.type_transaction,
@@ -174,65 +179,97 @@ const FormModal = ({
                             />
                         ) : null}
                     </div>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="username"
-                            className="block text-sm font-light mb-2"
-                        >
-                            Quantity
-                        </label>
-                        <CurrencyInput
-                            allowDecimals={false}
-                            defaultValue={0}
-                            decimalSeparator=","
-                            groupSeparator="."
-                            placeholder="Quantity"
-                            className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
-                            {...register("qty")}
-                        />
-                        {errors.qty ? (
-                            <ErrorLabel text={errors.qty.message ?? ""} />
-                        ) : null}
-                    </div>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="username"
-                            className="block text-sm font-light mb-2"
-                        >
-                            Harga Satuan
-                        </label>
-                        <CurrencyInput
-                            allowDecimals={false}
-                            defaultValue={0}
-                            decimalSeparator=","
-                            groupSeparator="."
-                            placeholder="Harga Satuan"
-                            className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
-                            {...register("price")}
-                        />
-                        {errors.price ? (
-                            <ErrorLabel text={errors.price.message ?? ""} />
-                        ) : null}
-                    </div>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="username"
-                            className="block text-sm font-light mb-2"
-                        >
-                            Total
-                        </label>
-                        <CurrencyInput
-                            allowDecimals={false}
-                            defaultValue={0}
-                            decimalSeparator=","
-                            groupSeparator="."
-                            placeholder="Jumlah"
-                            className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
-                            {...register("amount")}
-                        />
-                        {errors.amount ? (
-                            <ErrorLabel text={errors.amount.message ?? ""} />
-                        ) : null}
+                    <div className="grid grid-cols-4 gap-4">
+                        <div className="mb-4">
+                            <label
+                                htmlFor="username"
+                                className="block text-sm font-light mb-2"
+                            >
+                                Quantity
+                            </label>
+                            <CurrencyInput
+                                allowDecimals={false}
+                                // defaultValue={0}
+                                decimalSeparator=","
+                                groupSeparator="."
+                                placeholder="Quantity"
+                                className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
+                                {...register("qty")}
+                            />
+                            {errors.qty ? (
+                                <ErrorLabel
+                                    className="ml-0"
+                                    text={errors.qty.message ?? ""}
+                                />
+                            ) : null}
+                        </div>
+                        <div className="mb-4">
+                            <label
+                                htmlFor="satuan"
+                                className="block text-sm font-light mb-2"
+                            >
+                                Satuan
+                            </label>
+                            <TextInput
+                                id="satuan"
+                                type="text"
+                                placeholder="Masukkan satuan"
+                                className="py-[10px]"
+                                {...register("satuan")}
+                            />
+                            {errors.satuan ? (
+                                <ErrorLabel
+                                    className="ml-0"
+                                    text={errors.satuan.message ?? ""}
+                                />
+                            ) : null}
+                        </div>
+                        <div className="mb-4">
+                            <label
+                                htmlFor="username"
+                                className="block text-sm font-light mb-2"
+                            >
+                                Harga Satuan
+                            </label>
+                            <CurrencyInput
+                                allowDecimals={false}
+                                // defaultValue={0}
+                                decimalSeparator=","
+                                groupSeparator="."
+                                placeholder="Harga Satuan"
+                                className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
+                                {...register("price")}
+                            />
+                            {errors.price ? (
+                                <ErrorLabel
+                                    className="ml-0"
+                                    text={errors.price.message ?? ""}
+                                />
+                            ) : null}
+                        </div>
+                        <div className="mb-4">
+                            <label
+                                htmlFor="username"
+                                className="block text-sm font-light mb-2"
+                            >
+                                Total
+                            </label>
+                            <CurrencyInput
+                                allowDecimals={false}
+                                // defaultValue={0}
+                                decimalSeparator=","
+                                groupSeparator="."
+                                placeholder="Jumlah"
+                                className="flex-1 block w-full text-left focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md sm:text-base border-gray-200"
+                                {...register("amount")}
+                            />
+                            {errors.amount ? (
+                                <ErrorLabel
+                                    className="ml-0"
+                                    text={errors.amount.message ?? ""}
+                                />
+                            ) : null}
+                        </div>
                     </div>
                 </div>
                 <div className="grid grid-cols-1 gap-4">

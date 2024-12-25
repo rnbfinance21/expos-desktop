@@ -12,6 +12,7 @@ import { handleErrorAxios } from "../../utils/errors";
 import Toast from "../../utils/toast";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
 import Header from "./main/Header";
+import { ucwords } from "../../utils/string";
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -162,7 +163,10 @@ const Main = () => {
                                                     )}
                                                 </th>
                                                 <th className="text-xs font-light py-2 px-4 w-64 text-end">
-                                                    {numberFormat(item.qty, 0)}
+                                                    {numberFormat(item.qty, 0)}{" "}
+                                                    {ucwords(
+                                                        item.satuan ?? "-"
+                                                    )}
                                                 </th>
                                                 <th className="text-xs font-light py-2 px-4 w-64 text-end">
                                                     <div className="flex flex-row">
