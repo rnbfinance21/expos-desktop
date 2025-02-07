@@ -239,7 +239,10 @@ type PaymentParams = {
 
 export interface SavePaymentParams extends SaveDraftParams, PaymentParams {}
 
-export interface UpdatePaymentParams extends UpdateDraftParams, PaymentParams {}
+export interface UpdatePaymentParams extends UpdateDraftParams, PaymentParams {
+  updateLogs?: number[];
+  deleteLogs?: number[];
+}
 
 export interface VoidPaymentParams extends UpdateDraftParams, PaymentParams {
   keterangan: string;

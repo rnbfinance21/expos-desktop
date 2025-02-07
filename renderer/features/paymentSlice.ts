@@ -43,6 +43,8 @@ export interface PaymentOrder {
     table: string;
     no_bill: string | null;
   };
+  updateLog?: number[];
+  deleteLog?: number[];
   orders: Payment[];
 }
 
@@ -70,6 +72,8 @@ const initialState: PaymentState = {
     table: "",
     no_bill: null,
   },
+  updateLog: [],
+  deleteLog: [],
   orders: [],
   // select attribute
   orderType: 1,
@@ -108,6 +112,8 @@ export const paymentSlice = createSlice({
       state.id = actions.payload.id;
       state.identity = actions.payload.identity;
       state.orders = actions.payload.orders;
+      state.deleteLog = actions.payload.deleteLog;
+      state.updateLog = actions.payload.updateLog;
     },
     setOrderType: (state, actions: PayloadAction<number | null>) => {
       state.orderType = actions.payload;
