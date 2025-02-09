@@ -236,11 +236,23 @@ const DetailAction = () => {
     };
 
     const _onPayment = () => {
-        if (identity.name === "" || identity.table === "") {
+        if (identity.name == null || identity.name == "") {
             Toast.fire({
                 icon: "warning",
                 title: "Peringatan!",
-                text: "Silahkan isi data pelanggan",
+                text: "Silahkan isi nama pelanggan",
+            });
+        } else if (identity.table == null || identity.table == "") {
+            Toast.fire({
+                icon: "warning",
+                title: "Peringatan!",
+                text: "Silahkan isi nomor meja",
+            });
+        } else if (identity.no_bill == null || identity.no_bill == "") {
+            Toast.fire({
+                icon: "warning",
+                title: "Peringatan!",
+                text: "Silahkan isi nomor bill / bon ",
             });
         } else if (orders.length === 0) {
             Toast.fire({
