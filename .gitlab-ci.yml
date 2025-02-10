@@ -7,22 +7,21 @@ variables:
   ELECTRON_BUILDER_CACHE: "/root/.cache/electron-builder"
 
 build_app:
-  image: node:18
+  image: electronuserland/builder:wine  # Menggunakan image dengan Wine untuk build Windows
   stage: build
   script:
-    - yarn install
-    - yarn build
-    - yarn dist:all
+    - yarn install --frozen-lockfile
+    - yarn electron-builder --win --ia32 --x64  # Build langsung dengan electron-builder
   artifacts:
     paths:
       - dist/
 
 release:
-  image: node:18
+  image: electronuserland/builder:wine
   stage: release
   script:
     - export GITLAB_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN
-    - yarn install
-    - yarn dist:all --publish always
+    - yarn install --frozen-lockfile
+    - yarn electron-builder --win --ia32 --x64 --publish always  # Publish ke GitLab Releases
   only:
     - main
