@@ -11,7 +11,7 @@ build_app:
   stage: build
   script:
     - yarn install --frozen-lockfile
-    - yarn electron-builder --win --ia32 --x64  # Build langsung dengan electron-builder
+    - yarn nextron build --win --ia32 --x64  # Build langsung dengan electron-builder
   artifacts:
     paths:
       - dist/
@@ -22,6 +22,6 @@ release:
   script:
     - export GITLAB_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN
     - yarn install --frozen-lockfile
-    - yarn electron-builder --win --ia32 --x64 --publish always  # Publish ke GitLab Releases
+    - yarn nextron build --win --ia32 --x64 --publish always  # Publish ke GitLab Releases
   only:
     - main
