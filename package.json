@@ -62,7 +62,7 @@
         "releaseType": "release"
     },
     "build": {
-        "appId": "com.expos",
+        "appId": "com.expos.exposdesktop",
         "productName": "EXPOS",
         "directories": {
             "output": "dist"
