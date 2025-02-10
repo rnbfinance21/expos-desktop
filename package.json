@@ -64,13 +64,21 @@
             }
         ],
         "win": {
-            "target": "nsis"
+            "win": {
+                "target": [
+                    {
+                        "target": "nsis",
+                        "arch": [
+                            "ia32",
+                            "x64"
+                        ]
+                    }
+                ]
+            }
         },
-        "mac": {
-            "target": "dmg"
-        },
-        "linux": {
-            "target": "AppImage"
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true
         }
     }
 }
