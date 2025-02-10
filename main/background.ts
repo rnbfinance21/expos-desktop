@@ -25,6 +25,9 @@ import log from "electron-log";
 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
+//Basic flags
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
 
 const store = new Store();
 
@@ -1354,11 +1357,11 @@ ipcMain.on("play-sound", async () => {
 
     // setupPushReceiver(mainWindow.webContents);
     // Periksa pembaruan saat aplikasi dimulai
-    const gitToken = process.env.GITLAB_PERSONAL_ACCESS_TOKEN;
+    // const gitToken = process.env.GITLAB_PERSONAL_ACCESS_TOKEN;
 
-    const server =
-        "https://gitlab.com/api/v4/projects/42994318/releases/permalink/latest/assets/links";
-    autoUpdater.setFeedURL({ url: server });
+    // const server =
+    //     "https://gitlab.com/api/v4/projects/42994318/releases/permalink/latest/assets/links";
+    // autoUpdater.setFeedURL({ url: server });
     autoUpdater.checkForUpdatesAndNotify();
 })();
 
