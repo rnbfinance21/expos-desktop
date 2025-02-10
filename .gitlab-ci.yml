@@ -11,19 +11,24 @@ build_app:
   stage: build
   script:
     - echo "NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL" > renderer/.env.local
+    - echo "GITLAB_PERSONAL_ACCESS_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN" > renderer/.env.local
     - yarn install --frozen-lockfile
     - yarn nextron build --win --ia32 --x64 # Build langsung dengan electron-builder
+    - ls -lah dist/
   artifacts:
     paths:
       - dist/
+    expire_in: 1 day
 
 release:
   image: electronuserland/builder:wine
   stage: release
   script:
     - echo "NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL" > renderer/.env.local
+    - echo "GITLAB_PERSONAL_ACCESS_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN" > renderer/.env.local
     - export GITLAB_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN
     - yarn install --frozen-lockfile
     - yarn nextron build --win --ia32 --x64 --publish always # Publish ke GitLab Releases
+    - ls -lah dist/
   only:
     - main

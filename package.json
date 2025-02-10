@@ -60,9 +60,12 @@
         "publish": [
             {
                 "provider": "generic",
-                "url": "https://gitlab.com/rnbfinance21/expos-desktop/-/raw/main/releases/"
+                "url": "https://gitlab.com/api/v4/projects/42994318/releases/latest/download"
             }
         ],
+        "directories": {
+            "output": "dist"
+        },
         "files": [
             "app/**/*",
             "main/**/*",
@@ -78,7 +81,8 @@
                         "x64"
                     ]
                 }
-            ]
+            ],
+            "artifactName": "EXPOS-V${version}.exe"
         },
         "nsis": {
             "oneClick": false,
