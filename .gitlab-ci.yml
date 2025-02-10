@@ -28,10 +28,18 @@ release:
     - echo "GITLAB_PERSONAL_ACCESS_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN" > renderer/.env.local
     - export GITLAB_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN
     - yarn install --frozen-lockfile
-    - yarn nextron build --win --ia32 --x64 --publish always # Publish ke GitLab Releases
+    - yarn nextron build --win --ia32 --x64 --publish never # Publish ke GitLab Releases
     - ls -lah dist/
+    - |
+      curl --request POST --header "PRIVATE-TOKEN: $GITLAB_PERSONAL_ACCESS_TOKEN" \
+      --form "name=EXPOS-V${CI_COMMIT_TAG}.exe" \
+      --form "url=https://gitlab.com/api/v4/projects/42994318/jobs/artifacts/${CI_COMMIT_REF_NAME}/raw/dist/EXPOS-V${CI_COMMIT_TAG}.exe?job=release" \
+      --form "filepath=/EXPOS-V${CI_COMMIT_TAG}.exe" \
+      --form "link_type=other" \
+      "https://gitlab.com/api/v4/projects/42994318/releases"
+
   artifacts:
     paths:
       - dist/
   only:
-    - main
+    - tags

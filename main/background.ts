@@ -1356,10 +1356,9 @@ ipcMain.on("play-sound", async () => {
     // Periksa pembaruan saat aplikasi dimulai
     const gitToken = process.env.GITLAB_PERSONAL_ACCESS_TOKEN;
 
-    const server = "https://gitlab.com/api/v4/projects/42994318/releases";
-    const url = `${server}/latest/download?private_token=${gitToken}`;
-
-    autoUpdater.setFeedURL({ url });
+    const server =
+        "https://gitlab.com/api/v4/projects/42994318/releases/permalink/latest/assets/links";
+    autoUpdater.setFeedURL({ url: server });
     autoUpdater.checkForUpdatesAndNotify();
 })();
 
