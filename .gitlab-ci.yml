@@ -7,11 +7,12 @@ variables:
   ELECTRON_BUILDER_CACHE: "/root/.cache/electron-builder"
 
 build_app:
-  image: electronuserland/builder:wine  # Menggunakan image dengan Wine untuk build Windows
+  image: electronuserland/builder:wine # Menggunakan image dengan Wine untuk build Windows
   stage: build
   script:
+    - echo "NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL" > renderer/.env.local
     - yarn install --frozen-lockfile
-    - yarn nextron build --win --ia32 --x64  # Build langsung dengan electron-builder
+    - yarn nextron build --win --ia32 --x64 # Build langsung dengan electron-builder
   artifacts:
     paths:
       - dist/
@@ -20,8 +21,9 @@ release:
   image: electronuserland/builder:wine
   stage: release
   script:
+    - echo "NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL" > renderer/.env.local
     - export GITLAB_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN
     - yarn install --frozen-lockfile
-    - yarn nextron build --win --ia32 --x64 --publish always  # Publish ke GitLab Releases
+    - yarn nextron build --win --ia32 --x64 --publish always # Publish ke GitLab Releases
   only:
     - main
