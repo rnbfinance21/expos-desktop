@@ -30,5 +30,8 @@ release:
     - yarn install --frozen-lockfile
     - yarn nextron build --win --ia32 --x64 --publish always # Publish ke GitLab Releases
     - ls -lah dist/
+  artifacts:
+    paths:
+      - dist/
   only:
     - main
