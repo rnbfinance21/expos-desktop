@@ -5,169 +5,197 @@ import Swal from "sweetalert2";
 import { getPengeluaran, setRefetch } from "../../features/pengeluaranSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import PengeluaranService, {
-  PengeluaranData,
+    PengeluaranData,
 } from "../../services/PengeluaranService";
 import { numberFormat } from "../../utils/currency";
 import { handleErrorAxios } from "../../utils/errors";
 import Toast from "../../utils/toast";
 import { DynamicHeroIcon, Loading } from "../globals/icons";
 import Header from "./main/Header";
+import { ucwords } from "../../utils/string";
 
 const Main = () => {
-  const dispatch = useDispatch();
-  const { token, outlet } = useAuth();
-  const { date, search, refetchPengeluaran } = useSelector(getPengeluaran);
+    const dispatch = useDispatch();
+    const { token, outlet } = useAuth();
+    const { date, search, refetchPengeluaran } = useSelector(getPengeluaran);
 
-  const [data, setData] = useState<PengeluaranData[]>([]);
+    const [data, setData] = useState<PengeluaranData[]>([]);
 
-  const { isLoading, isRefetching, refetch } = useQuery(
-    ["pengeluaran", token],
-    () =>
-      PengeluaranService.getPengeluaran(token, {
-        search,
-        date,
-        outlet_id: outlet.id,
-      }),
-    {
-      onSuccess: (res) => {
-        setData(res.data);
-      },
-      onSettled: () => {
-        dispatch(setRefetch(false));
-      },
-    }
-  );
+    const { isLoading, isRefetching, refetch } = useQuery(
+        ["pengeluaran", token],
+        () =>
+            PengeluaranService.getPengeluaran(token, {
+                search,
+                date,
+                outlet_id: outlet.id,
+            }),
+        {
+            onSuccess: (res) => {
+                setData(res.data);
+            },
+            onSettled: () => {
+                dispatch(setRefetch(false));
+            },
+        }
+    );
 
-  const deleteMutation = useMutation(
-    (id: number) => PengeluaranService.deletePengeluaran(token, id),
-    {
-      onSuccess: (res) => {
-        Toast.fire("Berhasil!", res.message, "success");
+    const deleteMutation = useMutation(
+        (id: number) => PengeluaranService.deletePengeluaran(token, id),
+        {
+            onSuccess: (res) => {
+                Toast.fire("Berhasil!", res.message, "success");
+                refetch();
+            },
+            onError: handleErrorAxios,
+        }
+    );
+
+    const _onClick = (item: PengeluaranData) => {
+        Swal.fire({
+            title: "Apakah Anda akan menbatalkan data ini?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Batalkan",
+            cancelButtonText: "Tidak",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteMutation.mutate(item.id);
+            }
+        });
+    };
+
+    useEffect(() => {
         refetch();
-      },
-      onError: handleErrorAxios,
-    }
-  );
+    }, [date, search]);
 
-  const _onClick = (item: PengeluaranData) => {
-    Swal.fire({
-      title: "Apakah Anda akan menbatalkan data ini?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, Batalkan",
-      cancelButtonText: "Tidak",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteMutation.mutate(item.id);
-      }
-    });
-  };
+    useEffect(() => {
+        if (refetchPengeluaran) {
+            refetch();
+        }
+    }, [refetchPengeluaran]);
 
-  useEffect(() => {
-    refetch();
-  }, [date, search]);
-
-  useEffect(() => {
-    if (refetchPengeluaran) {
-      refetch();
-    }
-  }, [refetchPengeluaran]);
-
-  return (
-    <div className="flex-1 flex flex-col overflow-auto bg-white">
-      <Header />
-      {isLoading || isRefetching ? (
-        <div className="flex-1 flex justify-center items-center">
-          <Loading />
-        </div>
-      ) : (
-        <div className="h-0 ">
-          <table className="min-w-full">
-            <thead className="sticky top-[54px]">
-              <tr className="bg-gray-100">
-                <th className="text-sm font-medium py-2 px-4 w-16 text-center">
-                  Aksi
-                </th>
-                <th className="text-sm font-medium py-2 px-4 w-48 text-center">
-                  Tanggal
-                </th>
-                <th className="text-sm font-medium py-2 px-4 text-left">
-                  Transaksi
-                </th>
-                <th className="text-sm font-medium py-2 px-4 text-left">
-                  Tipe
-                </th>
-                <th className="text-sm font-medium py-2 px-4 text-left">
-                  Keterangan
-                </th>
-                <th className="text-sm font-medium py-2 px-4 w-64 text-center">
-                  Jumlah
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="py-2 px-4 text-center">
-                    Data Tidak Tersedia
-                  </td>
-                </tr>
-              ) : (
-                <>
-                  {data.map((item) => {
-                    return (
-                      <tr className="hover:bg-gray-100 border-b">
-                        <th className="text-xs font-light py-2 px-4 w-16 text-center">
-                          <button
-                            onClick={() => _onClick(item)}
-                            className="p-2 rounded bg-red-500"
-                          >
-                            <DynamicHeroIcon
-                              icon="TrashIcon"
-                              className="text-white"
-                            />
-                          </button>
-                        </th>
-                        <th className="text-xs font-light py-2 px-4 w-48 text-center">
-                          {item.date}
-                        </th>
-                        <th className="text-xs font-light py-2 px-4 text-left">
-                          {item.transaksi}
-                        </th>
-                        <th className="text-xs font-light py-2 px-4 text-left">
-                          {item.type_transaction === 1 ? "Food" : "Non Food"}
-                        </th>
-                        <th className="text-xs font-light py-2 px-4 text-left">
-                          {item.description ?? "-"}
-                        </th>
-                        <th className="text-xs font-light py-2 px-4 w-64 text-end">
-                          <div className="flex flex-row">
-                            <span>Rp</span>
-                            <span className="flex-1">
-                              {numberFormat(
-                                item.type === 2 ? item.amount : 0,
-                                0
-                              )}
-                            </span>
-                          </div>
-                        </th>
-                      </tr>
-                    );
-                  })}
-                </>
-              )}
-            </tbody>
-            <tfoot className="sticky bottom-0">
-              <tr className="border-b">
-                <th
-                  colSpan={5}
-                  className="text-sm font-medium py-2 px-4 w-48 text-end"
-                >
-                  Total
-                </th>
-                {/* <th className="text-sm font-medium py-2 px-4 text-end">
+    return (
+        <div className="flex-1 flex flex-col overflow-auto bg-white">
+            <Header />
+            {isLoading || isRefetching ? (
+                <div className="flex-1 flex justify-center items-center">
+                    <Loading />
+                </div>
+            ) : (
+                <div className="h-0 ">
+                    <table className="min-w-full">
+                        <thead className="sticky top-[54px]">
+                            <tr className="bg-gray-100">
+                                <th className="text-sm font-medium py-2 px-4 w-16 text-center">
+                                    Aksi
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 w-48 text-center">
+                                    Tanggal
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 text-left">
+                                    Transaksi
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 text-left">
+                                    Tipe
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 text-left">
+                                    Keterangan
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 w-64 text-end">
+                                    Harga
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 w-64 text-end">
+                                    Jumlah
+                                </th>
+                                <th className="text-sm font-medium py-2 px-4 w-64 text-center">
+                                    Total
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={8}
+                                        className="py-2 px-4 text-center"
+                                    >
+                                        Data Tidak Tersedia
+                                    </td>
+                                </tr>
+                            ) : (
+                                <>
+                                    {data.map((item) => {
+                                        return (
+                                            <tr className="hover:bg-gray-100 border-b">
+                                                <th className="text-xs font-light py-2 px-4 w-16 text-center">
+                                                    <button
+                                                        onClick={() =>
+                                                            _onClick(item)
+                                                        }
+                                                        className="p-2 rounded bg-red-500"
+                                                    >
+                                                        <DynamicHeroIcon
+                                                            icon="TrashIcon"
+                                                            className="text-white"
+                                                        />
+                                                    </button>
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 w-48 text-center">
+                                                    {item.date}
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 text-left">
+                                                    {item.transaksi}
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 text-left">
+                                                    {item.type_transaction === 1
+                                                        ? "Food"
+                                                        : "Non Food"}
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 text-left">
+                                                    {item.description ?? "-"}
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 w-64 text-end">
+                                                    {numberFormat(
+                                                        item.price,
+                                                        0
+                                                    )}
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 w-64 text-end">
+                                                    {numberFormat(item.qty, 0)}{" "}
+                                                    {ucwords(
+                                                        item.satuan ?? "-"
+                                                    )}
+                                                </th>
+                                                <th className="text-xs font-light py-2 px-4 w-64 text-end">
+                                                    <div className="flex flex-row">
+                                                        <span>Rp</span>
+                                                        <span className="flex-1">
+                                                            {numberFormat(
+                                                                item.type === 2
+                                                                    ? item.amount
+                                                                    : 0,
+                                                                0
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        );
+                                    })}
+                                </>
+                            )}
+                        </tbody>
+                        <tfoot className="sticky bottom-0">
+                            <tr className="border-b">
+                                <th
+                                    colSpan={7}
+                                    className="text-sm font-medium py-2 px-4 w-48 text-end"
+                                >
+                                    Total
+                                </th>
+                                {/* <th className="text-sm font-medium py-2 px-4 text-end">
                   <div className="flex flex-row">
                     <span>Rp</span>
                     <span className="flex-1">
@@ -182,28 +210,30 @@ const Main = () => {
                     </span>
                   </div>
                 </th> */}
-                <th className="text-sm font-medium py-2 px-4 text-end">
-                  <div className="flex flex-row">
-                    <span>Rp</span>
-                    <span className="flex-1">
-                      {numberFormat(
-                        data
-                          .filter((e) => e.type === 2)
-                          .reduce((acc, item) => {
-                            return acc + item.amount;
-                          }, 0),
-                        0
-                      )}
-                    </span>
-                  </div>
-                </th>
-              </tr>
-            </tfoot>
-          </table>
+                                <th className="text-sm font-medium py-2 px-4 text-end">
+                                    <div className="flex flex-row">
+                                        <span>Rp</span>
+                                        <span className="flex-1">
+                                            {numberFormat(
+                                                data
+                                                    .filter((e) => e.type === 2)
+                                                    .reduce((acc, item) => {
+                                                        return (
+                                                            acc + item.amount
+                                                        );
+                                                    }, 0),
+                                                0
+                                            )}
+                                        </span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Main;

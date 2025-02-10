@@ -1,0 +1,28 @@
+stages:
+  - build
+  - release
+
+variables:
+  GIT_STRATEGY: clone
+  ELECTRON_BUILDER_CACHE: "/root/.cache/electron-builder"
+
+build_app:
+  image: node:18
+  stage: build
+  script:
+    - yarn install
+    - yarn build
+    - yarn dist:all
+  artifacts:
+    paths:
+      - dist/
+
+release:
+  image: node:18
+  stage: release
+  script:
+    - export GITLAB_TOKEN=$GITLAB_PERSONAL_ACCESS_TOKEN
+    - yarn install
+    - yarn dist:all --publish always
+  only:
+    - main
