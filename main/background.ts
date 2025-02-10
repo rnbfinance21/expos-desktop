@@ -1297,6 +1297,11 @@ ipcMain.on("play-sound", async () => {
     let pathFile = path.join(__dirname, "my_sound.mp3");
     sound.play(pathFile);
 });
+
+ipcMain.on("get-app-version", async (e) => {
+    e.returnValue = app.getVersion();
+});
+
 (async () => {
     await app.whenReady();
 
@@ -1361,7 +1366,12 @@ ipcMain.on("play-sound", async () => {
 
     // const server =
     //     "https://gitlab.com/api/v4/projects/42994318/releases/permalink/latest/assets/links";
-    // autoUpdater.setFeedURL({ url: server });
+    autoUpdater.setFeedURL({
+        provider: "github",
+        owner: "rnbfinance21",
+        repo: "expos-desktop",
+        token: process.env.GH_TOKEN,
+    });
     autoUpdater.checkForUpdatesAndNotify();
 })();
 

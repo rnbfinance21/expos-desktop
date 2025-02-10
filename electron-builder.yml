@@ -1,6 +1,6 @@
-appId: com.example.expos
+appId: com.expos.exposdesktop
 productName: Expos Kasir
-copyright: Copyright © 2023 Expos
+copyright: Copyright © 2025 Expos
 directories:
   output: dist
   buildResources: resources
