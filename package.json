@@ -63,6 +63,11 @@
                 "url": "https://gitlab.com/rnbfinance21/expos-desktop/-/raw/main/releases/"
             }
         ],
+        "files": [
+            "app/**/*",
+            "renderer/**/*",
+            "package.json"
+        ],
         "win": {
             "target": [
                 {
