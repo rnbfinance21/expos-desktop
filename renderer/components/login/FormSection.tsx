@@ -30,7 +30,7 @@ const FormSection = () => {
             </div>
             <div className="flex flex-row justify-center items-center p-4">
                 <span className="text-sm font-bold">
-                    &copy; CV. Ramen Nikmat Barokah{" "}
+                    &copy; 2025 CV. Ramen Nikmat Barokah{" "}
                     {appVersion ? `v${appVersion}` : ""}
                 </span>
             </div>
