@@ -2,7 +2,7 @@
   "private": true,
   "name": "expos",
   "description": "Aplikasi kasir",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "luthfi <luthficloud1290@gmail.com>",
   "main": "app/background.js",
   "scripts": {
@@ -91,7 +91,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true
     }
   }
 }
