@@ -1383,24 +1383,77 @@ app.on("window-all-closed", () => {
     }
 });
 
-autoUpdater.on("update-available", () => {
-    log.info("Update tersedia, mengunduh...");
-    console.log("Update tersedia, mengunduh...");
+// Ketika update tersedia
+autoUpdater.on("update-available", (info) => {
+    log.info(`Update tersedia: Versi ${info.version}`);
+    dialog.showMessageBox({
+        type: "info",
+        title: "Update Tersedia",
+        message: `Versi terbaru ${info.version} tersedia. Mengunduh pembaruan...`,
+        buttons: ["OK"],
+    });
 });
 
-autoUpdater.on("update-downloaded", () => {
+// Ketika update tersedia
+autoUpdater.on("update-available", (info) => {
+    log.info(`Update tersedia: Versi ${info.version}`);
+
     dialog
         .showMessageBox({
             type: "info",
             title: "Update Tersedia",
-            message: "Update sudah diunduh. Restart untuk menerapkan update?",
-            buttons: ["Restart", "Nanti"],
+            message: `Versi terbaru ${info.version} tersedia. Apakah ingin mengunduh sekarang?`,
+            buttons: ["Ya, Unduh", "Nanti"],
+            defaultId: 0,
+            cancelId: 1,
         })
         .then((result) => {
             if (result.response === 0) {
-                autoUpdater.quitAndInstall();
+                log.info("Mulai mengunduh update...");
+                autoUpdater.downloadUpdate();
+            } else {
+                log.info("Pengguna menunda update.");
             }
         });
+});
+
+// Menampilkan progress download
+autoUpdater.on("download-progress", (progress) => {
+    log.info(`Mengunduh... ${progress.percent.toFixed(2)}%`);
+});
+
+// Jika update telah diunduh
+autoUpdater.on("update-downloaded", (info) => {
+    log.info(`Update versi ${info.version} sudah diunduh.`);
+
+    dialog
+        .showMessageBox({
+            type: "question",
+            title: "Update Siap",
+            message: `Update ke versi ${info.version} sudah diunduh. Apakah ingin restart sekarang?`,
+            buttons: ["Restart Sekarang", "Nanti"],
+            defaultId: 0,
+            cancelId: 1,
+        })
+        .then((result) => {
+            if (result.response === 0) {
+                log.info("Restarting aplikasi untuk update...");
+                autoUpdater.quitAndInstall();
+            } else {
+                log.info("Pengguna memilih untuk mengupdate nanti.");
+            }
+        });
+});
+
+// Jika terjadi error
+autoUpdater.on("error", (error) => {
+    log.error("Error saat update:", error);
+    dialog.showMessageBox({
+        type: "error",
+        title: "Update Gagal",
+        message: `Terjadi kesalahan saat update: ${error.message}`,
+        buttons: ["OK"],
+    });
 });
 
 ipcMain.on("restart_app", () => {
