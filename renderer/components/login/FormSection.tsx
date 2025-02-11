@@ -20,7 +20,7 @@ const FormSection = () => {
             <div className="flex-1 flex flex-col p-4 justify-center">
                 <div className="mb-4">
                     <p className="text-2xl font-semibold">
-                        Selamat Datang Kembali
+                        Selamat Datang
                     </p>
                     <p className="text-sm font-light text-gray-500">
                         Silahkan masuk dengan akun Anda
