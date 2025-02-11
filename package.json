@@ -87,7 +87,8 @@
                     ]
                 }
             ],
-            "artifactName": "EXPOS-V${version}.msi"
+            "artifactName": "EXPOS-V${version}.msi",
+            "icon": "resources/icon.ico"
         }
     }
 }
