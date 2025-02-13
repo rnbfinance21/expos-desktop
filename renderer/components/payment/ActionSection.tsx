@@ -572,13 +572,13 @@ const ActionSection = () => {
                 <Numpad value={inputNumpad.toString()} onChange={_onChange} />
             </div>
             <div className="flex flex-col space-y-2">
-                {/* <Button
+                <Button
                     onClick={_simulatePrint}
                     type="button"
                     className="flex-1 bg-red-500 text-sm  text-white border border-red-300 rounded-lg"
                 >
                     CETAK STRUK
-                </Button> */}
+                </Button>
                 {type !== "VOID" ? (
                     <Button
                         type="button"
