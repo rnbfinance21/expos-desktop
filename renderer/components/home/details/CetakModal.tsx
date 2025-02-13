@@ -121,13 +121,13 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
             Cetak Item Tambahan ke Dapur
           </span>
         </div>
-        <div
+        {/* <div
           onClick={_printBill}
           className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="PrinterIcon" className="mr-4 h-6 w-6" />
           <span className="text-sm font-medium text-gray-900">Cetak Struk</span>
-        </div>
+        </div> */}
         {data.member !== null ? (
           <div
             onClick={_printAccount}
