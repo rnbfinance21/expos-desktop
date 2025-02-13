@@ -2,7 +2,7 @@
   "private": true,
   "name": "expos",
   "description": "Aplikasi kasir",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "luthfi <luthficloud1290@gmail.com>",
   "main": "app/background.js",
   "scripts": {
