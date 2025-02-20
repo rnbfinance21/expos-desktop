@@ -293,7 +293,7 @@ const DetailAction = () => {
             />
           </div>
         </div>
-        {type === "ADD" && (
+        {/* {type === "ADD" && (
           <div className="grid grid-cols-2">
             <div
               onClick={_onSave}
@@ -308,7 +308,7 @@ const DetailAction = () => {
               Rp {numberFormat(sum, 0)}
             </div>
           </div>
-        )}
+        )} */}
         {type !== "VOID" ? (
           <div className="grid grid-cols-2">
             <div
