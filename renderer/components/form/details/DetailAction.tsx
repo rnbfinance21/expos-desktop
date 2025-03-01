@@ -180,6 +180,7 @@ const DetailAction = () => {
             pajak_stat: d.menu.tax_state,
             notes: d.notes,
             price: d.price,
+            price_menu: d.price,
             qty: d.qty,
             menu: d.menu,
             variants: d.variants,

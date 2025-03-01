@@ -555,7 +555,7 @@ const MenuCustomModal = () => {
                       ></textarea>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="grid grid-cols-1 gap-4 mb-4">
                     <div>
                       <p className="text-xs font-medium">Jumlah</p>
                       <div className="mt-1 flex rounded-md shadow-sm">
@@ -582,7 +582,7 @@ const MenuCustomModal = () => {
                         </span>
                       </div>
                     </div>
-                    <div>
+                    {/* <div>
                       <p className="text-xs font-medium">Diskon</p>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <span
@@ -607,7 +607,7 @@ const MenuCustomModal = () => {
                           <DynamicHeroIcon icon="PlusIcon" />
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 

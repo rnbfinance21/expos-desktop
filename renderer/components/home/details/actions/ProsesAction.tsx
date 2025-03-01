@@ -215,6 +215,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
                         pajak_stat: d.pajak_state,
                         notes: d.description,
                         price: d.price,
+                        price_menu: d.price,
                         qty: d.qty,
                         menu: d.menu,
                         variants: tmpVariant,
