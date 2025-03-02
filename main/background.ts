@@ -1390,51 +1390,51 @@ autoUpdater.on("update-available", (info) => {
 
   log.info("Mulai mengunduh update...");
   autoUpdater.downloadUpdate();
-//   dialog
-//     .showMessageBox({
-//       type: "info",
-//       title: "Update Tersedia",
-//       message: `Versi terbaru ${info.version} tersedia. Apakah ingin mengunduh sekarang?`,
-//       buttons: ["Ya, Unduh", "Nanti"],
-//       defaultId: 0,
-//       cancelId: 1,
-//     })
-//     .then((result) => {
-//       if (result.response === 0) {
-//         log.info("Mulai mengunduh update...");
-//         autoUpdater.downloadUpdate();
-//       } else {
-//         log.info("Pengguna menunda update.");
-//       }
-//     });
+  //   dialog
+  //     .showMessageBox({
+  //       type: "info",
+  //       title: "Update Tersedia",
+  //       message: `Versi terbaru ${info.version} tersedia. Apakah ingin mengunduh sekarang?`,
+  //       buttons: ["Ya, Unduh", "Nanti"],
+  //       defaultId: 0,
+  //       cancelId: 1,
+  //     })
+  //     .then((result) => {
+  //       if (result.response === 0) {
+  //         log.info("Mulai mengunduh update...");
+  //         autoUpdater.downloadUpdate();
+  //       } else {
+  //         log.info("Pengguna menunda update.");
+  //       }
+  //     });
 });
 
 // Menampilkan progress download
 autoUpdater.on("download-progress", (progress) => {
-    console.log(`Mengunduh... ${progress.percent.toFixed(2)}%`);
-//   log.info(`Mengunduh... ${progress.percent.toFixed(2)}%`);
+  console.log(`Mengunduh... ${progress.percent.toFixed(2)}%`);
+  log.info(`Mengunduh... ${progress.percent.toFixed(2)}%`);
 });
 
 // Jika update telah diunduh
 autoUpdater.on("update-downloaded", (info) => {
   log.info(`Update versi ${info.version} sudah diunduh.`);
-
   dialog
     .showMessageBox({
       type: "question",
       title: "Update Siap",
       message: `Update ke versi ${info.version} sudah diunduh. Apakah ingin restart sekarang?`,
-      buttons: ["Restart Sekarang", "Nanti"],
+      buttons: ["Restart Sekarang"],
       defaultId: 0,
       cancelId: 1,
     })
     .then((result) => {
-      if (result.response === 0) {
-        log.info("Restarting aplikasi untuk update...");
-        autoUpdater.quitAndInstall();
-      } else {
-        log.info("Pengguna memilih untuk mengupdate nanti.");
-      }
+      // if (result.response === 0) {
+      //   log.info("Restarting aplikasi untuk update...");
+      //   autoUpdater.quitAndInstall();
+      // } else {
+      //   log.info("Pengguna memilih untuk mengupdate nanti.");
+      // }
+      autoUpdater.quitAndInstall();
     });
 });
 
