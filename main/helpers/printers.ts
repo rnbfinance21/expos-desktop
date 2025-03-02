@@ -113,18 +113,33 @@ const cetakBill = (outlet: InfoOutlet, order: OrderDetail): PosPrintData[] => {
                 textAlign: "left",
             },
         },
+        // {
+        //     type: "text",
+        //     value: `<div style='display: flex; flex-direction: row; item'>
+        //         <div style='width: 70px;'>Status</div>
+        //         <div style='flex: 1'>
+        //           : Belum Lunas
+        //         </div>
+        //       </div>`,
+        //     fontsize: 30,
+        //     style: {
+        //         // fontWeight: '400',
+        //         textAlign: "left",
+        //         borderTop: "1px dashed black",
+        //         borderBottom: "1px dashed black"
+        //     },
+        // },
         {
             type: "text",
-            value: `<div style='display: flex; flex-direction: row;'>
-                <div style='width: 70px;'>Status</div>
-                <div style='flex: 1'>
-                  : Belum Lunas
-                </div>
+            value: `<div style='display: flex; flex-direction: row; align-items: center; justify-items: center;'>
+                <span style='font-size: 30px;'>BELUM LUNAS</span>
               </div>`,
-            fontsize: 20,
+            fontsize: 30,
             style: {
                 // fontWeight: '400',
                 textAlign: "left",
+                borderTop: "1px dashed black",
+                borderBottom: "1px dashed black",
             },
         },
         {
