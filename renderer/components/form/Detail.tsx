@@ -53,21 +53,18 @@ const Detail = () => {
     };
 
     const _onClick = (item: Orders) => {
-        console.log(item.id_detail);
-
         setSelectedData(item);
         if (type === "ADD") {
             _showModalUpdate(item);
-        } else if (type === "VOID" && item.id_detail) {
+        } else if (
+            (type === "VOID" && item.id_detail) ||
+            (type === "UPDATE" && item.id_detail)
+        ) {
             Swal.fire(
                 "Peringatan",
-                "Hanya bisa melakukan void penambahan item, untuk perubahan atau hapus item menu hanya bisa dilakukan oleh Admin",
+                "Hanya bisa melakukan penambahan item, untuk perubahan atau hapus item menu hanya bisa dilakukan oleh Admin",
                 "warning"
             );
-            // Toast.fire({
-            //     icon: "warning",
-            //     text: "Perubahan atau hapus item menu hanya bisa dilakukan oleh Admin",
-            // });
         } else {
             setOpenPasscodeModal(true);
         }
