@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -20,6 +20,7 @@ import { handleErrorAxios } from "../../../utils/errors";
 import Toast from "../../../utils/toast";
 import UangKasModal from "../../modals/UangKasModal";
 import DetailActionButton from "./DetailActionButton";
+import { generateRandomString } from "../../../utils/string";
 
 const DetailAction = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const DetailAction = () => {
     useSelector(getOrder);
   const sum = useSelector(getSumOrder);
 
+  const idempotencyKeyRef = useRef<string>(generateRandomString(32));
   const [openKasModal, setOpenKasModal] = useState(false);
   const [openKasType, setOpenKasType] = useState("SAVE");
 
@@ -47,6 +49,7 @@ const DetailAction = () => {
   const saveDraftMutation = useMutation(
     (params: SaveDraftParams) => OrderService.saveDraft(token, params),
     {
+      retry: false,
       onSuccess: (res) => {
         dispatch(resetOrder());
         Swal.fire("Berhasil!", res.message, "success");
@@ -59,6 +62,7 @@ const DetailAction = () => {
   const updateDraftMutation = useMutation(
     (params: UpdateDraftParams) => OrderService.updateDraft(token, params),
     {
+      retry: false,
       onSuccess: (res) => {
         dispatch(resetOrder());
         Swal.fire("Berhasil!", res.message, "success");
@@ -83,6 +87,7 @@ const DetailAction = () => {
       if (result.isConfirmed) {
         if (type === "ADD") {
           saveDraftMutation.mutate({
+            key: idempotencyKeyRef.current,
             outlet_id: outlet.id,
             name: identity.name,
             table: identity.table,
@@ -312,12 +317,13 @@ const DetailAction = () => {
         )} */}
         {type !== "VOID" ? (
           <div className="grid grid-cols-2">
-            <div
+            <button
               onClick={_onSave}
+              disabled={saveDraftMutation.isLoading || updateDraftMutation.isLoading}
               className="bg-blue-500 active:bg-blue-600 text-white p-4 text-center text-sm font-medium cursor-pointer"
             >
               {saveDraftMutation.isLoading ? "Mohon Tunggu..." : "Simpan"}
-            </div>
+            </button>
             <div
               onClick={_onPayment}
               className="bg-green-500 active:bg-green-600 text-white p-4 text-center text-sm font-medium cursor-pointer"

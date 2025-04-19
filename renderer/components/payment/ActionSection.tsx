@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef } from "react";
 import { useMutation } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -26,7 +26,7 @@ import Toast from "../../utils/toast";
 import { Button } from "../globals/buttons";
 import { Numpad } from "../globals/keyboard";
 import electron from "electron";
-import { ucwords } from "../../utils/string";
+import { generateRandomString, ucwords } from "../../utils/string";
 import { formatFullDate } from "../../utils/date";
 import { DetailVariant } from "../../services/OrderService";
 import axios from "../../utils/axios";
@@ -65,6 +65,8 @@ const ActionSection = () => {
     const orderTypeList = useSelector(getOrderType);
     const paymentTypeList = useSelector(getPaymentType);
 
+    const idempotencyKeyRef = useRef<string>(generateRandomString(32));
+
     const validationSave = () => {
         if (
             orderType !== null &&
@@ -89,6 +91,7 @@ const ActionSection = () => {
     const saveMutation = useMutation(
         (params: SavePaymentParams) => OrderService.savePayment(token, params),
         {
+            retry: false,
             onSuccess: async (res) => {
                 if (ipcRenderer) {
                     if (changeState) {
@@ -301,6 +304,7 @@ const ActionSection = () => {
                         });
                     } else if (type === "ADD") {
                         saveMutation.mutate({
+                            key: idempotencyKeyRef.current,
                             outlet_id: outlet.id,
                             name: identity.name,
                             table: identity.table,

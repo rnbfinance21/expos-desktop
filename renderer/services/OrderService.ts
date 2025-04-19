@@ -186,6 +186,7 @@ type VariantParams = {
 };
 
 export type SaveDraftParams = {
+  key: string;
   outlet_id: number;
   name: string;
   table: string;
