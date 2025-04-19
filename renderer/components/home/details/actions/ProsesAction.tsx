@@ -21,7 +21,7 @@ import { handleErrorAxios } from "../../../../utils/errors";
 import DetailActionButton from "../../../form/details/DetailActionButton";
 import PasscodeModal from "../../../modals/PasscodeModal";
 import electron from "electron";
-import { ucwords } from "../../../../utils/string";
+import { generateRandomString, ucwords } from "../../../../utils/string";
 import GabungModal from "../GabungModal";
 import UangKasModal from "../../../modals/UangKasModal";
 import CetakModal from "../CetakModal";
@@ -158,6 +158,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
         dispatch(resetPayment());
         dispatch(
             setPayment({
+                key: generateRandomString(32),
                 type: "UPDATE",
                 id: data.id,
                 identity: {
