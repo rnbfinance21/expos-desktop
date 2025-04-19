@@ -26,7 +26,7 @@ const DetailAction = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { token, kasState, outlet, setKasState } = useAuth();
-  const { identity, orders, type, id, updateLog, deleteLog } =
+  const { identity, orders, type, id, updateLog, deleteLog, key } =
     useSelector(getOrder);
   const sum = useSelector(getSumOrder);
 
@@ -87,7 +87,7 @@ const DetailAction = () => {
       if (result.isConfirmed) {
         if (type === "ADD") {
           saveDraftMutation.mutate({
-            key: idempotencyKeyRef.current,
+            key: key ?? idempotencyKeyRef.current,
             outlet_id: outlet.id,
             name: identity.name,
             table: identity.table,
@@ -168,6 +168,7 @@ const DetailAction = () => {
     dispatch(
       setPayment({
         type: type,
+        key: key ?? idempotencyKeyRef.current,
         id: id,
         identity: {
           member_id: null,

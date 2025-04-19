@@ -37,6 +37,7 @@ export interface Payment {
 
 export interface PaymentOrder {
     type: string;
+    key: string;
     id: number | null;
     identity: {
         member_id: number | null;
@@ -66,6 +67,7 @@ export interface PaymentState extends PaymentOrder {
 
 const initialState: PaymentState = {
     type: "ADD",
+    key: "",
     id: null,
     identity: {
         member_id: null,
@@ -118,6 +120,9 @@ export const paymentSlice = createSlice({
         },
         setOrderType: (state, actions: PayloadAction<number | null>) => {
             state.orderType = actions.payload;
+        },
+        setPaymentKey: (state, actions: PayloadAction<string>) => {
+            state.key = actions.payload;
         },
         setPaymentType: (state, actions: PayloadAction<number | null>) => {
             state.paymentType = actions.payload;
@@ -297,6 +302,7 @@ export const paymentSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+    setPaymentKey,
     setPayment,
     resetPayment,
     setOrderType,

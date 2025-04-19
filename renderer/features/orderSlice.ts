@@ -39,6 +39,7 @@ export interface Orders {
 
 export interface OrderState {
   type: "ADD" | "UPDATE" | "ADDITIONAL" | "VOID";
+  key: string;
   id: number | null;
   identity: {
     member_id: number | null;
@@ -53,6 +54,7 @@ export interface OrderState {
 
 const initialState: OrderState = {
   type: "ADD",
+  key: "",
   id: null,
   identity: {
     member_id: null,
@@ -100,6 +102,9 @@ export const orderSlice = createSlice({
       state.type = actions.payload;
       state.deleteLog = [];
       state.updateLog = [];
+    },
+    setKey: (state, actions: PayloadAction<string>) => {
+      state.key = actions.payload;
     },
     setId: (state, actions: PayloadAction<number>) => {
       state.id = actions.payload;
@@ -279,6 +284,7 @@ export const orderSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  setKey,
   setIdentity,
   addItem,
   incrementItem,
