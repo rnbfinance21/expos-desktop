@@ -78,8 +78,8 @@ const Header = () => {
                             onClick={() => {
                                 if (type !== "ADD") {
                                     dispatch(resetOrder());
-                                    dispatch(setKey(generateRandomString(32)));
                                 }
+                                dispatch(setKey(generateRandomString(32)));
                                 router.push("/form");
                             }}
                         >
