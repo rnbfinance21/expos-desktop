@@ -30,6 +30,9 @@ import { generateRandomString, ucwords } from "../../utils/string";
 import { formatFullDate } from "../../utils/date";
 import { DetailVariant } from "../../services/OrderService";
 import axios from "../../utils/axios";
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 const ActionSection = () => {
     const ipcRenderer = electron.ipcRenderer || false;
@@ -122,15 +125,48 @@ const ActionSection = () => {
                         );
                     }
                 }
-                Swal.fire({
-                    title: "Berhasil",
-                    text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
+                // Swal.fire({
+                //     title: "Berhasil",
+                //     text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
+                //     allowOutsideClick: false,
+                //     icon: "success",
+                //     showCancelButton: false,
+                //     confirmButtonColor: "#3085d6",
+                //     cancelButtonColor: "#d33",
+                //     confirmButtonText: "Oke",
+                // })
+
+                MySwal.fire({
+                    title: (
+                        <div className="text-2xl font-bold text-gray-800">
+                            Terima Kasih! 🎉
+                        </div>
+                    ),
+                    html: (
+                        <div className="mt-3 text-gray-700">
+                            <p>Transaksi Anda telah berhasil.</p>
+                            <p className="text-xl font-semibold mt-3">
+                                Total Kembalian:
+                                <span className="block text-3xl text-green-600 font-bold mt-1">
+                                    Rp {kembalian.toLocaleString('id-ID')}
+                                </span>
+                            </p>
+                        </div>
+                    ),
                     allowOutsideClick: false,
                     icon: "success",
                     showCancelButton: false,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "Oke",
+                    backdrop: `
+                rgba(0,0,0,0.4)
+                left top
+                no-repeat
+            `,
+                    customClass: {
+                        popup: 'rounded-2xl shadow-lg p-4',
+                    },
                 }).then((result) => {
                     if (result.isConfirmed) {
                         dispatch(resetPayment());
@@ -163,15 +199,48 @@ const ActionSection = () => {
                         2
                     );
                 }
-                Swal.fire({
-                    title: "Berhasil",
-                    text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
+                // Swal.fire({
+                //     title: "Berhasil",
+                //     text: "Transaksi Berhasil, Jangan lupa ucapkan Terima Kasih",
+                //     allowOutsideClick: false,
+                //     icon: "success",
+                //     showCancelButton: false,
+                //     confirmButtonColor: "#3085d6",
+                //     cancelButtonColor: "#d33",
+                //     confirmButtonText: "Oke",
+                // })
+
+                MySwal.fire({
+                    title: (
+                        <div className="text-2xl font-bold text-gray-800">
+                            Terima Kasih! 🎉
+                        </div>
+                    ),
+                    html: (
+                        <div className="mt-3 text-gray-700">
+                            <p>Transaksi Anda telah berhasil.</p>
+                            <p className="text-xl font-semibold mt-3">
+                                Total Kembalian:
+                                <span className="block text-3xl text-green-600 font-bold mt-1">
+                                    Rp {kembalian.toLocaleString('id-ID')}
+                                </span>
+                            </p>
+                        </div>
+                    ),
                     allowOutsideClick: false,
                     icon: "success",
                     showCancelButton: false,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "Oke",
+                    backdrop: `
+                rgba(0,0,0,0.4)
+                left top
+                no-repeat
+            `,
+                    customClass: {
+                        popup: 'rounded-2xl shadow-lg p-4',
+                    },
                 }).then((result) => {
                     if (result.isConfirmed) {
                         dispatch(resetPayment());
@@ -570,8 +639,10 @@ const ActionSection = () => {
         }
     };
 
+
+
     return (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 mt-2">
             <div>
                 <Numpad value={inputNumpad.toString()} onChange={_onChange} />
             </div>

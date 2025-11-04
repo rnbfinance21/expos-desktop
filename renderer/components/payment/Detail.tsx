@@ -44,7 +44,7 @@ const Detail = () => {
           <AttributeSection />
           <div className="px-4 pb-4 border-t pt-2">
             <InputSection />
-            <ActionSection />
+            {/* <ActionSection /> */}
           </div>
         </>
       )}

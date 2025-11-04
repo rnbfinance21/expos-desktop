@@ -15,7 +15,7 @@ const Main = () => {
     useSelector(getPayment);
 
   return (
-    <div className="w-[600px] h-full flex flex-col border-r">
+    <div className="w-[400px] h-full flex flex-col border-r">
       <ProfileSection />
       <div className="flex-1 overflow-auto scrollbar-hide">
         <div className="h-0">

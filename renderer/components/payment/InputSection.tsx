@@ -11,28 +11,20 @@ import {
   setKeterangan,
   setPotongan,
 } from "../../features/paymentSlice";
+import { numberFormat } from "../../utils/currency";
+import ActionSection from "./ActionSection";
 
 const InputSection = () => {
   const dispatch = useDispatch();
-  const { diskon, potongan, bayar, paymentType, type, keterangan } =
+  const { diskon, potongan, bayar, paymentType, type, keterangan, tax } =
     useSelector(getPayment);
 
-  const { total, kembalian } = useSelector(getPaymentAllSumPrice);
+
+  const { total, kembalian, diskon_value, pajak_value, subtotal, sumPayment, sumSubtotalBox, sumSubtotalPajak } = useSelector(getPaymentAllSumPrice);
 
   const onFocus = (value: number) => dispatch(setFocus(value));
 
-  const setInputDiskon = (value: string) => {
-    dispatch(setDiskon(parseInt(value, 10)));
-    if (paymentType !== 1) {
-      dispatch(autoSetBayar());
-    }
-  };
-  const setInputPotongan = (value: string) => {
-    dispatch(setPotongan(parseInt(value, 10)));
-    if (paymentType !== 1) {
-      dispatch(autoSetBayar());
-    }
-  };
+
 
   const setInputBayar = (value: string) => {
     dispatch(setBayar(parseInt(value, 10)));
@@ -43,7 +35,82 @@ const InputSection = () => {
 
   return (
     <div className="mb-4 space-y-2">
-      <div className="w-full flex rounded-md shadow-sm">
+      <div className="grid grid-cols-2 gap-4">
+
+        <div>
+          <div className="w-full bg-white p-4 text-sm">
+            {/* Subtotal */}
+            <div className="flex justify-between">
+              <span className="text-gray-700">Subtotal:</span>
+              <span className="font-medium text-gray-800">Rp{numberFormat(sumSubtotalPajak)}</span>
+            </div>
+
+
+
+            {/* Pajak */}
+            <div className="flex justify-between py-1 border-b border-gray-200 pb-2">
+              <span className="text-gray-700">Pajak ({tax}%):</span>
+              <span className="text-green-600 font-medium">Rp{numberFormat(pajak_value)}</span>
+            </div>
+
+            {/* Total Bayar */}
+            <div className="flex justify-between py-1 font-semibold text-sm">
+              <span className="text-gray-900">Subtotal:</span>
+              <span className="text-gray-900">Rp{numberFormat(subtotal)}</span>
+            </div>
+
+            {/* Diskon */}
+            <div className="flex justify-between py-1">
+              <span className="text-gray-700">Diskon ({diskon}%):</span>
+              <span className="text-red-600 font-medium">Rp{numberFormat(diskon_value)}</span>
+            </div>
+
+            {/* Potongan */}
+            <div className="flex justify-between py-1">
+              <span className="text-gray-700">Potongan:</span>
+              <span className="text-red-600 font-medium">Rp{numberFormat(potongan)}</span>
+            </div>
+
+            {/* Total Bayar */}
+            <div className="flex justify-between py-1 font-semibold text-sm border-t border-gray-200 mt-2 pt-2">
+              <span className="text-gray-900">Total Bayar:</span>
+              <span className="text-gray-900">Rp{numberFormat(total)}</span>
+            </div>
+
+            {/* Dibayar */}
+            <div className="flex justify-between py-1">
+              <span className="text-gray-700">Dibayar:</span>
+              <span className="font-medium text-gray-800">Rp{numberFormat(bayar)}</span>
+            </div>
+
+            {/* Kembalian */}
+            {/* <div className="flex justify-between py-1">
+              <span className="text-gray-700">Kembalian:</span>
+              <span className={`font-semibold ${kembalian < 0 ? 'text-red-500' : 'text-green-600'}`}>Rp{numberFormat(kembalian)}</span>
+            </div> */}
+          </div>
+        </div>
+        <div>
+          <CurrencyInput
+            allowDecimals={false}
+            defaultValue={0}
+            decimalSeparator=","
+            groupSeparator="."
+            onValueChange={(value) => {
+              if (value) {
+                setInputBayar(value);
+              } else {
+                setInputBayar("0");
+              }
+            }}
+            value={bayar}
+            onClick={() => onFocus(3)}
+            className="flex-1 block w-full text-center text-[60px] focus:ring-red-500 focus:border-red-500 min-w-0 rounded-md border-gray-200"
+          />
+          <ActionSection />
+        </div>
+      </div>
+      {/* <div className="w-full flex rounded-md shadow-sm">
         <span className="inline-flex pl-2 items-center w-32 rounded-l-md border border-r-0  bg-gray-50 text-gray-800 font-semibold sm:text-xs">
           Diskon
         </span>
@@ -87,8 +154,8 @@ const InputSection = () => {
           onClick={() => onFocus(2)}
           className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
         />
-      </div>
-      <div className="w-full flex rounded-md shadow-sm">
+      </div> */}
+      {/* <div className="w-full flex rounded-md shadow-sm">
         <span className="inline-flex pl-2 items-center w-32 rounded-l-md border border-r-0  bg-gray-50 text-gray-800 font-semibold sm:text-xs">
           Bayar
         </span>
@@ -108,50 +175,7 @@ const InputSection = () => {
           onClick={() => onFocus(3)}
           className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
         />
-      </div>
-      <div className="w-full flex rounded-md shadow-sm">
-        <span className="inline-flex pl-2 items-center w-32 rounded-l-md border border-r-0  bg-gray-50 text-gray-800 font-semibold sm:text-xs">
-          Total
-        </span>
-        <CurrencyInput
-          allowDecimals={false}
-          defaultValue={0}
-          decimalSeparator=","
-          groupSeparator="."
-          value={total}
-          readOnly
-          className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
-        />
-      </div>
-      <div className="w-full flex rounded-md shadow-sm">
-        <span className="inline-flex pl-2 items-center w-32 rounded-l-md border border-r-0  bg-gray-50 text-gray-800 font-semibold sm:text-xs">
-          Kembalian
-        </span>
-        <CurrencyInput
-          allowDecimals={false}
-          defaultValue={0}
-          decimalSeparator=","
-          groupSeparator="."
-          value={kembalian}
-          readOnly
-          className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
-        />
-      </div>
-      {type === "VOID" ? (
-        <div className="w-full flex rounded-md shadow-sm">
-          <span className="inline-flex pl-2 items-center w-32 rounded-l-md border border-r-0  bg-gray-50 text-gray-800 font-semibold sm:text-xs">
-            Keterangan
-          </span>
-          <input
-            type="text"
-            name="keterangan"
-            placeholder="Keterangan void"
-            value={keterangan}
-            onChange={(e) => dispatch(setKeterangan(e.currentTarget.value))}
-            className="flex-1 block w-full text-right focus:ring-red-500 focus:border-red-500 min-w-0 rounded-none rounded-r-md sm:text-xs border-gray-200"
-          />
-        </div>
-      ) : null}
+      </div> */}
     </div>
   );
 };
