@@ -7,6 +7,9 @@ import {
   setPayment,
   setTax,
 } from "../../features/paymentAttributeSlice";
+import {
+  setTax as setInputTax,
+} from "../../features/paymentSlice";
 import { useAuth } from "../../hooks/AuthContext";
 import MasterService from "../../services/MasterService";
 import { Loading } from "../globals/icons";
@@ -16,7 +19,7 @@ import InputSection from "./InputSection";
 
 const Detail = () => {
   const dispatch = useDispatch();
-  const { token } = useAuth();
+  const { token, outlet } = useAuth();
 
   const { isLoading, refetch } = useQuery(
     ["payment_attributes", token],
@@ -32,6 +35,10 @@ const Detail = () => {
       },
     }
   );
+
+  useEffect(() => {
+    dispatch(setInputTax(outlet.tax));
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col">

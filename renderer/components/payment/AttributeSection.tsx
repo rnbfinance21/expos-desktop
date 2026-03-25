@@ -34,7 +34,7 @@ const AttributeSection = () => {
       <div className="h-0">
         <OrderTypeSection />
         <PaymentTypeSection />
-        <TaxSection />
+        {/* <TaxSection /> */}
         <CashSection />
         <div className="flex flex-col gap-2 px-4 py-2 cursor-pointer">
           <div>
