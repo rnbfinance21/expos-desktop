@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setCash,
   setOrder,
@@ -8,6 +8,8 @@ import {
   setTax,
 } from "../../features/paymentAttributeSlice";
 import {
+  autoSetBayar,
+  getPayment,
   setTax as setInputTax,
 } from "../../features/paymentSlice";
 import { useAuth } from "../../hooks/AuthContext";
@@ -20,6 +22,7 @@ import InputSection from "./InputSection";
 const Detail = () => {
   const dispatch = useDispatch();
   const { token, outlet } = useAuth();
+  const { paymentType, orderType } = useSelector(getPayment);
 
   const { isLoading, refetch } = useQuery(
     ["payment_attributes", token],
@@ -37,8 +40,17 @@ const Detail = () => {
   );
 
   useEffect(() => {
-    dispatch(setInputTax(outlet.tax));
-  }, []);
+
+    if (orderType !== 1) {
+      dispatch(setInputTax(0));
+    } else {
+      dispatch(setInputTax(outlet.tax));
+    }
+    
+    if (paymentType !== 1) {
+      dispatch(autoSetBayar());
+    } 
+  }, [paymentType]);
 
   return (
     <div className="flex-1 flex flex-col">
