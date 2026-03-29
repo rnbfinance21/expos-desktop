@@ -23,7 +23,10 @@ const Detail = () => {
   const dispatch = useDispatch();
   const { token, outlet } = useAuth();
   const { paymentType, orderType } = useSelector(getPayment);
-  const outletTax = Number(outlet?.tax ?? 0);
+  const outletTax =
+    typeof outlet?.tax === "number" && !Number.isNaN(outlet.tax)
+      ? outlet.tax
+      : null;
 
   const { isLoading, refetch } = useQuery(
     ["payment_attributes", token],
@@ -43,7 +46,7 @@ const Detail = () => {
   useEffect(() => {
     if (orderType !== 1) {
       dispatch(setInputTax(0));
-    } else {
+    } else if (outletTax !== null) {
       dispatch(setInputTax(outletTax));
     }
 
