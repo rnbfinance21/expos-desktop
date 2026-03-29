@@ -23,6 +23,7 @@ const Detail = () => {
   const dispatch = useDispatch();
   const { token, outlet } = useAuth();
   const { paymentType, orderType } = useSelector(getPayment);
+  const outletTax = Number(outlet?.tax ?? 0);
 
   const { isLoading, refetch } = useQuery(
     ["payment_attributes", token],
@@ -40,17 +41,16 @@ const Detail = () => {
   );
 
   useEffect(() => {
-
     if (orderType !== 1) {
       dispatch(setInputTax(0));
     } else {
-      dispatch(setInputTax(outlet.tax));
+      dispatch(setInputTax(outletTax));
     }
-    
+
     if (paymentType !== 1) {
       dispatch(autoSetBayar());
-    } 
-  }, [paymentType]);
+    }
+  }, [dispatch, orderType, outletTax, paymentType]);
 
   return (
     <div className="flex-1 flex flex-col">

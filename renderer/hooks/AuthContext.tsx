@@ -91,8 +91,10 @@ export const AuthContextProvider = ({ children }: Props) => {
     const [kasState, setKasState] = useState(false);
     const [openState, setOpenState] = useState(false);
     const [token, setToken] = useState(null);
-    const [user, setUser] = useState<UserDetail>();
-    const [outlet, setOutlet] = useState<OutletDetail>();
+    const [user, setUser] = useState<UserDetail>(authContextDefaultValues.user);
+    const [outlet, setOutlet] = useState<OutletDetail>(
+        authContextDefaultValues.outlet
+    );
     const [accessCode, setAccessCode] = useState<string | null>(null);
     const [tableCount, setTableCount] = useState<number>(0);
 
@@ -190,8 +192,8 @@ export const AuthContextProvider = ({ children }: Props) => {
         }
         // Cookie.remove("_token");
         setToken(null);
-        setUser(undefined);
-        setOutlet(undefined);
+        setUser(authContextDefaultValues.user);
+        setOutlet(authContextDefaultValues.outlet);
     };
 
     const refetch = () => {
