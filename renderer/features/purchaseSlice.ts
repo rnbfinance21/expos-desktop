@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { formatDate } from "../utils/date";
-import { RootState } from "../config/store";
+import { formatDate } from "@/utils/date";
+import { RootState } from "@/config/store";
 
 export interface PurchaseState {
     search: string;

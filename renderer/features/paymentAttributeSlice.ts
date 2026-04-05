@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { OrderType, PaymentType } from "../services/MasterService";
-import { RootState } from "../config/store";
+import { OrderType, PaymentType } from "@/modules/payment/type";
+import { RootState } from "@/config/store";
 
 export interface PaymentState {
   order: OrderType[];

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef, HTMLProps } from "react";
-import { classNames } from "../../../utils/string";
+import { classNames } from "@/utils/string";
 
 interface TextInputProps extends HTMLProps<HTMLInputElement> {
   className?: string;

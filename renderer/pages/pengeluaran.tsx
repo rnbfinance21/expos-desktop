@@ -1,6 +1,6 @@
 import React from "react";
-import Main from "../components/pengeluaran/Main";
-import DefaultLayout from "../layouts/DefaultLayout";
+import Main from "@/modules/pengeluaran/components/Main";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 const pengeluaran = () => {
   return (

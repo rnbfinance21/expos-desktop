@@ -1,6 +1,6 @@
 import React from "react";
-import Main from "../components/supplier/Main";
-import DefaultLayout from "../layouts/DefaultLayout";
+import Main from "@/modules/supplier/components/Main";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 const SupplierPage = () => {
   return (

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import Detail from "../components/home/Detail";
-import Main from "../components/home/Main";
-import { withAuth } from "../HOC/withAuth";
-import DefaultLayout from "../layouts/DefaultLayout";
+import React from "react";
+import { withAuth } from "@/HOC/withAuth";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import Main from "@/modules/home/components/Main";
+import Detail from "@/modules/home/components/Detail";
 
 function Home() {
   return (

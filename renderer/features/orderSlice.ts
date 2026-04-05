@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../config/store";
-import { Menu } from "../services/MenuService";
-import { arraysEqual2, arraysEqual3 } from "../utils/array";
+import { RootState } from "@/config/store";
+import { Menu } from "@/modules/menu/type";
+import { arraysEqual2, arraysEqual3 } from "@/utils/array";
 
 export type VariantOrder = {
   id: number;

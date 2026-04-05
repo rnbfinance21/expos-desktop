@@ -4,12 +4,13 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
-import { DynamicHeroIcon } from "../components/globals/icons";
-import { useAuth } from "../hooks/AuthContext";
-import OutletService, { OpenOutletParams } from "../services/OutletService";
-import { classNames, ucwords } from "../utils/string";
-import Toast from "../utils/toast";
-import SideBar from "./Sidebar";
+import { DynamicHeroIcon } from "@/components/globals/icons";
+import { useAuth } from "@/hooks/AuthContext";
+import { openOutlet } from "@/modules/outlet/api";
+import { OpenOutletParams } from "@/modules/outlet/type";
+import { classNames, ucwords } from "@/utils/string";
+import Toast from "@/utils/toast";
+import SideBar from "@/layouts/Sidebar";
 
 interface HeaderProps {
   isBack: boolean;
@@ -22,7 +23,7 @@ const Header = ({ isBack }: HeaderProps) => {
   const [openSideBar, setOpenSideBar] = useState(false);
 
   const openStateMutation = useMutation(
-    (params: OpenOutletParams) => OutletService.openOutlet(token, params),
+    (params: OpenOutletParams) => openOutlet(token, params),
     {
       onSuccess: (res) => {
         Toast.fire("Berhasil!", res.message, "success");

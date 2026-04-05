@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
-import { BaseResponse } from "../services/types";
-import Toast from "./toast";
+import { BaseResponse } from "@/utils/types";
+import Toast from "@/utils/toast";
 
 export const handleErrorAxios = (err: AxiosError<BaseResponse>) => {
   if (err.isAxiosError) {

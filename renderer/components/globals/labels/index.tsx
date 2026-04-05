@@ -1,4 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import ErrorLabel from './ErrorLabel';
+import ErrorLabel from '@/components/globals/labels/ErrorLabel';
 
 export { ErrorLabel };

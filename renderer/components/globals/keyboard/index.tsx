@@ -1,4 +1,4 @@
-import KeyboardWrapper from "./KeyboardWrapper";
-import Numpad from "./Numpad";
+import KeyboardWrapper from "@/components/globals/keyboard/KeyboardWrapper";
+import Numpad from "@/components/globals/keyboard/Numpad";
 
 export { KeyboardWrapper, Numpad };

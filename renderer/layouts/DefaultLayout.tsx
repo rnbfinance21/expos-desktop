@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { Fragment, ReactNode } from "react";
-import { DynamicHeroIcon } from "../components/globals/icons";
-import Header from "./Header";
+import { DynamicHeroIcon } from "@/components/globals/icons";
+import Header from "@/layouts/Header";
 
 interface DefaultLayoutProps {
   title?: string;

@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { HTMLProps } from "react";
-import { classNames } from "../../../utils/string";
+import { classNames } from "@/utils/string";
 
 interface ButtonProps extends HTMLProps<HTMLButtonElement> {
   blok?: boolean;

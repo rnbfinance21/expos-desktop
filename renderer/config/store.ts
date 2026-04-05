@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import listOrderReducer from "../features/listOrderSlice";
-import menuReducer from "../features/menuSlice";
-import orderReducer from "../features/orderSlice";
-import customReducer from "../features/customSlice";
-import paymentReducer from "../features/paymentSlice";
-import paymentAttributeReducer from "../features/paymentAttributeSlice";
-import reportReducer from "../features/reportSlice";
-import pengeluaranReducer from "../features/pengeluaranSlice";
-import stokMenuReducer from "../features/stokMenuSlice";
-import supplierReducer from "../features/supplierSlice";
-import purchaseReducer from "../features/purchaseSlice";
+import listOrderReducer from "@/features/listOrderSlice";
+import menuReducer from "@/features/menuSlice";
+import orderReducer from "@/features/orderSlice";
+import customReducer from "@/features/customSlice";
+import paymentReducer from "@/features/paymentSlice";
+import paymentAttributeReducer from "@/features/paymentAttributeSlice";
+import reportReducer from "@/features/reportSlice";
+import pengeluaranReducer from "@/features/pengeluaranSlice";
+import stokMenuReducer from "@/features/stokMenuSlice";
+import supplierReducer from "@/features/supplierSlice";
+import purchaseReducer from "@/features/purchaseSlice";
 
 export const store = configureStore({
     reducer: {

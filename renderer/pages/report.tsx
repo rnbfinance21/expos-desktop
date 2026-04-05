@@ -1,7 +1,7 @@
 import React from "react";
-import Detail from "../components/report/Detail";
-import Main from "../components/report/Main";
-import DefaultLayout from "../layouts/DefaultLayout";
+import Main from "@/modules/report/components/Main";
+import Detail from "@/modules/report/components/Detail";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 const report = () => {
   return (

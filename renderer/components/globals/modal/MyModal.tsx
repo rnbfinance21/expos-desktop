@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, ReactElement } from "react";
-import { DynamicHeroIcon } from "../icons";
+import { DynamicHeroIcon } from "@/components/globals/icons";
 
 type MyModalProps = {
   show: boolean;

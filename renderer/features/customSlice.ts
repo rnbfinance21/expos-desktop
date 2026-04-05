@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Menu } from "../services/MenuService";
-import { Orders } from "./orderSlice";
-import { RootState } from "../config/store";
+import { Menu } from "@/modules/menu/type";
+import { Orders } from "@/features/orderSlice";
+import { RootState } from "@/config/store";
 
 export interface CustomState {
   type: string;

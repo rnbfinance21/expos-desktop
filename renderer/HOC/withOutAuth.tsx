@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import Router from "next/router";
-import { useAuth } from "../hooks/AuthContext";
+import { useAuth } from "@/hooks/AuthContext";
 
 const redirectTo = "/home";
 

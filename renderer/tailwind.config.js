@@ -5,6 +5,8 @@ module.exports = {
     "./renderer/pages/**/*.{js,ts,jsx,tsx}",
     "./renderer/components/**/*.{js,ts,jsx,tsx}",
     "./renderer/layouts/**/*.{js,ts,jsx,tsx}",
+    "./renderer/modules/**/*.{js,ts,jsx,tsx}",
+    "./renderer/HOC/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     colors: {

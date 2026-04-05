@@ -1,6 +1,6 @@
 import React from "react";
-import DefaultLayout from "../layouts/DefaultLayout";
-import Main from "../components/purchase/Main";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import Main from "@/modules/purchase/components/Main";
 
 const PurchasePage = () => {
     return (

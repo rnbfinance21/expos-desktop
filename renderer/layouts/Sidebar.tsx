@@ -1,11 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import React, { Fragment } from "react";
-import { useAuth } from "../hooks/AuthContext";
-import { classNames, ucwords } from "../utils/string";
-import Divider from "../components/globals/dividers/Divider";
-import { DynamicHeroIcon } from "../components/globals/icons";
-import { IconName } from "../components/globals/icons/DynamicHeroIcon";
+import { useAuth } from "@/hooks/AuthContext";
+import { classNames, ucwords } from "@/utils/string";
+import Divider from "@/components/globals/dividers/Divider";
+import { DynamicHeroIcon } from "@/components/globals/icons";
+import { IconName } from "@/components/globals/icons/DynamicHeroIcon";
 import { useRouter } from "next/router";
 
 type SideBarProps = {

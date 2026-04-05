@@ -7,10 +7,10 @@ import {
 } from "react";
 import Cookie from "js-cookie";
 import { useQuery } from "react-query";
-import AuthService from "../services/AuthService";
+import { userDetail, uangKas } from "@/modules/auth/api";
 import { AxiosError } from "axios";
-import { BaseResponse } from "../services/types";
-import Toast from "../utils/toast";
+import { BaseResponse } from "@/utils/types";
+import Toast from "@/utils/toast";
 import electron from "electron";
 
 type UserDetail = {
@@ -128,7 +128,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 
     const fetchUser = useQuery(
         ["user_detail", token],
-        () => AuthService.userDetail(token),
+        () => userDetail(token),
         {
             enabled: token !== null && token !== "" ? true : false,
             retry: 3,

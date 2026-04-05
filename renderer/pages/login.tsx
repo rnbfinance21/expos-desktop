@@ -1,15 +1,15 @@
 import React from "react";
-import Container from "../components/login/Container";
-import { withOutAuth } from "../HOC/withOutAuth";
-import HeroSection from "../components/login/HeroSection";
-import FormSection from "../components/login/FormSection";
+import { withOutAuth } from "@/HOC/withOutAuth";
+import LoginContainer from "@/modules/auth/components/LoginContainer";
+import HeroSection from "@/modules/auth/components/HeroSection";
+import FormSection from "@/modules/auth/components/FormSection";
 
 const login = () => {
   return (
-    <Container>
+    <LoginContainer>
       <HeroSection />
       <FormSection />
-    </Container>
+    </LoginContainer>
   );
 };
 

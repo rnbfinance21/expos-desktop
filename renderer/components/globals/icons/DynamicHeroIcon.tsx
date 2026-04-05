@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import * as HeroIcons from "@heroicons/react/24/solid";
-import { classNames } from "../../../utils/string";
+import { classNames } from "@/utils/string";
 
 export type IconName = keyof typeof HeroIcons;
 
