@@ -1,0 +1,115 @@
+../../../../node_modules/bun-types/bun.d.ts(7213,5): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/bun.d.ts(7213,14): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7213,34): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7214,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7214,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7215,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7215,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7216,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7217,12): error TS1005: ')' expected.
+../../../../node_modules/bun-types/bun.d.ts(7232,19): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/bun.d.ts(7232,20): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7234,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7234,4): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/bun.d.ts(7248,5): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/bun.d.ts(7248,14): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7248,34): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7249,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7249,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7250,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7250,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7251,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7266,9): error TS1005: ')' expected.
+../../../../node_modules/bun-types/bun.d.ts(7266,18): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/bun.d.ts(7267,13): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7268,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7268,4): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/bun.d.ts(7285,5): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/bun.d.ts(7285,14): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7285,34): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7286,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7286,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7287,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7287,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7288,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7289,12): error TS1005: ')' expected.
+../../../../node_modules/bun-types/bun.d.ts(7304,19): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/bun.d.ts(7304,20): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7306,21): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7308,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7308,4): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/bun.d.ts(7321,5): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/bun.d.ts(7321,14): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7321,34): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7322,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7322,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7323,15): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7323,35): error TS1005: ',' expected.
+../../../../node_modules/bun-types/bun.d.ts(7324,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7339,9): error TS1005: ')' expected.
+../../../../node_modules/bun-types/bun.d.ts(7339,18): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/bun.d.ts(7340,13): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7341,3): error TS1109: Expression expected.
+../../../../node_modules/bun-types/bun.d.ts(7341,4): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(736,11): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/sql.d.ts(736,17): error TS1434: Unexpected keyword or identifier.
+../../../../node_modules/bun-types/sql.d.ts(736,18): error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+../../../../node_modules/bun-types/sql.d.ts(736,22): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(736,57): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(736,58): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(764,11): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(764,18): error TS1005: ',' expected.
+../../../../node_modules/bun-types/sql.d.ts(764,27): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(764,39): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(764,74): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(764,75): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(793,17): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(793,24): error TS1005: ',' expected.
+../../../../node_modules/bun-types/sql.d.ts(793,28): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(793,63): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(793,64): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(823,17): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(823,24): error TS1005: ',' expected.
+../../../../node_modules/bun-types/sql.d.ts(823,33): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(823,45): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(823,80): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(823,81): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(844,22): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(844,29): error TS1005: ',' expected.
+../../../../node_modules/bun-types/sql.d.ts(845,11): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(846,9): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(847,5): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(847,6): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(852,17): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(852,24): error TS1005: ',' expected.
+../../../../node_modules/bun-types/sql.d.ts(852,30): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(852,42): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(852,77): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(852,78): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(860,14): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(860,27): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(860,44): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(860,50): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/sql.d.ts(860,51): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(860,52): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(868,12): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(868,27): error TS1005: ')' expected.
+../../../../node_modules/bun-types/sql.d.ts(868,44): error TS1109: Expression expected.
+../../../../node_modules/bun-types/sql.d.ts(868,50): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/sql.d.ts(868,51): error TS1005: ';' expected.
+../../../../node_modules/bun-types/sql.d.ts(868,52): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/sql.d.ts(887,1): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/test.d.ts(279,10): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/test.d.ts(279,17): error TS1005: ',' expected.
+../../../../node_modules/bun-types/test.d.ts(279,24): error TS1005: ')' expected.
+../../../../node_modules/bun-types/test.d.ts(279,28): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/test.d.ts(279,29): error TS1005: ';' expected.
+../../../../node_modules/bun-types/test.d.ts(279,30): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/test.d.ts(571,10): error TS1139: Type parameter declaration expected.
+../../../../node_modules/bun-types/test.d.ts(571,17): error TS1005: ',' expected.
+../../../../node_modules/bun-types/test.d.ts(571,24): error TS1005: ')' expected.
+../../../../node_modules/bun-types/test.d.ts(571,28): error TS1011: An element access expression should take an argument.
+../../../../node_modules/bun-types/test.d.ts(571,29): error TS1005: ';' expected.
+../../../../node_modules/bun-types/test.d.ts(571,30): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/test.d.ts(572,3): error TS1128: Declaration or statement expected.
+../../../../node_modules/bun-types/test.d.ts(2392,1): error TS1128: Declaration or statement expected.
