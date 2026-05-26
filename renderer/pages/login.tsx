@@ -1,16 +1,9 @@
 import React from "react";
 import { withOutAuth } from "@/HOC/withOutAuth";
-import LoginContainer from "@/modules/auth/components/LoginContainer";
-import HeroSection from "@/modules/auth/components/HeroSection";
-import FormSection from "@/modules/auth/components/FormSection";
+import LoginShell from "@/features/auth/components/login-shell";
 
 const login = () => {
-  return (
-    <LoginContainer>
-      <HeroSection />
-      <FormSection />
-    </LoginContainer>
-  );
+  return <LoginShell />;
 };
 
 export default withOutAuth(login);

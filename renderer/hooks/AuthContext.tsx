@@ -7,11 +7,12 @@ import {
 } from "react";
 import Cookie from "js-cookie";
 import { useQuery } from "react-query";
-import { userDetail, uangKas } from "@/modules/auth/api";
+import { userDetail } from "@/features/auth/api";
 import { AxiosError } from "axios";
 import { BaseResponse } from "@/utils/types";
 import Toast from "@/utils/toast";
 import electron from "electron";
+import { useAuthStore } from "@/store/auth-store";
 
 type UserDetail = {
     id: number;
@@ -87,6 +88,8 @@ const AuthContext = createContext<authContextType>(authContextDefaultValues);
 
 export const AuthContextProvider = ({ children }: Props) => {
     const ipcRenderer = electron.ipcRenderer || false;
+    const setStoreToken = useAuthStore((state) => state.setToken);
+    const clearStoreToken = useAuthStore((state) => state.clearToken);
 
     const [kasState, setKasState] = useState(false);
     const [openState, setOpenState] = useState(false);
@@ -109,15 +112,17 @@ export const AuthContextProvider = ({ children }: Props) => {
 
             if (_token !== undefined && _token !== "") {
                 setToken(_token);
+                setStoreToken(_token);
             } else {
                 setToken("");
+                clearStoreToken();
             }
         }
-    }, []);
+    }, [clearStoreToken, ipcRenderer, setStoreToken]);
 
     const fetchUser = useQuery(
         ["user_detail", token],
-        () => userDetail(token),
+        () => userDetail(),
         {
             enabled: token !== null && token !== "" ? true : false,
             retry: 3,
@@ -179,6 +184,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 
     const signIn = (val: string) => {
         setToken(val);
+        setStoreToken(val);
 
         if (ipcRenderer) {
             ipcRenderer.send("electron-store-set", "_token", val);
@@ -192,6 +198,7 @@ export const AuthContextProvider = ({ children }: Props) => {
         }
         // Cookie.remove("_token");
         setToken(null);
+        clearStoreToken();
         setUser(authContextDefaultValues.user);
         setOutlet(authContextDefaultValues.outlet);
     };
