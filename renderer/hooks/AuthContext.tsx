@@ -98,17 +98,6 @@ export const AuthContextProvider = ({ children }: Props) => {
     const [accessCode, setAccessCode] = useState<string | null>(null);
     const [tableCount, setTableCount] = useState<number>(0);
 
-    const resolveOutletTax = (
-        nextTax: unknown,
-        prevTax: number
-    ): number => {
-        if (typeof nextTax === "number" && !Number.isNaN(nextTax)) {
-            return nextTax;
-        }
-
-        return prevTax;
-    };
-
     useEffect(() => {
         if (ipcRenderer) {
             // const _token: any =
@@ -143,16 +132,16 @@ export const AuthContextProvider = ({ children }: Props) => {
                     photo: data.photo,
                     state: data.state ? true : false,
                 });
-                setOutlet((prevOutlet) => ({
+                setOutlet({
                     id: data.outlet.id,
                     name: data.outlet.name,
                     address: data.outlet.address,
                     code: data.outlet.code,
                     open_state: data.outlet.open_state ? true : false,
-                    tax: resolveOutletTax(data.outlet.tax, prevOutlet.tax),
+                    tax: data.outlet.tax,
                     instagram: data.outlet.instagram,
                     contact: data.outlet.contact,
-                }));
+                });
                 setKasState(data.outlet.kas_state === 1 ? true : false);
                 setOpenState(data.outlet.open_state === 1 ? true : false);
                 setAccessCode(data.access_code);
