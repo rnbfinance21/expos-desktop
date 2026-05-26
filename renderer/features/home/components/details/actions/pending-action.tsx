@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import electron from "electron";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
@@ -8,7 +9,6 @@ import { updateState } from "@/modules/order/api";
 import { OrderDetail, UpdateStateParams } from "@/modules/order/type";
 import { handleErrorAxios } from "@/utils/errors";
 import { Button } from "@/components/globals/buttons";
-import electron from "electron";
 
 interface PendingActionProps {
   data: OrderDetail;
@@ -19,21 +19,16 @@ const PendingAction = ({ data }: PendingActionProps) => {
   const dispatch = useDispatch();
   const { token } = useAuth();
 
-  const [typeConfirm, setTypeConfirm] = useState(1); // 1 = accept, -1 = Reject
+  const [typeConfirm, setTypeConfirm] = useState(1);
 
   const changeStateMutation = useMutation(
     (params: UpdateStateParams) => updateState(token, params),
     {
       onSuccess: (res) => {
-        if (ipcRenderer) {
-          if (typeConfirm === 1) {
-            // let copies =  ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
-
-            // for (let index = 0; index < copies; index++) {
-            // }
-            ipcRenderer.send("print-order", data, 1);
-          }
+        if (ipcRenderer && typeConfirm === 1) {
+          ipcRenderer.send("print-order", data, 1);
         }
+
         Swal.fire("Berhasil!", res.message, "success");
         dispatch(setRefetchOrder(true));
       },
@@ -41,7 +36,7 @@ const PendingAction = ({ data }: PendingActionProps) => {
     }
   );
 
-  const _onAccept = () => {
+  const onAccept = () => {
     setTypeConfirm(1);
     Swal.fire({
       title: "Apakah Anda yakin?",
@@ -63,7 +58,7 @@ const PendingAction = ({ data }: PendingActionProps) => {
     });
   };
 
-  const _onReject = (type = 0) => {
+  const onReject = (type = 0) => {
     setTypeConfirm(-1);
     Swal.fire({
       title: type === 0 ? "Alasan penolakan" : "Alasan Pembatalan",
@@ -86,10 +81,11 @@ const PendingAction = ({ data }: PendingActionProps) => {
       }
     });
   };
+
   return (
     <div className="grid grid-cols-2 gap-4">
-      <Button onClick={_onAccept}>Terima</Button>
-      <Button onClick={() => _onReject(0)}>Tolak</Button>
+      <Button onClick={onAccept}>Terima</Button>
+      <Button onClick={() => onReject(0)}>Tolak</Button>
     </div>
   );
 };

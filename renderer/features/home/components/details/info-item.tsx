@@ -8,11 +8,7 @@ type InfoItemProps = {
 
 const InfoItem = ({ title, value, col }: InfoItemProps) => {
   return (
-    <div
-      className={`flex ${
-        col ? "flex-col" : "flex-row justify-between"
-      }  text-xs`}
-    >
+    <div className={`flex ${col ? "flex-col" : "flex-row justify-between"} text-xs`}>
       <div className="w-28">
         <span className="font-light">{title}</span>
       </div>

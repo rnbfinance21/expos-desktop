@@ -16,7 +16,7 @@ const initialState: CounterState = {
   search: "",
   status: null,
   date: formatDate(new Date()),
-  refetchOrder: true,
+  refetchOrder: false,
   selectedOrder: null,
   openDetail: false,
 };
@@ -38,9 +38,11 @@ export const counterSlice = createSlice({
       state.selectedOrder = null;
     },
     setRefetchOrder: (state, actions: PayloadAction<boolean>) => {
-      // state.selectedOrder = null;
       state.refetchOrder = actions.payload;
-      state.selectedOrder = null;
+
+      if (actions.payload) {
+        state.selectedOrder = null;
+      }
     },
     setStatusAndDate: (
       state,

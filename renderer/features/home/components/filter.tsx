@@ -1,23 +1,17 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
-import { Button } from "@/components/globals/buttons";
-import { DynamicHeroIcon } from "@/components/globals/icons";
-import StatusSelect from "@/modules/home/components/filters/StatusSelect";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getListOrder,
-  setDate,
-  setStatusAndDate,
-} from "@/features/listOrderSlice";
+import { Button } from "@/components/globals/buttons";
+import { DynamicHeroIcon } from "@/components/globals/icons";
+import { getListOrder, setDate } from "@/features/listOrderSlice";
 import { formatDate } from "@/utils/date";
 
 const Filter = () => {
   const dispatch = useDispatch();
-  const { status, date } = useSelector(getListOrder);
+  const { date } = useSelector(getListOrder);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [filterStatus, setFilterStatus] = useState(0);
   const [filterDate, setFilterDate] = useState(new Date());
 
   const closeModal = () => {
@@ -28,21 +22,16 @@ const Filter = () => {
     setIsOpen(true);
   };
 
-  const _onSubmit = () => {
+  const onSubmit = () => {
     dispatch(setDate(formatDate(filterDate)));
-    // setStatusAndDate({
-    //   status: filterStatus,
-    //   date: formatDate(filterDate),
-    // })
     closeModal();
   };
 
   useEffect(() => {
     if (isOpen) {
-      setFilterStatus(status);
       setFilterDate(new Date(date));
     }
-  }, [isOpen]);
+  }, [date, isOpen]);
 
   return (
     <>
@@ -86,19 +75,13 @@ const Filter = () => {
                     FILTER
                   </Dialog.Title>
                   <div className="mt-4">
-                    {/* <div className="mb-4">
-                      <StatusSelect
-                        onChange={setFilterStatus}
-                        value={filterStatus}
-                      />
-                    </div> */}
                     <div className="mb-4">
                       <div className="relative">
                         <DatePicker
                           selected={filterDate}
-                          onChange={(date) => {
-                            if (date !== null) {
-                              setFilterDate(date);
+                          onChange={(selectedDate) => {
+                            if (selectedDate !== null) {
+                              setFilterDate(selectedDate);
                             }
                           }}
                           dateFormat="yyyy-MM-dd"
@@ -113,7 +96,7 @@ const Filter = () => {
                   </div>
 
                   <div className="mt-4">
-                    <Button onClick={_onSubmit} blok>
+                    <Button onClick={onSubmit} blok>
                       Terapkan Filter
                     </Button>
                   </div>

@@ -1,8 +1,8 @@
 import React from "react";
+import { VariantOrder } from "@/features/orderSlice";
 import { Detail } from "@/modules/order/type";
 import { numberFormat } from "@/utils/currency";
 import { ucwords } from "@/utils/string";
-import { VariantOrder } from "@/features/orderSlice";
 
 type DetailItemProps = {
   data: Detail;
@@ -12,7 +12,7 @@ const DetailItem = ({ data }: DetailItemProps) => {
   let tmpVariant: VariantOrder[] = [];
 
   data.variants.forEach((e) => {
-    let find = tmpVariant.findIndex((f) => f.id === e.variant_id);
+    const find = tmpVariant.findIndex((f) => f.id === e.variant_id);
 
     if (find === -1) {
       tmpVariant.push({
@@ -27,9 +27,9 @@ const DetailItem = ({ data }: DetailItemProps) => {
         ],
       });
     } else {
-      let selected = tmpVariant[find];
+      const selected = tmpVariant[find];
 
-      let tmpData: {
+      const tmpData: {
         option_id: number;
         option_name: string;
         price: number;
@@ -55,9 +55,7 @@ const DetailItem = ({ data }: DetailItemProps) => {
             <span className="text-green-500 text-[10px]">(tambahan)</span>
           ) : null}
         </span>
-        <span className="text-sm font-bold">
-          Rp{numberFormat(data.total, 0)}
-        </span>
+        <span className="text-sm font-bold">Rp{numberFormat(data.total, 0)}</span>
       </div>
       {data.type_order === 2 ? (
         <div className="mt-1">
@@ -75,10 +73,7 @@ const DetailItem = ({ data }: DetailItemProps) => {
               </span>
               <span className="text-[10px] text-gray-800 font-semibold">
                 {variant.data
-                  .map((opt: any, oi: number) => {
-                    let result = `${opt.option_name} `;
-                    return result;
-                  })
+                  .map((opt) => `${opt.option_name} `)
                   .toString()}
               </span>
             </div>
@@ -94,12 +89,8 @@ const DetailItem = ({ data }: DetailItemProps) => {
       ) : null}
       <div className="flex flex-row mt-2 justify-between">
         <div className="flex flex-row">
-          <span className="text-[10px] text-gray-500 font-light mr-1">
-            Jumlah:
-          </span>
-          <span className="text-[10px] text-gray-800 font-semibold">
-            {data.qty}
-          </span>
+          <span className="text-[10px] text-gray-500 font-light mr-1">Jumlah:</span>
+          <span className="text-[10px] text-gray-800 font-semibold">{data.qty}</span>
         </div>
         <div className="flex flex-row">
           <span className="text-[10px] text-gray-800 font-semibold">

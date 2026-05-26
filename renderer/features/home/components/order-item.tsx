@@ -1,9 +1,6 @@
 import React from "react";
-import { Order, OrderDetail, OrderPaginate } from "@/modules/order/type";
+import { OrderPaginate } from "@/modules/order/type";
 import { classNames, ucwords } from "@/utils/string";
-import PendingAction from "@/modules/home/components/details/actions/PendingAction";
-import ProsesAction from "@/modules/home/components/details/actions/ProsesAction";
-import PaidAction from "@/modules/home/components/details/actions/PaidAction";
 
 interface OrderItemProps {
   data: OrderPaginate;
@@ -36,7 +33,7 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
     },
   };
 
-  const selectColor = stateColor[data.status] ?? stateColor["-1"];
+  const selectColor = stateColor[data.status] ?? stateColor[-1];
 
   return (
     <div
@@ -73,16 +70,6 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
             </p>
           </div>
         </div>
-
-        {/* <div className="w-[350px]">
-          {data.status === 0 ? (
-            <PendingAction data={data} />
-          ) : data?.status === 1 ? (
-            <ProsesAction data={data} />
-          ) : data?.status === 2 ? (
-            <PaidAction data={data} />
-          ) : null}
-        </div> */}
       </div>
     </div>
   );

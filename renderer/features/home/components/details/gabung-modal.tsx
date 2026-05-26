@@ -1,0 +1,164 @@
+import React, { useEffect, useMemo, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { setRefetchOrder } from "@/features/listOrderSlice";
+import { useAuth } from "@/hooks/AuthContext";
+import { gabungOrder, getOrderMerge } from "@/modules/order/api";
+import { GabungParams, Order, OrderDetail } from "@/modules/order/type";
+import { handleErrorAxios } from "@/utils/errors";
+import { ucwords } from "@/utils/string";
+import Toast from "@/utils/toast";
+import { Button } from "@/components/globals/buttons";
+import { DynamicHeroIcon, Loading } from "@/components/globals/icons";
+import MyModal from "@/components/globals/modal/MyModal";
+
+interface GabungModalProps {
+  show: boolean;
+  onClose: () => void;
+  data: OrderDetail;
+}
+
+const GabungModal = ({ show, onClose, data }: GabungModalProps) => {
+  const dispatch = useDispatch();
+  const { token } = useAuth();
+  const [search, setSearch] = useState("");
+  const [selectedTransaction, setSelectedTransaction] = useState(0);
+
+  const { data: mergeResponse, isLoading } = useQuery(
+    ["merge_order", token, data.id],
+    () => getOrderMerge(token as string, data.id),
+    {
+      enabled: show && token !== null && token !== "",
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const listData = useMemo<Order[]>(() => {
+    const source = mergeResponse?.data ?? [];
+    const keyword = search.trim().toLowerCase();
+
+    if (!keyword) {
+      return source;
+    }
+
+    return source.filter((item) => {
+      return (
+        item.name.toLowerCase().includes(keyword) ||
+        item.table.toLowerCase().includes(keyword) ||
+        item.kode_transaksi.toLowerCase().includes(keyword)
+      );
+    });
+  }, [mergeResponse, search]);
+
+  const gabungMutation = useMutation(
+    (params: GabungParams) => gabungOrder(token, params),
+    {
+      onSuccess: (res) => {
+        Swal.fire("Berhasil!", res.message, "success");
+        dispatch(setRefetchOrder(true));
+        onClose();
+      },
+      onError: handleErrorAxios,
+    }
+  );
+
+  const onSubmit = () => {
+    if (selectedTransaction !== 0) {
+      gabungMutation.mutate({
+        from: data.id,
+        to: selectedTransaction,
+      });
+    } else {
+      Toast.fire("Pemberitahuan", "Silahkan pilih transaksi", "warning");
+    }
+  };
+
+  useEffect(() => {
+    if (!show) {
+      setSearch("");
+      setSelectedTransaction(0);
+    }
+  }, [show]);
+
+  return (
+    <MyModal title="Gabung pesanan ke" show={show} onClose={onClose}>
+      <div className="mt-4">
+        <div className="relative">
+          <input
+            className="border text-sm pl-8 pr-4 py-2 rounded-md w-full"
+            placeholder="Cari transaksi..."
+            autoCapitalize="none"
+            value={search}
+            onChange={(e) => setSearch(e.currentTarget.value)}
+          />
+          <DynamicHeroIcon
+            icon="MagnifyingGlassIcon"
+            className="absolute left-3 top-3"
+          />
+        </div>
+        <div className="mt-4 h-[250px] overflow-auto">
+          {isLoading ? (
+            <div className="h-full w-full flex justify-center items-center">
+              <Loading />
+            </div>
+          ) : listData.length === 0 ? (
+            <div className="p-4 bg-gray-100 text-center">
+              <p className="text-sm font-bold text-gray-900">
+                Transaksi tidak ditemukan
+              </p>
+            </div>
+          ) : (
+            <div className="h-0 space-y-2">
+              {listData.map((item) => {
+                return (
+                  <div
+                    key={`gabung_transaksi_${item.id}`}
+                    onClick={() => {
+                      if (selectedTransaction === item.id) {
+                        setSelectedTransaction(0);
+                      } else {
+                        setSelectedTransaction(item.id);
+                      }
+                    }}
+                    className="p-4 flex flex-row items-center border-b cursor-pointer hover:bg-gray-100"
+                  >
+                    <div className="h-11 px-4 bg-gray-100 border rounded-md overflow-hidden flex justify-center items-center">
+                      <span className="font-bold text-gray-900">{item.table}</span>
+                    </div>
+                    <div className="flex-1 flex flex-col ml-4">
+                      <p className="text-xs font-bold text-gray-900">{ucwords(item.name)}</p>
+                      <div className="flex flex-row gap-2 items-center">
+                        <p className="text-[10px] font-light text-gray-600">
+                          #{item.kode_transaksi}
+                        </p>
+                      </div>
+                    </div>
+                    {item.id === selectedTransaction ? (
+                      <DynamicHeroIcon
+                        icon="CheckCircleIcon"
+                        className="text-green-500 h-7 w-7"
+                      />
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+        <div className="mt-4">
+          <Button
+            blok
+            onClick={onSubmit}
+            isLoading={gabungMutation.isLoading}
+            disabled={gabungMutation.isLoading}
+          >
+            Simpan
+          </Button>
+        </div>
+      </div>
+    </MyModal>
+  );
+};
+
+export default GabungModal;

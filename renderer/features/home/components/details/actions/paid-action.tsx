@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import electron from "electron";
 import { useMutation } from "react-query";
 import { useDispatch } from "react-redux";
-import Swal from "sweetalert2";
-import { setRefetchOrder } from "@/features/listOrderSlice";
 import {
   VariantOrder,
   setId,
@@ -11,13 +10,10 @@ import {
   setOrders,
   setType,
 } from "@/features/orderSlice";
-import { resetPayment, setPayment } from "@/features/paymentSlice";
 import { useAuth } from "@/hooks/AuthContext";
-import { OrderDetail, UpdateStateParams } from "@/modules/order/type";
-import { handleErrorAxios } from "@/utils/errors";
+import { OrderDetail } from "@/modules/order/type";
 import DetailActionButton from "@/modules/form/components/details/DetailActionButton";
 import PasscodeModal from "@/modules/shared/components/PasscodeModal";
-import electron from "electron";
 import { ucwords } from "@/utils/string";
 import Toast from "@/utils/toast";
 import axios from "@/utils/axios";
@@ -50,11 +46,7 @@ const PaidAction = ({ data }: PaidActionProps) => {
     )
   );
 
-  const _onCancel = () => {
-    setOpenPasscodeModal(true);
-  };
-
-  const _onSuccessPasscode = () => {
+  const onSuccessPasscode = () => {
     setOpenPasscodeModal(false);
     dispatch(setType("VOID"));
     dispatch(
@@ -71,7 +63,7 @@ const PaidAction = ({ data }: PaidActionProps) => {
           let tmpVariant: VariantOrder[] = [];
 
           d.variants.forEach((e) => {
-            let find = tmpVariant.findIndex((f) => f.id === e.id);
+            const find = tmpVariant.findIndex((f) => f.id === e.id);
 
             if (find === -1) {
               tmpVariant.push({
@@ -86,9 +78,9 @@ const PaidAction = ({ data }: PaidActionProps) => {
                 ],
               });
             } else {
-              let selected = tmpVariant[find];
+              const selected = tmpVariant[find];
 
-              let tmpData: {
+              const tmpData: {
                 option_id: number;
                 option_name: string;
                 price: number;
@@ -119,15 +111,6 @@ const PaidAction = ({ data }: PaidActionProps) => {
             type_order: d.type_order,
             id_detail: d.id,
             variants: tmpVariant,
-            // variants: d.variants.map((v) => {
-            //   return {
-            //     option_id: v.variant_option_id,
-            //     price: v.price,
-            //     category_id: v.variant_id,
-            //     category_name: v.variant_name,
-            //     option_name: v.option_name,
-            //   };
-            // }),
           };
         })
       )
@@ -136,26 +119,17 @@ const PaidAction = ({ data }: PaidActionProps) => {
     router.push("/form");
   };
 
-  const _sendToKitchen = () => {
+  const sendToKitchen = () => {
     if (ipcRenderer) {
-      // let copies =
-      //   ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
-      //   2;
-
-      // for (let index = 0; index < copies; index++) {
-      // }
       ipcRenderer.send("print-order", data, 1);
     }
   };
 
-  const _sendToKitchenAdditional = () => {
+  const sendToKitchenAdditional = () => {
     if (ipcRenderer) {
       if (data.details.filter((e) => e.type === 1).length > 0) {
-        let copies =
-          ipcRenderer.sendSync(
-            "electron-store-get",
-            "printer-kitchen-copies"
-          ) ?? 2;
+        const copies =
+          ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ?? 2;
 
         for (let index = 0; index < copies; index++) {
           ipcRenderer.send("print-order-additional", data, 1);
@@ -170,7 +144,7 @@ const PaidAction = ({ data }: PaidActionProps) => {
     }
   };
 
-  const _rePrint = () => {
+  const rePrint = () => {
     if (ipcRenderer) {
       ipcRenderer.send(
         "print-reprint",
@@ -179,7 +153,7 @@ const PaidAction = ({ data }: PaidActionProps) => {
           address: outlet.address,
           instagram: outlet.instagram,
           kasir: ucwords(user.name),
-          contact: outlet.contact
+          contact: outlet.contact,
         },
         data,
         1
@@ -192,33 +166,29 @@ const PaidAction = ({ data }: PaidActionProps) => {
   return (
     <>
       <div className="flex-1 flex flex-row flex-wrap items-start justify-start gap-2">
-        <DetailActionButton
-          icon="PrinterIcon"
-          title="Cetak Struk"
-          onClick={_rePrint}
-        />
+        <DetailActionButton icon="PrinterIcon" title="Cetak Struk" onClick={rePrint} />
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak Pesanan"
-          onClick={_sendToKitchen}
+          onClick={sendToKitchen}
         />
         <DetailActionButton
           icon="PrinterIcon"
           title="Cetak Tambahan"
-          onClick={_sendToKitchenAdditional}
+          onClick={sendToKitchenAdditional}
         />
         <DetailActionButton
           icon="XMarkIcon"
           title="Void"
           outline={false}
-          onClick={_onCancel}
+          onClick={() => setOpenPasscodeModal(true)}
           iconClassName="text-white"
         />
       </div>
       <PasscodeModal
         visible={openPasscodeModal}
         onClose={() => setOpenPasscodeModal(false)}
-        onSuccess={_onSuccessPasscode}
+        onSuccess={onSuccessPasscode}
       />
     </>
   );

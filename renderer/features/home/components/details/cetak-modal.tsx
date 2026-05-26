@@ -1,14 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import electron from "electron";
+import { useMutation } from "react-query";
 import { useAuth } from "@/hooks/AuthContext";
 import { DynamicHeroIcon } from "@/components/globals/icons";
-
 import MyModal from "@/components/globals/modal/MyModal";
-import electron from "electron";
 import { OrderDetail } from "@/modules/order/type";
 import { ucwords } from "@/utils/string";
 import Toast from "@/utils/toast";
-import { useMutation } from "react-query";
 import axios from "@/utils/axios";
 
 interface CetakModalProps {
@@ -19,7 +17,6 @@ interface CetakModalProps {
 
 const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
-  const dispatch = useDispatch();
   const { token, outlet, user } = useAuth();
 
   const mutationLogs = useMutation((deskription: string) =>
@@ -38,28 +35,15 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
     )
   );
 
-  const _sendToKitchen = () => {
+  const sendToKitchen = () => {
     if (ipcRenderer) {
-      // let copies =
-      //   ipcRenderer.sendSync("electron-store-get", "printer-kitchen-copies") ??
-      //   2;
-
-      // for (let index = 0; index < copies; index++) {
-      // }
       ipcRenderer.send("print-order", data, 1);
     }
   };
 
-  const _sendToKitchenAdditional = () => {
+  const sendToKitchenAdditional = () => {
     if (ipcRenderer) {
       if (data.details.filter((e) => e.type === 1).length > 0) {
-        let copies =
-          ipcRenderer.sendSync(
-            "electron-store-get",
-            "printer-kitchen-copies"
-          ) ?? 2;
-
-        for (let index = 0; index < copies; index++) {}
         ipcRenderer.send("print-order-additional", data, 1);
       } else {
         Toast.fire(
@@ -71,7 +55,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
     }
   };
 
-  const _printBill = () => {
+  const printBill = () => {
     if (ipcRenderer) {
       ipcRenderer.send(
         "print-bill",
@@ -81,7 +65,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
           instagram: outlet.instagram,
           kasir: ucwords(user.name),
           tax: outlet.tax,
-          contact: outlet.contact
+          contact: outlet.contact,
         },
         data
       );
@@ -90,7 +74,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
     }
   };
 
-  const _printAccount = () => {
+  const printAccount = () => {
     if (ipcRenderer && data.member !== null) {
       ipcRenderer.send("print-account", {
         name: data.member.name,
@@ -104,16 +88,14 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
     <MyModal title="Pilih Opsi Cetak" show={show} onClose={onClose}>
       <div className="mt-4">
         <div
-          onClick={_sendToKitchen}
+          onClick={sendToKitchen}
           className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="TruckIcon" className="mr-4 h-6 w-6" />
-          <span className="text-sm font-medium text-gray-900">
-            Cetak ke Dapur
-          </span>
+          <span className="text-sm font-medium text-gray-900">Cetak ke Dapur</span>
         </div>
         <div
-          onClick={_sendToKitchenAdditional}
+          onClick={sendToKitchenAdditional}
           className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="DocumentPlusIcon" className="mr-4 h-6 w-6" />
@@ -122,7 +104,7 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
           </span>
         </div>
         <div
-          onClick={_printBill}
+          onClick={printBill}
           className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
         >
           <DynamicHeroIcon icon="PrinterIcon" className="mr-4 h-6 w-6" />
@@ -130,13 +112,11 @@ const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
         </div>
         {data.member !== null ? (
           <div
-            onClick={_printAccount}
+            onClick={printAccount}
             className="flex flex-row p-4 bg-gray-100 cursor-pointer mb-2 items-center active:bg-gray-200"
           >
             <DynamicHeroIcon icon="UserIcon" className="mr-4 h-6 w-6" />
-            <span className="text-sm font-medium text-gray-900">
-              Cetak Akun
-            </span>
+            <span className="text-sm font-medium text-gray-900">Cetak Akun</span>
           </div>
         ) : null}
       </div>
