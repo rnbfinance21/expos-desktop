@@ -15,6 +15,8 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
   const ipcRenderer = electron.ipcRenderer || false;
 
+  const getLayout = (Component as any).getLayout || ((page: any) => page)
+
   useEffect(() => {
     if (ipcRenderer) {
       // // Listen for service successfully started
@@ -76,11 +78,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       ipcRenderer.send(`PUSH_RECEIVER:::START_NOTIFICATION_SERVICE`, senderId);
     }
   }, [ipcRenderer]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <AuthContextProvider>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </AuthContextProvider>
       </Provider>
     </QueryClientProvider>
