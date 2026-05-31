@@ -8,7 +8,7 @@ import {
   setTax,
 } from "../../../features/paymentSlice";
 import ButtonAttributes from "../ButtonAttributes";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "../../../core/contexts/AuthContext";
 
 const TaxSection = () => {
   const dispatch = useDispatch();

@@ -8,7 +8,8 @@ import {
   setMenu,
   setRefetchMenu,
 } from "../../features/stokMenuSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
+import { useOutlet } from "../../core/contexts/OutletContext";
 import MenuService, {
   ChangeStockStateParams,
 } from "../../services/MenuService";
@@ -18,7 +19,8 @@ import Header from "./menu/Header";
 
 const MenuSection = () => {
   const dispatch = useDispatch();
-  const { token, outlet } = useAuth();
+  const { token } = useAuth();
+  const { outlet } = useOutlet();
 
   const { refetchMenu } = useSelector(getMenu);
   const menu = useSelector(getMenuData);

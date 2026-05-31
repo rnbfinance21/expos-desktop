@@ -8,7 +8,8 @@ import CurrencyInput from "react-currency-input-field";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import * as yup from "yup";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "../../../core/contexts/AuthContext";
+import { useOutlet } from "../../../core/contexts/OutletContext";
 import PengeluaranService, {
     SavePengeluaranParams,
 } from "../../../services/PengeluaranService";
@@ -53,7 +54,8 @@ const FormModal = ({
     formType,
     onSuccess,
 }: FormModalProps) => {
-    const { token, outlet } = useAuth();
+    const { token } = useAuth();
+    const { outlet } = useOutlet();
 
     const {
         register,

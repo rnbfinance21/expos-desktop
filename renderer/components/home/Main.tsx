@@ -7,7 +7,7 @@ import {
   setRefetchOrder,
   setSelectedOrder,
 } from "../../features/listOrderSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import OrderService, {
   GetOrderOutletPaginateParams,
   GetOrderOutletParams,

@@ -11,7 +11,7 @@ import AuthService, { LoginUsernameParams } from "../../services/AuthService";
 import { AxiosError } from "axios";
 import { BaseResponse } from "../../services/types";
 import Toast from "../../utils/toast";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import { Numpad } from "../globals/keyboard";
 import electron from "electron";
 

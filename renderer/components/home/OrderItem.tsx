@@ -11,7 +11,7 @@ interface OrderItemProps {
   selected?: boolean;
 }
 
-const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
+const OrderItem = ({ data, onClick, selected = false }: OrderItemProps) => {
   const stateColor: {
     [key: number]: {
       background: string;
@@ -86,10 +86,6 @@ const OrderItem = ({ data, onClick, selected }: OrderItemProps) => {
       </div>
     </div>
   );
-};
-
-OrderItem.defaultProps = {
-  selected: false,
 };
 
 export default OrderItem;

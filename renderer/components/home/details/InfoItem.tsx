@@ -6,7 +6,7 @@ type InfoItemProps = {
   col?: boolean;
 };
 
-const InfoItem = ({ title, value, col }: InfoItemProps) => {
+const InfoItem = ({ title, value, col = false }: InfoItemProps) => {
   return (
     <div
       className={`flex ${
@@ -21,10 +21,6 @@ const InfoItem = ({ title, value, col }: InfoItemProps) => {
       </div>
     </div>
   );
-};
-
-InfoItem.defaultProps = {
-  col: false,
 };
 
 export default InfoItem;

@@ -1,5 +1,5 @@
 import React from "react";
-import { withOutAuth } from "../HOC/withOutAuth";
+import { withOutAuth } from "../core/guards/withOutAuth";
 import LoginContainer from "../modules/auth/components/login-container";
 
 const LoginPage = () => {

@@ -15,10 +15,10 @@ interface DetailActionButtonProps {
 const DetailActionButton = ({
   icon,
   title,
-  outline,
-  color,
-  iconClassName,
-  onClick,
+  outline = true,
+  color = "red",
+  iconClassName = "",
+  onClick = () => {},
 }: DetailActionButtonProps) => {
   return (
     <div className="cursor-pointer flex flex-col justify-center items-center">
@@ -27,14 +27,14 @@ const DetailActionButton = ({
         className={classNames(
           "p-3 rounded-full  flex justify-center items-center",
           outline
-            ? `border border-red-500 active:border-red-600 active:bg-red-200`
+            ? `border border-${color}-500 active:border-${color}-600 active:bg-${color}-200`
             : `bg-${color}-500 active:bg-${color}-600`
         )}
       >
         <DynamicHeroIcon
           icon={icon}
           className={classNames(
-            "text-red-500 h-[20px] w-[20px]",
+            `text-${color}-500 h-[20px] w-[20px]`,
             iconClassName
           )}
         />
@@ -46,10 +46,4 @@ const DetailActionButton = ({
   );
 };
 
-DetailActionButton.defaultProps = {
-  outline: true,
-  color: "red",
-  iconClassName: "",
-  onClick: () => {},
-};
 export default DetailActionButton;

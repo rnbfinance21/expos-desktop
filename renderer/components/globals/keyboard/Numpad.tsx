@@ -23,7 +23,7 @@ const ButtonNumpad = ({ text, onClick }: ButtonNumpadProps) => {
   );
 };
 
-const Numpad = ({ value, onChange, isNullable }: NumpadProps) => {
+const Numpad = ({ value, onChange, isNullable = false }: NumpadProps) => {
   const onTapNumber = (val: string) => {
     if (isNullable) {
       onChange(value + val);
@@ -69,8 +69,5 @@ const Numpad = ({ value, onChange, isNullable }: NumpadProps) => {
   );
 };
 
-Numpad.defaultProps = {
-  isNullable: false,
-};
 
 export default Numpad;

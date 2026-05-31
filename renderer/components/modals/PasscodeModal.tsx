@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import AuthService from "../../services/AuthService";
 import { handleErrorAxios } from "../../utils/errors";
 import Toast from "../../utils/toast";

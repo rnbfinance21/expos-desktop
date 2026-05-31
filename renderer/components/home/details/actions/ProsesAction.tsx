@@ -12,7 +12,7 @@ import {
     setType,
 } from "../../../../features/orderSlice";
 import { resetPayment, setPayment } from "../../../../features/paymentSlice";
-import { useAuth } from "../../../../hooks/AuthContext";
+import { useAuth } from "@core/contexts/AuthContext";
 import OrderService, {
     OrderDetail,
     UpdateStateParams,
@@ -25,6 +25,7 @@ import { generateRandomString, ucwords } from "../../../../utils/string";
 import GabungModal from "../GabungModal";
 import UangKasModal from "../../../modals/UangKasModal";
 import CetakModal from "../CetakModal";
+import { useOutlet } from "@core/contexts/OutletContext";
 
 interface ProsesActionProps {
     data: OrderDetail;
@@ -34,7 +35,8 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
     const ipcRenderer = electron.ipcRenderer || false;
     const dispatch = useDispatch();
     const router = useRouter();
-    const { token, outlet, user, setKasState } = useAuth();
+    const { token, user } = useAuth();
+    const { outlet, setKasState } = useOutlet();
 
     const [openPasscodeModal, setOpenPasscodeModal] = useState(false);
     const [openGabungModal, setOpenGabungModal] = useState(false);
@@ -107,13 +109,13 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
                                 option_name: string;
                                 price: number;
                             }[] = [
-                                ...selected.data,
-                                {
-                                    option_id: e.variant_option_id,
-                                    option_name: e.option_name,
-                                    price: e.price,
-                                },
-                            ];
+                                    ...selected.data,
+                                    {
+                                        option_id: e.variant_option_id,
+                                        option_name: e.option_name,
+                                        price: e.price,
+                                    },
+                                ];
 
                             tmpVariant[find].data = tmpData;
                         }
@@ -195,13 +197,13 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
                                 option_name: string;
                                 price: number;
                             }[] = [
-                                ...selected.data,
-                                {
-                                    option_id: e.variant_option_id,
-                                    option_name: e.option_name,
-                                    price: e.price,
-                                },
-                            ];
+                                    ...selected.data,
+                                    {
+                                        option_id: e.variant_option_id,
+                                        option_name: e.option_name,
+                                        price: e.price,
+                                    },
+                                ];
 
                             tmpVariant[find].data = tmpData;
                         }
@@ -364,7 +366,7 @@ const ProsesAction = ({ data }: ProsesActionProps) => {
             <UangKasModal
                 visible={openKasModal}
                 openState={1}
-                onError={() => {}}
+                onError={() => { }}
                 onSuccess={_onSuccessKas}
             />
             <CetakModal

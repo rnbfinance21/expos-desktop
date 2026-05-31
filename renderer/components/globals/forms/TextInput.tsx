@@ -7,7 +7,7 @@ interface TextInputProps extends HTMLProps<HTMLInputElement> {
 }
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ className, ...props }, ref) => {
+  ({ className = "", ...props }, ref) => {
     return (
       <div className="relative">
         <input
@@ -22,9 +22,5 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     );
   }
 );
-
-TextInput.defaultProps = {
-  className: "",
-};
 
 export default TextInput;

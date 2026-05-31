@@ -10,7 +10,8 @@ import {
   resetOrder,
 } from "../../../features/orderSlice";
 import { resetPayment, setPayment } from "../../../features/paymentSlice";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "../../../core/contexts/AuthContext";
+import { useOutlet } from "../../../core/contexts/OutletContext";
 import OrderService, {
   SaveDraftParams,
   UpdateDraftParams,
@@ -25,7 +26,8 @@ import { generateRandomString } from "../../../utils/string";
 const DetailAction = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { token, kasState, outlet, setKasState } = useAuth();
+  const { token, kasState, setKasState } = useAuth();
+  const { outlet } = useOutlet();
   const { identity, orders, type, id, updateLog, deleteLog, key } =
     useSelector(getOrder);
   const sum = useSelector(getSumOrder);

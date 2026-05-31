@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { getReport, setRefetch } from "../../features/reportSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import OrderService, { Order } from "../../services/OrderService";
 import { numberFormat } from "../../utils/currency";
 import { ucwords } from "../../utils/string";

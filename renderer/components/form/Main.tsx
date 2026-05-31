@@ -14,7 +14,8 @@ import {
   setRefetchMenu,
 } from "../../features/menuSlice";
 import { addItem } from "../../features/orderSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
+import { useOutlet } from "../../core/contexts/OutletContext";
 import MenuService, { Menu } from "../../services/MenuService";
 import { numberFormat } from "../../utils/currency";
 import { Loading } from "../globals/icons";
@@ -24,7 +25,8 @@ import MenuItem from "./MenuItem";
 
 const Main = () => {
   const dispatch = useDispatch();
-  const { token, outlet } = useAuth();
+  const { token } = useAuth();
+  const { outlet } = useOutlet();
 
   const { refetchMenu, type } = useSelector(getMenu);
   const menuData = useSelector(getMenuData);

@@ -1,6 +1,5 @@
 import Head from "next/head";
 import React, { Fragment, ReactNode } from "react";
-import { DynamicHeroIcon } from "../components/globals/icons";
 import Header from "./Header";
 
 interface DefaultLayoutProps {
@@ -9,7 +8,7 @@ interface DefaultLayoutProps {
   isBack?: boolean;
 }
 
-const DefaultLayout = ({ title, children, isBack }: DefaultLayoutProps) => {
+const DefaultLayout = ({ title = "", children, isBack = false }: DefaultLayoutProps) => {
   return (
     <Fragment>
       <Head>
@@ -26,11 +25,6 @@ const DefaultLayout = ({ title, children, isBack }: DefaultLayoutProps) => {
       </div>
     </Fragment>
   );
-};
-
-DefaultLayout.defaultProps = {
-  title: "",
-  isBack: false,
 };
 
 export default DefaultLayout;

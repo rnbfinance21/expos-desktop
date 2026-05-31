@@ -12,7 +12,7 @@ import {
   setType,
 } from "../../../../features/orderSlice";
 import { resetPayment, setPayment } from "../../../../features/paymentSlice";
-import { useAuth } from "../../../../hooks/AuthContext";
+import { useAuth } from "../../../../core/contexts/AuthContext";
 import OrderService, {
   OrderDetail,
   UpdateStateParams,

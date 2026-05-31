@@ -5,12 +5,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
 import electron from "electron";
 import * as yup from "yup";
-import { useAuth } from "../../../hooks/AuthContext";
-import { LoginRequest } from "../type";
-import AuthService from "../api";
+import { LoginRequest } from "@modules/auth/type";
+import AuthService from "@modules/auth/api";
 import { AxiosError } from "axios";
-import { BaseResponse } from "../../../services/types";
-import Toast from "../../../utils/toast";
+import { BaseResponse } from "@services/types";
+import Toast from "@utils/toast";
+import { useAuth } from "@core/contexts/AuthContext";
 
 const schema = yup.object({
     username: yup.string().required("Masukkan kode staff"),
@@ -60,7 +60,12 @@ export function useLoginForm() {
     const onSubmit = (data) => {
         if (ipcRenderer) {
             let params = { ...data };
-            mutate(params);
+            mutate({
+                identifier: params.username,
+                password: params.password,
+            });
+        } else {
+            Toast.fire("Error!", "Electron IPC tidak tersedia", "error");
         }
     };
 

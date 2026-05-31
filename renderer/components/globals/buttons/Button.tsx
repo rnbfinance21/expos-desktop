@@ -10,10 +10,10 @@ interface ButtonProps extends HTMLProps<HTMLButtonElement> {
 }
 
 const Button = ({
-  blok,
-  type,
+  blok = false,
+  type = "button",
   children,
-  isLoading,
+  isLoading = false,
   className,
   disabled,
   onClick,
@@ -34,12 +34,6 @@ const Button = ({
       {isLoading ? "Mohon Tunggu..." : children}
     </button>
   );
-};
-
-Button.defaultProps = {
-  blok: false,
-  isLoading: false,
-  type: "button",
 };
 
 export default Button;

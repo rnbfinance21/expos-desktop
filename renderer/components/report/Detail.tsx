@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import { getReport } from "../../features/reportSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
+import { useOutlet } from "../../core/contexts/OutletContext";
 import ReportService, {
   DownloadReportParams,
   ResumeData,
@@ -15,7 +16,8 @@ import { Button } from "../globals/buttons";
 import Swal from "sweetalert2";
 
 const Detail = () => {
-  const { token, outlet } = useAuth();
+  const { token } = useAuth();
+  const { outlet } = useOutlet();
   const { date, refetchReport } = useSelector(getReport);
 
   const [data, setData] = useState<ResumeData>({

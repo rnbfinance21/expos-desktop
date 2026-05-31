@@ -13,7 +13,7 @@ interface DynamicHeroIconProps {
 const DynamicHeroIcon: FC<DynamicHeroIconProps> = ({
   icon,
   className,
-  onClick,
+  onClick = () => {},
 }) => {
   const SingleIcon = HeroIcons[icon];
 
@@ -23,10 +23,6 @@ const DynamicHeroIcon: FC<DynamicHeroIconProps> = ({
       onClick={onClick}
     />
   );
-};
-
-DynamicHeroIcon.defaultProps = {
-  onClick: () => {},
 };
 
 export default DynamicHeroIcon;

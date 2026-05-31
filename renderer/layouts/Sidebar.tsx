@@ -1,12 +1,13 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import React, { Fragment } from "react";
-import { useAuth } from "../hooks/AuthContext";
+import { useAuth } from "@core/contexts/AuthContext";
 import { classNames, ucwords } from "../utils/string";
 import Divider from "../components/globals/dividers/Divider";
 import { DynamicHeroIcon } from "../components/globals/icons";
 import { IconName } from "../components/globals/icons/DynamicHeroIcon";
 import { useRouter } from "next/router";
+import { useOutlet } from "@core/contexts/OutletContext";
 
 type SideBarProps = {
     show: boolean;
@@ -41,7 +42,8 @@ const SideBarMenu = ({ title, onClick, icon }: SideBarMenuProps) => {
 };
 
 const SideBar = ({ show, onClose }: SideBarProps) => {
-    const { user, outlet, logout } = useAuth();
+    const { user, logout } = useAuth();
+    const { outlet } = useOutlet();
     const router = useRouter();
 
     return (

@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import MyModal from "../../globals/modal/MyModal";
 import { useQuery } from "react-query";
 import PurchaseService from "../../../services/purchaseService";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "../../../core/contexts/AuthContext";
 import { formatDate, formatFullDate } from "../../../utils/date";
 
 type Props = {

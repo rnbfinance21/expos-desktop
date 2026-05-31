@@ -5,11 +5,12 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import { DynamicHeroIcon } from "../components/globals/icons";
-import { useAuth } from "../hooks/AuthContext";
+import { useAuth } from "@core/contexts/AuthContext";
 import OutletService, { OpenOutletParams } from "../services/OutletService";
 import { classNames, ucwords } from "../utils/string";
 import Toast from "../utils/toast";
 import SideBar from "./Sidebar";
+import { useOutlet } from "@core/contexts/OutletContext";
 
 interface HeaderProps {
   isBack: boolean;
@@ -17,7 +18,8 @@ interface HeaderProps {
 
 const Header = ({ isBack }: HeaderProps) => {
   const navigate = useRouter();
-  const { user, outlet, openState, setOpenState, token } = useAuth();
+  const { user, token } = useAuth();
+  const { outlet, openState, setOpenState } = useOutlet();
 
   const [openSideBar, setOpenSideBar] = useState(false);
 

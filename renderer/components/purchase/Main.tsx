@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
+import { useOutlet } from "../../core/contexts/OutletContext";
 import PengeluaranService, {
     PengeluaranData,
 } from "../../services/PengeluaranService";
@@ -26,7 +27,8 @@ const STATUS = {
 
 const Main = () => {
     const dispatch = useDispatch();
-    const { token, outlet } = useAuth();
+    const { token } = useAuth();
+    const { outlet } = useOutlet();
     const { date, search, refetchPurchase } = useSelector(getPurchase);
 
     const [data, setData] = useState<Purchase[]>([]);

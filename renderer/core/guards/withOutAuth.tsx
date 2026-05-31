@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Router from "next/router";
-import { useAuth } from "../hooks/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
-const redirectTo = "/login";
+const redirectTo = "/home";
 
-export const withAuth = (WrappedComponent: any) => {
+export const withOutAuth = (WrappedComponent: any) => {
   const Wrapper = (props: any) => {
     const { token } = useAuth();
 
     useEffect(() => {
-      if (token === null || token === "") {
+      if (token !== null && token !== "") {
         Router.replace(redirectTo, redirectTo, { shallow: true });
       }
     }, [token]);

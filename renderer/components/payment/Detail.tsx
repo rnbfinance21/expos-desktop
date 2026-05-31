@@ -12,7 +12,8 @@ import {
   getPayment,
   setTax as setInputTax,
 } from "../../features/paymentSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
+import { useOutlet } from "../../core/contexts/OutletContext";
 import MasterService from "../../services/MasterService";
 import { Loading } from "../globals/icons";
 import ActionSection from "./ActionSection";
@@ -21,7 +22,8 @@ import InputSection from "./InputSection";
 
 const Detail = () => {
   const dispatch = useDispatch();
-  const { token, outlet } = useAuth();
+  const { token } = useAuth();
+  const { outlet } = useOutlet();
   const { paymentType, orderType } = useSelector(getPayment);
   const outletTax =
     typeof outlet?.tax === "number" && !Number.isNaN(outlet.tax)

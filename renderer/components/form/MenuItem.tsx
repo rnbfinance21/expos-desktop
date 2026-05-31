@@ -9,7 +9,7 @@ interface MenuItemProps {
   onClick?: () => void;
 }
 
-const MenuItem = ({ data, type, onClick }: MenuItemProps) => {
+const MenuItem = ({ data, type = "list", onClick }: MenuItemProps) => {
   return (
     <>
       <div
@@ -50,10 +50,6 @@ const MenuItem = ({ data, type, onClick }: MenuItemProps) => {
       </div>
     </>
   );
-};
-
-MenuItem.defaultProps = {
-  type: "list",
 };
 
 export default MenuItem;

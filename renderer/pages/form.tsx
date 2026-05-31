@@ -1,9 +1,9 @@
 import React from "react";
-import Detail from "../components/form/Detail";
-import Header from "../components/form/Header";
-import Main from "../components/form/Main";
-import { withAuth } from "../HOC/withAuth";
-import DefaultLayout from "../layouts/DefaultLayout";
+import Detail from "@components/form/Detail";
+import Header from "@components/form/Header";
+import Main from "@components/form/Main";
+import { withAuth } from "@core/guards/withAuth";
+import DefaultLayout from "@layouts/DefaultLayout";
 
 const form = () => {
   return (

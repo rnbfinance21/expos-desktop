@@ -8,7 +8,8 @@ import CurrencyInput from "react-currency-input-field";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import * as yup from "yup";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "../../../core/contexts/AuthContext";
+import { useOutlet } from "../../../core/contexts/OutletContext";
 import { handleErrorAxios } from "../../../utils/errors";
 import Toast from "../../../utils/toast";
 import { Button } from "../../globals/buttons";
@@ -45,7 +46,8 @@ const FormModal = ({
   formType,
   onSuccess,
 }: FormModalProps) => {
-  const { token, outlet } = useAuth();
+  const { token } = useAuth();
+  const { outlet } = useOutlet();
 
   const [supplierData, setSupplierData] = useState<
     {

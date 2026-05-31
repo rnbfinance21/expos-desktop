@@ -6,7 +6,7 @@ import {
   setSelectedItem,
   updateItemCustom,
 } from "../../features/paymentSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import { Button } from "../globals/buttons";
 import { Numpad } from "../globals/keyboard";
 import MyModal from "../globals/modal/MyModal";

@@ -1,7 +1,7 @@
 import React from "react";
-import DefaultLayout from "../layouts/DefaultLayout";
-import Main from "../components/payment/Main";
-import Detail from "../components/payment/Detail";
+import DefaultLayout from "@layouts/DefaultLayout";
+import Main from "@components/payment/Main";
+import Detail from "@components/payment/Detail";
 
 const payment = () => {
   return (

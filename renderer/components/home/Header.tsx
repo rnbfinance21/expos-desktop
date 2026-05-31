@@ -16,7 +16,7 @@ import {
     setKey,
     setType,
 } from "../../features/orderSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
 import { DynamicHeroIcon } from "../globals/icons";
 import Filter from "./Filter";
 import { generateRandomString } from "../../utils/string";

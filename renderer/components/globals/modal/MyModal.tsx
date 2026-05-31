@@ -8,7 +8,7 @@ type MyModalProps = {
   onClose?: () => void;
   children: ReactElement;
 };
-const MyModal = ({ show, title, onClose, children }: MyModalProps) => {
+const MyModal = ({ show, title, onClose = () => {}, children }: MyModalProps) => {
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => {}}>
@@ -63,8 +63,5 @@ const MyModal = ({ show, title, onClose, children }: MyModalProps) => {
   );
 };
 
-MyModal.defaultProps = {
-  onClose: () => {},
-};
 
 export default MyModal;

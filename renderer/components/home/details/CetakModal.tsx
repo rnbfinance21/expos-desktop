@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useAuth } from "../../../hooks/AuthContext";
+import { useAuth } from "../../../core/contexts/AuthContext";
+import { useOutlet } from "../../../core/contexts/OutletContext";
 import { DynamicHeroIcon } from "../../globals/icons";
 
 import MyModal from "../../globals/modal/MyModal";
@@ -20,7 +21,8 @@ interface CetakModalProps {
 const CetakModal = ({ show, onClose, data }: CetakModalProps) => {
   const ipcRenderer = electron.ipcRenderer || false;
   const dispatch = useDispatch();
-  const { token, outlet, user } = useAuth();
+  const { token, user } = useAuth();
+  const { outlet } = useOutlet();
 
   const mutationLogs = useMutation((deskription: string) =>
     axios.post(

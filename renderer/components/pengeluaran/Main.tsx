@@ -3,7 +3,8 @@ import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { getPengeluaran, setRefetch } from "../../features/pengeluaranSlice";
-import { useAuth } from "../../hooks/AuthContext";
+import { useAuth } from "../../core/contexts/AuthContext";
+import { useOutlet } from "../../core/contexts/OutletContext";
 import PengeluaranService, {
     PengeluaranData,
 } from "../../services/PengeluaranService";
@@ -16,7 +17,8 @@ import { ucwords } from "../../utils/string";
 
 const Main = () => {
     const dispatch = useDispatch();
-    const { token, outlet } = useAuth();
+    const { token } = useAuth();
+    const { outlet } = useOutlet();
     const { date, search, refetchPengeluaran } = useSelector(getPengeluaran);
 
     const [data, setData] = useState<PengeluaranData[]>([]);

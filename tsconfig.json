@@ -18,7 +18,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"
-  },
+    },
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["renderer/components/*"],
+      "@utils/*": ["renderer/utils/*"],
+      "@services/*": ["renderer/services/*"],
+      "@features/*": ["renderer/features/*"],
+      "@layouts/*": ["renderer/layouts/*"],
+      "@modules/*": ["renderer/modules/*"],
+      "@config/*": ["renderer/config/*"],
+      "@core/*": ["renderer/core/*"]
+    },
   "exclude": [
     "node_modules",
     "renderer/next.config.js",
